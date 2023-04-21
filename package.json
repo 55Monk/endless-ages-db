@@ -22,6 +22,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "storybook dev -p 6006",
@@ -76,6 +77,7 @@
     "@storybook/testing-library": "0.0.14-next.2",
     "babel-plugin-named-exports-order": "0.0.2",
     "prop-types": "15.8.1",
+    "source-map-explorer": "2.5.3",
     "storybook": "7.0.6",
     "webpack": "5.80.0"
   }
