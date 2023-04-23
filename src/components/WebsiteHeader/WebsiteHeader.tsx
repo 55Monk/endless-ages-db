@@ -2,11 +2,7 @@ import dbIcon from "./db.png";
 import discordLogo from "./discord-mark.svg";
 import githubLogo from "./github-mark.svg";
 
-type Props = {};
-
-export default function WebsiteHeader(props: Props) {
-  const {} = props;
-
+export default function WebsiteHeader() {
   return (
     <div className="flex flex-row flex-nowrap items-center gap-4 border border-b-neutral-300 px-4 py-2">
       <img src={dbIcon} alt="Deathbot Orb" className="h-6 w-6" />
