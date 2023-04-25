@@ -4,7 +4,7 @@ import githubLogo from "./github-mark.svg";
 
 export default function WebsiteHeader() {
   return (
-    <div className="flex flex-row flex-nowrap items-center gap-4 border border-b-neutral-300 px-4 py-2">
+    <div className="flex items-center gap-4 border-b border-neutral-300 px-4 py-2">
       <img src={dbIcon} alt="Deathbot Orb" className="h-6 w-6" />
       <div className="text-xl">
         endless ages <strong>db</strong>
