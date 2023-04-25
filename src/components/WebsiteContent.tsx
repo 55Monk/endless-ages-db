@@ -1,6 +1,8 @@
 import { Tab } from "@headlessui/react";
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/20/solid";
+import L from "leaflet";
 import { Fragment, useState } from "react";
+import { ImageOverlay, MapContainer, Marker, Tooltip } from "react-leaflet";
 import getItems, { Race } from "../data/items";
 import FiltersPanel from "./FiltersPanel";
 import ItemCard from "./ItemCard";
@@ -50,6 +52,48 @@ export default function WebsiteContent() {
   filteredItems = filteredItems.filter(
     (item) => !item.race || toKeepRaces.includes(item.race)
   );
+
+  const OrbIcon: any = L.Icon.extend({
+    options: {
+      iconSize: [34, 51],
+      iconAnchor: [17, 51],
+      popupAnchor: [0, -51],
+      tooltipAnchor: [17, -35],
+    },
+  });
+
+  const icons = {
+    orb: new OrbIcon({
+      iconUrl: `${process.env.PUBLIC_URL}/assets/icons/orb-marker-icon.png`,
+    }),
+    ap: new OrbIcon({
+      iconUrl: `${process.env.PUBLIC_URL}/assets/icons/ap-marker-icon.png`,
+    }),
+    bl: new OrbIcon({
+      iconUrl: `${process.env.PUBLIC_URL}/assets/icons/bl-marker-icon.png`,
+    }),
+    hf: new OrbIcon({
+      iconUrl: `${process.env.PUBLIC_URL}/assets/icons/hf-marker-icon.png`,
+    }),
+    hm: new OrbIcon({
+      iconUrl: `${process.env.PUBLIC_URL}/assets/icons/hm-marker-icon.png`,
+    }),
+    qi: new OrbIcon({
+      iconUrl: `${process.env.PUBLIC_URL}/assets/icons/qi-marker-icon.png`,
+    }),
+    egg: new OrbIcon({
+      iconUrl: `${process.env.PUBLIC_URL}/assets/icons/egg-marker-icon.png`,
+    }),
+    plant: new OrbIcon({
+      iconUrl: `${process.env.PUBLIC_URL}/assets/icons/plant-marker-icon.png`,
+    }),
+    mineral: new OrbIcon({
+      iconUrl: `${process.env.PUBLIC_URL}/assets/icons/mineral-marker-icon.png`,
+    }),
+    chest: new OrbIcon({
+      iconUrl: `${process.env.PUBLIC_URL}/assets/icons/chest-marker-icon.png`,
+    }),
+  };
 
   return (
     <div className="flex flex-grow">
@@ -118,7 +162,33 @@ export default function WebsiteContent() {
           </Tab.Panels>
         </Tab.Group>
       </div>
-      <div className="flex-grow" />
+      <MapContainer
+        className="flex-grow"
+        center={[0, 0]}
+        zoom={-6}
+        minZoom={-6}
+        maxZoom={-1}
+        scrollWheelZoom={true}
+        crs={L.CRS.Simple}
+        maxBounds={[
+          [-21506, -21852],
+          [21694, 21348],
+        ]}
+      >
+        <ImageOverlay
+          url={`${process.env.PUBLIC_URL}/assets/maps/mainworld.png`}
+          bounds={[
+            [-21506, -21852],
+            [21694, 21348],
+          ]}
+        />
+        <Marker icon={icons["plant"]} position={[-6454, 13165]}>
+          <Tooltip>Perox Flower</Tooltip>
+        </Marker>
+        <Marker icon={icons["plant"]} position={[-2229, 13179]}>
+          <Tooltip>Sun Flower</Tooltip>
+        </Marker>
+      </MapContainer>
     </div>
   );
 }
