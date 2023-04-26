@@ -1,11 +1,19 @@
 import { Tab } from "@headlessui/react";
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/20/solid";
-import L from "leaflet";
+import L, { LatLngExpression } from "leaflet";
 import { Fragment, useState } from "react";
-import { ImageOverlay, MapContainer, Marker, Tooltip } from "react-leaflet";
+import {
+  ImageOverlay,
+  MapContainer,
+  Marker,
+  Polyline,
+  Tooltip,
+} from "react-leaflet";
 import getItems, { Race } from "../data/items";
 import FiltersPanel from "./FiltersPanel";
 import ItemCard from "./ItemCard";
+import { Quest, QuestStep } from "./Quest/QuestCard";
+import QuestPanel from "./Quest/QuestPanel";
 import RaceFilterPanel, { Filters } from "./RaceFilterPanel";
 
 type TabDef = {
@@ -28,6 +36,91 @@ const tabs: TabDef[] = [
 ];
 
 const races: Race[] = ["AP", "BL", "HF", "HM"];
+
+const quests: Record<string, Quest> = {
+  "Dominion Egg Quest": {
+    name: "Dominion Egg Quest",
+    shortDesc: "Rewards strength ring for each race",
+    steps: [
+      { npcName: "Dominion Gratute Egg", action: "Loot" },
+      { npcName: "Dominion Grison Egg", action: "Loot" },
+      { npcName: "Dominion Flisk Egg", action: "Loot" },
+      { npcName: "Dominion Powlong Egg", action: "Loot" },
+      { npcName: "Dominion Ligton Egg", action: "Loot" },
+      { npcName: "Dominion Bringing Egg", action: "Loot" },
+      { npcName: "Dominion Drout Egg", action: "Loot" },
+      { npcName: "Dominion Cripton Egg", action: "Loot" },
+      { npcName: "Dominion Briscore Egg", action: "Loot" },
+      { npcName: "To Trendor From IIA", action: "Teleport" },
+      { npcName: "G'fron", action: "Talk To" },
+    ],
+  },
+};
+
+function getLines(quest: Quest) {
+  const lines = [];
+  if (quest && quest.steps) {
+    let previousLocation;
+    for (const step of quest.steps) {
+      const npcLocation = npcs[step.npcName]?.location;
+      if (npcLocation) {
+        if (previousLocation) {
+          lines.push([previousLocation, npcLocation]);
+        }
+        previousLocation = npcLocation;
+      }
+    }
+  }
+  return lines;
+}
+
+type NPC = {
+  location?: LatLngExpression;
+  icon?: string;
+};
+
+const npcs: Record<string, NPC> = {
+  "Dominion Drout Egg": {
+    location: [-4, 7157],
+    icon: "egg",
+  },
+  "Dominion Cripton Egg": {
+    location: [8090, 7901],
+    icon: "egg",
+  },
+  "Dominion Briscore Egg": {
+    location: [16136, 8431],
+    icon: "egg",
+  },
+  "Dominion Gratute Egg": {
+    location: [12284, -7931],
+    icon: "egg",
+  },
+  "Dominion Grison Egg": {
+    location: [-877, -17704],
+    icon: "egg",
+  },
+  "Dominion Flisk Egg": {
+    location: [1866, -9615],
+    icon: "egg",
+  },
+  "Dominion Powlong Egg": {
+    location: [-9923, -14856],
+    icon: "egg",
+  },
+  "Dominion Ligton Egg": {
+    location: [-21234, -10756],
+    icon: "egg",
+  },
+  "Dominion Briging Egg": {
+    location: [-14283, 4671],
+    icon: "egg",
+  },
+  "To Trendor From IIA": {
+    location: [12371, -7937],
+  },
+  "G'fron": {},
+};
 
 export default function WebsiteContent() {
   const [searchRef, setSearchRef] = useState<HTMLInputElement | null>(null);
@@ -53,6 +146,8 @@ export default function WebsiteContent() {
     (item) => !item.race || toKeepRaces.includes(item.race)
   );
 
+  const [selectedQuest, setSelectedQuest] = useState<string>();
+
   const OrbIcon: any = L.Icon.extend({
     options: {
       iconSize: [34, 51],
@@ -62,7 +157,7 @@ export default function WebsiteContent() {
     },
   });
 
-  const icons = {
+  const icons: Record<string, any> = {
     orb: new OrbIcon({
       iconUrl: `${process.env.PUBLIC_URL}/assets/icons/orb-marker-icon.png`,
     }),
@@ -95,6 +190,8 @@ export default function WebsiteContent() {
     }),
   };
 
+  // @ts-ignore
+  // @ts-ignore
   return (
     <div className="flex flex-grow">
       <div className="flex w-[356px] flex-col gap-2 border-r border-neutral-300 p-2">
@@ -159,6 +256,13 @@ export default function WebsiteContent() {
                 ))}
               </div>
             </Tab.Panel>
+            <Tab.Panel />
+            <Tab.Panel />
+            <QuestPanel
+              quests={Object.values(quests)}
+              selectedQuest={selectedQuest}
+              setSelectedQuest={setSelectedQuest}
+            />
           </Tab.Panels>
         </Tab.Group>
       </div>
@@ -182,12 +286,36 @@ export default function WebsiteContent() {
             [21694, 21348],
           ]}
         />
-        <Marker icon={icons["plant"]} position={[-6454, 13165]}>
-          <Tooltip>Perox Flower</Tooltip>
-        </Marker>
-        <Marker icon={icons["plant"]} position={[-2229, 13179]}>
-          <Tooltip>Sun Flower</Tooltip>
-        </Marker>
+        {/*<Marker icon={icons["plant"]} position={[-6454, 13165]}>*/}
+        {/*  <Tooltip>Perox Flower</Tooltip>*/}
+        {/*</Marker>*/}
+        {/*<Marker icon={icons["plant"]} position={[-2229, 13179]}>*/}
+        {/*  <Tooltip>Sun Flower</Tooltip>*/}
+        {/*</Marker>*/}
+        {/*{Object.entries(npcs).map(([name, entry]) => (*/}
+        {/*  <Marker icon={icons[entry.icon ?? "orb"]} position={entry.location}>*/}
+        {/*    <Tooltip>{name}</Tooltip>*/}
+        {/*  </Marker>*/}
+        {/*))}*/}
+        {selectedQuest &&
+          quests[selectedQuest]?.steps.map(
+            (step: QuestStep, index) =>
+              npcs[step.npcName]?.location && (
+                <Marker
+                  key={index}
+                  icon={icons[npcs[step.npcName].icon ?? "orb"]}
+                  position={npcs[step.npcName].location!}
+                >
+                  <Tooltip>
+                    {step.action} {step.npcName}
+                  </Tooltip>
+                </Marker>
+              )
+          )}
+        {selectedQuest &&
+          getLines(quests[selectedQuest]).map((line, index) => (
+            <Polyline key={index} positions={line} color="red" />
+          ))}
       </MapContainer>
     </div>
   );
