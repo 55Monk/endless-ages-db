@@ -58,11 +58,13 @@ export default function ItemCard(props: Props) {
         <div className="flex items-center gap-2">
           <ChartBarIcon className="group h-4 w-4" />
           <span className="mb-[-1px] flex gap-2 text-sm">
-            {Object.entries(item.requirements).map(([req, value]: any) => (
-              <span>
-                {req} <strong>{value}</strong>
-              </span>
-            ))}
+            {Object.entries(item.requirements).map(
+              ([req, value]: any, index) => (
+                <span key={index}>
+                  {req} <strong>{value}</strong>
+                </span>
+              )
+            )}
           </span>
         </div>
       )}
@@ -70,11 +72,13 @@ export default function ItemCard(props: Props) {
         <div className="flex items-center gap-2">
           <ShieldExclamationIcon className="group h-4 w-4" />
           <span className="mb-[-1px] flex gap-2 text-sm">
-            {Object.entries(item.defenses).map(([defense, value]: any) => (
-              <span>
-                {defense} <strong>{value}</strong>
-              </span>
-            ))}
+            {Object.entries(item.defenses).map(
+              ([defense, value]: any, index) => (
+                <span key={index}>
+                  {defense} <strong>{value}</strong>
+                </span>
+              )
+            )}
           </span>
         </div>
       )}
@@ -123,8 +127,8 @@ export default function ItemCard(props: Props) {
               (level <strong>{item.craftedBy.level}</strong>)
             </span>
           </div>
-          {item.craftedBy.ingredients.map((ingredient) => (
-            <div className="mb-[-1px] pl-6 text-sm">
+          {item.craftedBy.ingredients.map((ingredient, index) => (
+            <div key={index} className="mb-[-1px] pl-6 text-sm">
               {ingredient.quantity}{" "}
               <span className="font-bold text-lime-600">{ingredient.name}</span>
             </div>
