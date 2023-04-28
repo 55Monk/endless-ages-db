@@ -1,16 +1,13 @@
 import { Tab } from "@headlessui/react";
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import { useState } from "react";
-import QuestCard, { Quest } from "./QuestCard";
+import getQuestMap from "../../data/quests";
+import QuestCard from "./QuestCard";
 
-type Props = {
-  quests: Quest[];
-  selectedQuest: string | undefined;
-  setSelectedQuest: any;
-};
+export default function QuestPanel() {
+  const [selectedQuest, setSelectedQuest] = useState<string>();
 
-export default function QuestPanel(props: Props) {
-  const { quests, selectedQuest, setSelectedQuest } = props;
+  const quests = Object.values(getQuestMap());
 
   const [searchRef, setSearchRef] = useState<HTMLInputElement | null>(null);
   const [searchValue, setSearchValue] = useState<string>("");

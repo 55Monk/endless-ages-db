@@ -1,126 +1,89 @@
 import { Tab } from "@headlessui/react";
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/20/solid";
-import L, { LatLngExpression } from "leaflet";
 import { Fragment, useState } from "react";
-import {
-  ImageOverlay,
-  MapContainer,
-  Marker,
-  Polyline,
-  Tooltip,
-} from "react-leaflet";
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import { immer } from "zustand/middleware/immer";
 import getItems, { Race } from "../data/items";
+import { maps } from "../data/maps";
+import getNpcMap, { Location } from "../data/npcs";
+import { Quest } from "../data/quests";
 import FiltersPanel from "./FiltersPanel";
-import ItemCard from "./ItemCard";
-import { Quest, QuestStep } from "./Quest/QuestCard";
+import ItemCard from "./Item/ItemCard";
+import PlotMap from "./Map/PlotMap";
 import QuestPanel from "./Quest/QuestPanel";
 import RaceFilterPanel, { Filters } from "./RaceFilterPanel";
 
-type TabDef = {
-  name: string;
-};
-
-const tabs: TabDef[] = [
-  {
-    name: "Items",
-  },
-  {
-    name: "Monsters",
-  },
-  {
-    name: "NPCs",
-  },
-  {
-    name: "Quests",
-  },
-];
+const tabs: string[] = ["Items", "Monsters", "NPCs", "Quests"];
 
 const races: Race[] = ["AP", "BL", "HF", "HM"];
 
-const quests: Record<string, Quest> = {
-  "Dominion Egg Quest": {
-    name: "Dominion Egg Quest",
-    shortDesc: "Rewards strength ring for each race",
-    steps: [
-      { npcName: "Dominion Gratute Egg", action: "Loot" },
-      { npcName: "Dominion Grison Egg", action: "Loot" },
-      { npcName: "Dominion Flisk Egg", action: "Loot" },
-      { npcName: "Dominion Powlong Egg", action: "Loot" },
-      { npcName: "Dominion Ligton Egg", action: "Loot" },
-      { npcName: "Dominion Bringing Egg", action: "Loot" },
-      { npcName: "Dominion Drout Egg", action: "Loot" },
-      { npcName: "Dominion Cripton Egg", action: "Loot" },
-      { npcName: "Dominion Briscore Egg", action: "Loot" },
-      { npcName: "To Trendor From IIA", action: "Teleport" },
-      { npcName: "G'fron", action: "Talk To" },
-    ],
-  },
+type ContentState = {
+  selectedTab: number;
+  selectedMap: string;
+  markers: { location: Location; icon?: string; complete?: boolean }[];
+  lines: any;
+  selectTab: (tab: number) => void;
+  selectMap: (map: string) => void;
+  clearMap: () => void;
+  plotQuest: (quest: Quest) => void;
+  setMarkerComplete: (index: number, complete: boolean) => void;
 };
 
-function getLines(quest: Quest) {
-  const lines = [];
-  if (quest && quest.steps) {
-    let previousLocation;
-    for (const step of quest.steps) {
-      const npcLocation = npcs[step.npcName]?.location;
-      if (npcLocation) {
-        if (previousLocation) {
-          lines.push([previousLocation, npcLocation]);
-        }
-        previousLocation = npcLocation;
-      }
-    }
-  }
-  return lines;
-}
-
-type NPC = {
-  location?: LatLngExpression;
-  icon?: string;
-};
-
-const npcs: Record<string, NPC> = {
-  "Dominion Drout Egg": {
-    location: [-4, 7157],
-    icon: "egg",
-  },
-  "Dominion Cripton Egg": {
-    location: [8090, 7901],
-    icon: "egg",
-  },
-  "Dominion Briscore Egg": {
-    location: [16136, 8431],
-    icon: "egg",
-  },
-  "Dominion Gratute Egg": {
-    location: [12284, -7931],
-    icon: "egg",
-  },
-  "Dominion Grison Egg": {
-    location: [-877, -17704],
-    icon: "egg",
-  },
-  "Dominion Flisk Egg": {
-    location: [1866, -9615],
-    icon: "egg",
-  },
-  "Dominion Powlong Egg": {
-    location: [-9923, -14856],
-    icon: "egg",
-  },
-  "Dominion Ligton Egg": {
-    location: [-21234, -10756],
-    icon: "egg",
-  },
-  "Dominion Briging Egg": {
-    location: [-14283, 4671],
-    icon: "egg",
-  },
-  "To Trendor From IIA": {
-    location: [12371, -7937],
-  },
-  "G'fron": {},
-};
+export const useContentStore = create<ContentState>()(
+  immer(
+    persist(
+      (set) => ({
+        selectedTab: 0,
+        selectedMap: Object.keys(maps)[0],
+        markers: [],
+        lines: [],
+        selectTab: (tab: number) => set(() => ({ selectedTab: tab })),
+        selectMap: (map: string) => set(() => ({ selectedMap: map })),
+        clearMap: () => set(() => ({ markers: [], lines: [] })),
+        plotQuest: (quest: Quest) =>
+          set(() => {
+            const npcs = getNpcMap();
+            const markers = quest.steps.map((step) => ({
+              location: npcs[step.npcName].location,
+              icon: npcs[step.npcName].icon,
+            }));
+            return { markers, selectedMap: markers[0].location.map };
+          }),
+        setMarkerComplete: (index: number, complete: boolean) =>
+          set((state) => {
+            state.markers[index].complete = complete;
+            if (complete) {
+              if (state.markers.length > index + 1) {
+                state.selectedMap = state.markers[index + 1].location.map;
+              } else {
+                state.selectedMap = state.markers[index].location.map;
+              }
+            } else {
+              const lastCompletedMarker = state.markers
+                .slice()
+                .reverse()
+                .find((marker) => marker.complete);
+              if (lastCompletedMarker) {
+                const lastCompletedMarkerIndex =
+                  state.markers.indexOf(lastCompletedMarker);
+                if (state.markers.length > lastCompletedMarkerIndex + 1) {
+                  state.selectedMap =
+                    state.markers[lastCompletedMarkerIndex + 1].location.map;
+                } else {
+                  state.selectedMap =
+                    state.markers[lastCompletedMarkerIndex].location.map;
+                }
+              } else {
+                state.selectedMap = state.markers[0].location.map;
+              }
+            }
+          }),
+      }),
+      { name: "eadb-content-storage" }
+    )
+  )
+);
 
 export default function WebsiteContent() {
   const [searchRef, setSearchRef] = useState<HTMLInputElement | null>(null);
@@ -129,6 +92,9 @@ export default function WebsiteContent() {
   races.forEach((race) => (initialRacesFilter[race] = true));
   const [racesFilter, setRacesFilter] =
     useState<Filters<Race>>(initialRacesFilter);
+
+  const selectedTab = useContentStore((state) => state.selectedTab);
+  const selectTab = useContentStore((state) => state.selectTab);
 
   const items = getItems();
   let filteredItems = [...items];
@@ -146,60 +112,14 @@ export default function WebsiteContent() {
     (item) => !item.race || toKeepRaces.includes(item.race)
   );
 
-  const [selectedQuest, setSelectedQuest] = useState<string>();
-
-  const OrbIcon: any = L.Icon.extend({
-    options: {
-      iconSize: [34, 51],
-      iconAnchor: [17, 51],
-      popupAnchor: [0, -51],
-      tooltipAnchor: [17, -35],
-    },
-  });
-
-  const icons: Record<string, any> = {
-    orb: new OrbIcon({
-      iconUrl: `${process.env.PUBLIC_URL}/assets/icons/orb-marker-icon.png`,
-    }),
-    ap: new OrbIcon({
-      iconUrl: `${process.env.PUBLIC_URL}/assets/icons/ap-marker-icon.png`,
-    }),
-    bl: new OrbIcon({
-      iconUrl: `${process.env.PUBLIC_URL}/assets/icons/bl-marker-icon.png`,
-    }),
-    hf: new OrbIcon({
-      iconUrl: `${process.env.PUBLIC_URL}/assets/icons/hf-marker-icon.png`,
-    }),
-    hm: new OrbIcon({
-      iconUrl: `${process.env.PUBLIC_URL}/assets/icons/hm-marker-icon.png`,
-    }),
-    qi: new OrbIcon({
-      iconUrl: `${process.env.PUBLIC_URL}/assets/icons/qi-marker-icon.png`,
-    }),
-    egg: new OrbIcon({
-      iconUrl: `${process.env.PUBLIC_URL}/assets/icons/egg-marker-icon.png`,
-    }),
-    plant: new OrbIcon({
-      iconUrl: `${process.env.PUBLIC_URL}/assets/icons/plant-marker-icon.png`,
-    }),
-    mineral: new OrbIcon({
-      iconUrl: `${process.env.PUBLIC_URL}/assets/icons/mineral-marker-icon.png`,
-    }),
-    chest: new OrbIcon({
-      iconUrl: `${process.env.PUBLIC_URL}/assets/icons/chest-marker-icon.png`,
-    }),
-  };
-
-  // @ts-ignore
-  // @ts-ignore
   return (
     <div className="flex flex-grow">
       <div className="flex w-[356px] flex-col gap-2 border-r border-neutral-300 p-2">
-        <Tab.Group>
+        <Tab.Group selectedIndex={selectedTab} onChange={selectTab}>
           <Tab.List className="flex justify-between gap-1">
             {tabs.map((tab) => (
               <Tab
-                key={tab.name}
+                key={tab}
                 className={({ selected }) =>
                   `rounded px-4 py-1 ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-700 focus:outline-none focus:ring-2 ${
                     selected
@@ -208,7 +128,7 @@ export default function WebsiteContent() {
                   }`
                 }
               >
-                {tab.name}
+                {tab}
               </Tab>
             ))}
           </Tab.List>
@@ -258,65 +178,11 @@ export default function WebsiteContent() {
             </Tab.Panel>
             <Tab.Panel />
             <Tab.Panel />
-            <QuestPanel
-              quests={Object.values(quests)}
-              selectedQuest={selectedQuest}
-              setSelectedQuest={setSelectedQuest}
-            />
+            <QuestPanel />
           </Tab.Panels>
         </Tab.Group>
       </div>
-      <MapContainer
-        className="flex-grow"
-        center={[0, 0]}
-        zoom={-6}
-        minZoom={-6}
-        maxZoom={-1}
-        scrollWheelZoom={true}
-        crs={L.CRS.Simple}
-        maxBounds={[
-          [-21506, -21852],
-          [21694, 21348],
-        ]}
-      >
-        <ImageOverlay
-          url={`${process.env.PUBLIC_URL}/assets/maps/mainworld.png`}
-          bounds={[
-            [-21506, -21852],
-            [21694, 21348],
-          ]}
-        />
-        {/*<Marker icon={icons["plant"]} position={[-6454, 13165]}>*/}
-        {/*  <Tooltip>Perox Flower</Tooltip>*/}
-        {/*</Marker>*/}
-        {/*<Marker icon={icons["plant"]} position={[-2229, 13179]}>*/}
-        {/*  <Tooltip>Sun Flower</Tooltip>*/}
-        {/*</Marker>*/}
-        {/*{Object.entries(npcs).map(([name, entry]) => (*/}
-        {/*  <Marker icon={icons[entry.icon ?? "orb"]} position={entry.location}>*/}
-        {/*    <Tooltip>{name}</Tooltip>*/}
-        {/*  </Marker>*/}
-        {/*))}*/}
-        {selectedQuest &&
-          quests[selectedQuest]?.steps.map(
-            (step: QuestStep, index) =>
-              npcs[step.npcName]?.location && (
-                <Marker
-                  key={index}
-                  icon={icons[npcs[step.npcName].icon ?? "orb"]}
-                  position={npcs[step.npcName].location!}
-                >
-                  <Tooltip>
-                    {step.action} {step.npcName}
-                  </Tooltip>
-                </Marker>
-              )
-          )}
-        {selectedQuest &&
-          getLines(quests[selectedQuest]).map((line, index) => (
-            <Polyline key={index} positions={line} color="red" />
-          ))}
-      </MapContainer>
+      <PlotMap />
     </div>
   );
 }

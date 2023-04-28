@@ -1,15 +1,6 @@
-import { BarsArrowDownIcon } from "@heroicons/react/20/solid";
-
-export type QuestStep = {
-  npcName: string;
-  action: string;
-};
-
-export type Quest = {
-  name: string;
-  shortDesc: string;
-  steps: QuestStep[];
-};
+import { Quest } from "../../data/quests";
+import { useContentStore } from "../WebsiteContent";
+import QuestStepCard from "./QuestStepCard";
 
 type Props = {
   quest: Quest;
@@ -23,28 +14,41 @@ export default function QuestCard(props: Props) {
   const isSelectedQuest =
     !!selectedQuest && selectedQuest.toLowerCase() === quest.name.toLowerCase();
 
+  // const markers = useMapContentStore((state) => state.markers);
+  const plotQuest = useContentStore((state) => state.plotQuest);
+  const clearMap = useContentStore((state) => state.clearMap);
+
+  function selectQuest() {
+    if (isSelectedQuest) {
+      setSelectedQuest();
+      clearMap();
+    } else {
+      setSelectedQuest(quest.name);
+      plotQuest(quest);
+    }
+  }
+
   return (
-    <div className="flex flex-col gap-1 rounded border border-neutral-300 p-1">
-      <div className="flex items-center gap-2">
+    <div className="overflow-hidden rounded border border-neutral-300">
+      <div
+        className="flex cursor-pointer items-center gap-2 p-1 hover:bg-neutral-100"
+        onClick={selectQuest}
+      >
         <div className="flex-grow">
           <div className="flex items-center gap-4">
-            <strong className="text-sm leading-none">{quest.name}</strong>
+            <strong>{quest.name}</strong>
           </div>
-          <div className="text-xs">{quest.shortDesc ?? "&#xfeff;"}</div>
+          <div className="text-sm">{quest.shortDesc ?? "&#xfeff;"}</div>
         </div>
-        <button
-          className="rounded-full p-1 hover:bg-neutral-100"
-          onClick={() => setSelectedQuest(quest.name)}
-        >
-          <BarsArrowDownIcon className="h-5 w-5" />
-        </button>
       </div>
-      {isSelectedQuest &&
-        quest.steps.map((step, index) => (
-          <div key={index}>
-            {step.action} {step.npcName}
-          </div>
-        ))}
+      {isSelectedQuest && (
+        <div className="flex flex-col gap-3 p-2">
+          <div className="text-sm">{quest.preface}</div>
+          {quest.steps.map((step, index) => (
+            <QuestStepCard key={index} step={step} index={index} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

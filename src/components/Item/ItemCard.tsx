@@ -11,8 +11,8 @@ import {
   TrophyIcon,
   WrenchScrewdriverIcon,
 } from "@heroicons/react/20/solid";
-import { getItemDps, getItemSalePrice, Item } from "../data/items";
-import icons from "./icons.png";
+import { getItemDps, getItemSalePrice, Item } from "../../data/items";
+import icons from "../icons.png";
 
 type Props = { item: Item };
 
@@ -130,7 +130,7 @@ export default function ItemCard(props: Props) {
           {item.craftedBy.ingredients.map((ingredient, index) => (
             <div key={index} className="mb-[-1px] pl-6 text-sm">
               {ingredient.quantity}{" "}
-              <span className="font-bold text-lime-600">{ingredient.name}</span>
+              <strong className="text-emerald-600">{ingredient.name}</strong>
             </div>
           ))}
         </>
