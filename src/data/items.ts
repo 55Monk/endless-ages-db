@@ -13,14 +13,12 @@ type Skill =
   | CraftSkill;
 type Requirement = Stat | Skill;
 type Element = "NORMAL" | "RUNE" | "DEATH" | "HEAL";
+type Bonus = Stat | "HEALTH";
 
 export type Item = {
   name: string;
   itemType?: ItemType;
-  iconLocation?: {
-    x: number;
-    y: number;
-  };
+  iconLocation?: [x: number, y: number];
   drops?: boolean;
   marketCost?: number;
   rewardFrom?: string;
@@ -40,6 +38,7 @@ export type Item = {
   race?: Race;
   requirements?: Partial<Record<Requirement, number>>;
   defenses?: Partial<Record<Element, number>>;
+  bonuses?: Partial<Record<Bonus, number>>;
   damage?: {
     element: Element;
     direct?: number;
@@ -51,11 +50,8 @@ export type Item = {
 
 const items: Item[] = [
   {
-    name: "Ontroytag",
-    iconLocation: {
-      x: 14,
-      y: 9,
-    },
+    name: "[AP] Ontroytag",
+    iconLocation: [14, 9],
     drops: false,
     fromVendor: "Multiple",
     race: "AP",
@@ -72,10 +68,7 @@ const items: Item[] = [
   },
   {
     name: "Peroxi Rebuilder Heal",
-    iconLocation: {
-      x: 3,
-      y: 1,
-    },
+    iconLocation: [3, 1],
     drops: true,
     marketCost: 60,
     craftedBy: {
@@ -101,10 +94,7 @@ const items: Item[] = [
   },
   {
     name: "Agate",
-    iconLocation: {
-      x: 5,
-      y: 1,
-    },
+    iconLocation: [5, 1],
     drops: true,
     marketCost: 150,
     droppedBy: {
@@ -113,12 +103,9 @@ const items: Item[] = [
     },
   },
   {
-    name: "Phision Torso Armor",
+    name: "[HF] Phision Torso Armor",
     itemType: "ARMOR",
-    iconLocation: {
-      x: 0,
-      y: 13,
-    },
+    iconLocation: [0, 13],
     drops: false,
     marketCost: 250000,
     rewardFrom: "11 Armor Quest",
@@ -134,11 +121,8 @@ const items: Item[] = [
     },
   },
   {
-    name: "Wings of Crom",
-    iconLocation: {
-      x: 12,
-      y: 5,
-    },
+    name: "[AP] Wings of Crom",
+    iconLocation: [12, 5],
     drops: false,
     rewardFrom: "Crom Keys",
     race: "AP",
@@ -148,11 +132,8 @@ const items: Item[] = [
     flight: 51,
   },
   {
-    name: "Netlauncher",
-    iconLocation: {
-      x: 5,
-      y: 4,
-    },
+    name: "[HF] Netlauncher",
+    iconLocation: [5, 4],
     drops: false,
     rewardFrom: "Netlauncher Quest",
     race: "HF",
@@ -169,13 +150,23 @@ const items: Item[] = [
       reloadDuration: 1.93,
     },
   },
+  {
+    name: "[HF] Ring of Power -20",
+    iconLocation: [8, 6],
+    drops: false,
+    rewardFrom: "Dominion Egg Quest",
+    race: "HF",
+    bonuses: {
+      STR: 20,
+    },
+  },
 ];
 
 items.forEach((item) => {
   if (!item.iconLocation) {
     switch (item.itemType) {
       case "QI": {
-        item.iconLocation = { x: 0, y: 1 };
+        item.iconLocation = [0, 1];
         break;
       }
     }
@@ -195,6 +186,16 @@ export function getItemDps(item: Item) {
   return undefined;
 }
 
+const itemMap: Partial<Record<string, Item>> = {};
+items.reduce((map, item) => {
+  map[item.name] = item;
+  return map;
+}, itemMap);
+
+export function getItemMap() {
+  return itemMap;
+}
+
 export default function getItems() {
-  return items.sort((a, b) => ("" + a.name).localeCompare(b.name));
+  return items;
 }

@@ -1,4 +1,5 @@
 import {
+  AdjustmentsHorizontalIcon,
   ArrowDownTrayIcon,
   BoltIcon,
   BugAntIcon,
@@ -13,6 +14,7 @@ import {
 } from "@heroicons/react/20/solid";
 import { getItemDps, getItemSalePrice, Item } from "../../data/items";
 import icons from "../icons.png";
+import TextRef from "../Reference/TextRef";
 
 type Props = { item: Item };
 
@@ -26,8 +28,8 @@ export default function ItemCard(props: Props) {
           className="h-8 w-8"
           style={{
             background: `url(${icons}) no-repeat`,
-            backgroundPosition: `-${(item.iconLocation?.x ?? 0) * 32}px -${
-              (item.iconLocation?.y ?? 0) * 32
+            backgroundPosition: `-${(item.iconLocation?.[0] ?? 0) * 32}px -${
+              (item.iconLocation?.[1] ?? 0) * 32
             }px`,
           }}
         />
@@ -49,9 +51,7 @@ export default function ItemCard(props: Props) {
               <LockClosedIcon className="group h-4 w-4" />
             )}
           </div>
-          <div className="text-xs">
-            &#xfeff;{item.race ? `[${item.race}]` : ""}
-          </div>
+          <div className="text-xs">&#xfeff;</div>
         </div>
       </div>
       {item.requirements && (
@@ -79,6 +79,18 @@ export default function ItemCard(props: Props) {
                 </span>
               )
             )}
+          </span>
+        </div>
+      )}
+      {item.bonuses && (
+        <div className="flex items-center gap-2">
+          <AdjustmentsHorizontalIcon className="group h-4 w-4" />
+          <span className="mb-[-1px] flex gap-2 text-sm">
+            {Object.entries(item.bonuses).map(([bonus, value]: any, index) => (
+              <span key={index}>
+                {bonus} <strong>+{value}</strong>
+              </span>
+            ))}
           </span>
         </div>
       )}
@@ -110,8 +122,7 @@ export default function ItemCard(props: Props) {
         <div className="flex items-center gap-2">
           <ShoppingCartIcon className="group h-4 w-4" />
           <span className="mb-[-1px] text-sm">
-            Purchased from{" "}
-            <span className="font-bold text-violet-500">{item.fromVendor}</span>
+            Purchased from <TextRef name={item.fromVendor} type="npc" />
           </span>
         </div>
       )}
@@ -130,7 +141,7 @@ export default function ItemCard(props: Props) {
           {item.craftedBy.ingredients.map((ingredient, index) => (
             <div key={index} className="mb-[-1px] pl-6 text-sm">
               {ingredient.quantity}{" "}
-              <strong className="text-emerald-600">{ingredient.name}</strong>
+              <TextRef name={ingredient.name} type="item" />
             </div>
           ))}
         </>
@@ -139,8 +150,7 @@ export default function ItemCard(props: Props) {
         <div className="flex items-center gap-2">
           <TrophyIcon className="group h-4 w-4" />
           <span className="mb-[-1px] text-sm">
-            Reward From{" "}
-            <span className="font-bold text-orange-500">{item.rewardFrom}</span>
+            Reward From <TextRef name={item.rewardFrom} type="quest" />
           </span>
         </div>
       )}
@@ -148,11 +158,8 @@ export default function ItemCard(props: Props) {
         <div className="flex items-center gap-2">
           <BugAntIcon className="group h-4 w-4" />
           <span className="mb-[-1px] text-sm">
-            Dropped by{" "}
-            <span className="font-bold text-red-500">
-              {item.droppedBy.name}
-            </span>{" "}
-            (<strong>{item.droppedBy.rate}</strong>%)
+            Dropped by <TextRef name={item.droppedBy.name} type="mob" /> (
+            <strong>{item.droppedBy.rate}</strong>%)
           </span>
         </div>
       )}

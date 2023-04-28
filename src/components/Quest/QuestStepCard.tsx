@@ -26,7 +26,7 @@ export default function QuestStepCard(props: Props) {
   return (
     <div className="g-1 flex flex-col">
       <div className="flex justify-between">
-        {stepAction?.name} {step.npcName}
+        {stepAction?.interaction} {step.npcName}
         <input
           type="checkbox"
           checked={complete}

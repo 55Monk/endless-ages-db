@@ -6,24 +6,32 @@ import { persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import getItems, { Race } from "../data/items";
 import { maps } from "../data/maps";
-import getNpcMap, { Location } from "../data/npcs";
+import getNpcMap from "../data/npcs";
 import { Quest } from "../data/quests";
+import { MapLocation } from "../data/shared";
 import FiltersPanel from "./FiltersPanel";
 import ItemCard from "./Item/ItemCard";
 import PlotMap from "./Map/PlotMap";
 import QuestPanel from "./Quest/QuestPanel";
 import RaceFilterPanel, { Filters } from "./RaceFilterPanel";
+import TextRef from "./Reference/TextRef";
 
 const tabs: string[] = ["Items", "Monsters", "NPCs", "Quests"];
 
 const races: Race[] = ["AP", "BL", "HF", "HM"];
 
+type Marker = {
+  location: MapLocation;
+  icon?: string;
+  complete?: boolean;
+};
+
 type ContentState = {
   selectedTab: number;
   selectedMap: string;
-  markers: { location: Location; icon?: string; complete?: boolean }[];
+  markers: Marker[];
   lines: any;
-  selectTab: (tab: number) => void;
+  selectTab: (tab: number | string) => void;
   selectMap: (map: string) => void;
   clearMap: () => void;
   plotQuest: (quest: Quest) => void;
@@ -38,7 +46,14 @@ export const useContentStore = create<ContentState>()(
         selectedMap: Object.keys(maps)[0],
         markers: [],
         lines: [],
-        selectTab: (tab: number) => set(() => ({ selectedTab: tab })),
+        selectTab: (tab: number | string) =>
+          set(() => {
+            if (typeof tab === "string") {
+              return { selectedTab: tabs.indexOf(tab) };
+            } else {
+              return { selectedTab: tab };
+            }
+          }),
         selectMap: (map: string) => set(() => ({ selectedMap: map })),
         clearMap: () => set(() => ({ markers: [], lines: [] })),
         plotQuest: (quest: Quest) =>
@@ -97,20 +112,21 @@ export default function WebsiteContent() {
   const selectTab = useContentStore((state) => state.selectTab);
 
   const items = getItems();
-  let filteredItems = [...items];
-  // filter by search
-  if (searchValue.length > 0) {
-    filteredItems = items.filter((item) =>
-      item.name.toLowerCase().includes(searchValue.toLowerCase())
-    );
-  }
-  // filter by race
-  const toKeepRaces = Object.entries(racesFilter)
-    .filter(([race, keep]) => keep)
-    .map(([race]) => race);
-  filteredItems = filteredItems.filter(
-    (item) => !item.race || toKeepRaces.includes(item.race)
-  );
+
+  // let filteredItems = [...items];
+  // // filter by search
+  // if (searchValue.length > 0) {
+  //   filteredItems = items.filter((item) =>
+  //     item.name.toLowerCase().includes(searchValue.toLowerCase())
+  //   );
+  // }
+  // // filter by race
+  // const toKeepRaces = Object.entries(racesFilter)
+  //   .filter(([race, keep]) => keep)
+  //   .map(([race]) => race);
+  // filteredItems = filteredItems.filter(
+  //   (item) => !item.race || toKeepRaces.includes(item.race)
+  // );
 
   return (
     <div className="flex flex-grow">
@@ -166,17 +182,19 @@ export default function WebsiteContent() {
               />
               <hr className="my-2" />
               <div className="flex flex-grow basis-0 flex-col gap-2 overflow-y-scroll">
-                {filteredItems.length === 0 && (
+                {items.length === 0 && (
                   <div className="rounded-md border-2 border-dotted border-neutral-300 p-6 text-center align-middle text-neutral-400">
                     No Items Match Criteria
                   </div>
                 )}
-                {filteredItems.map((item) => (
+                {items.map((item) => (
                   <ItemCard key={item.name} item={item} />
                 ))}
               </div>
             </Tab.Panel>
-            <Tab.Panel />
+            <Tab.Panel>
+              <TextRef name="[HF] Netlauncher" type="item" />
+            </Tab.Panel>
             <Tab.Panel />
             <QuestPanel />
           </Tab.Panels>

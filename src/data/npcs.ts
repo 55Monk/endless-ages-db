@@ -1,23 +1,15 @@
-import { LatLngExpression } from "leaflet";
-
-export type Location = {
-  map: string;
-  coordinates: LatLngExpression;
-  description: string;
-};
+import { MapEntity, MapLocation } from "./shared";
 
 export type ItemCount = [itemName: string, quantity: number];
 
 export type Action = {
-  name: string;
+  interaction: string;
   requires?: ItemCount[];
   gives?: ItemCount[];
-  teleport?: Location;
+  teleport?: MapLocation;
 };
 
-export type NPC = {
-  location: Location;
-  icon?: string;
+export type NPC = MapEntity & {
   actions?: Record<string, Action>;
 };
 
@@ -29,7 +21,9 @@ const npcs: Record<string, NPC> = {
       description: "Underwater under The Rig",
     },
     icon: "egg",
-    actions: { loot: { name: "Loot", gives: [["Dominion Drout Egg", 1]] } },
+    actions: {
+      loot: { interaction: "Loot", gives: [["Dominion Drout Egg", 1]] },
+    },
   },
   "Dominion Cripton Egg": {
     location: {
@@ -38,7 +32,9 @@ const npcs: Record<string, NPC> = {
       description: "Underwater between The Rig and AP near the big plants",
     },
     icon: "egg",
-    actions: { loot: { name: "Loot", gives: [["Dominion Cripton Egg", 1]] } },
+    actions: {
+      loot: { interaction: "Loot", gives: [["Dominion Cripton Egg", 1]] },
+    },
   },
   "Dominion Briscore Egg": {
     location: {
@@ -47,7 +43,9 @@ const npcs: Record<string, NPC> = {
       description: "On top of a big leaf on AP",
     },
     icon: "egg",
-    actions: { loot: { name: "Loot", gives: [["Dominion Briscore Egg", 1]] } },
+    actions: {
+      loot: { interaction: "Loot", gives: [["Dominion Briscore Egg", 1]] },
+    },
   },
   "Dominion Gratute Egg": {
     location: {
@@ -56,7 +54,9 @@ const npcs: Record<string, NPC> = {
       description: "Inside the Trendor sewer pipe",
     },
     icon: "egg",
-    actions: { loot: { name: "Loot", gives: [["Dominion Gratute Egg", 1]] } },
+    actions: {
+      loot: { interaction: "Loot", gives: [["Dominion Gratute Egg", 1]] },
+    },
   },
   "Dominion Grison Egg": {
     location: {
@@ -65,7 +65,9 @@ const npcs: Record<string, NPC> = {
       description: "Underwater near the Trisk Hive",
     },
     icon: "egg",
-    actions: { loot: { name: "Loot", gives: [["Dominion Grison Egg", 1]] } },
+    actions: {
+      loot: { interaction: "Loot", gives: [["Dominion Grison Egg", 1]] },
+    },
   },
   "Dominion Flisk Egg": {
     location: {
@@ -74,7 +76,9 @@ const npcs: Record<string, NPC> = {
       description: "Inside AMC deep cave",
     },
     icon: "egg",
-    actions: { loot: { name: "Loot", gives: [["Dominion Flisk Egg", 1]] } },
+    actions: {
+      loot: { interaction: "Loot", gives: [["Dominion Flisk Egg", 1]] },
+    },
   },
   "Dominion Powlong Egg": {
     location: {
@@ -83,7 +87,9 @@ const npcs: Record<string, NPC> = {
       description: "On top of BC bridge",
     },
     icon: "egg",
-    actions: { loot: { name: "Loot", gives: [["Dominion Powlong Egg", 1]] } },
+    actions: {
+      loot: { interaction: "Loot", gives: [["Dominion Powlong Egg", 1]] },
+    },
   },
   "Dominion Ligton Egg": {
     location: {
@@ -92,7 +98,9 @@ const npcs: Record<string, NPC> = {
       description: "Underwater near the BC and Oracle map edge",
     },
     icon: "egg",
-    actions: { loot: { name: "Loot", gives: [["Dominion Ligton Egg", 1]] } },
+    actions: {
+      loot: { interaction: "Loot", gives: [["Dominion Ligton Egg", 1]] },
+    },
   },
   "Dominion Briging Egg": {
     location: {
@@ -101,7 +109,9 @@ const npcs: Record<string, NPC> = {
       description: "Inside the large stone hut on MR",
     },
     icon: "egg",
-    actions: { loot: { name: "Loot", gives: [["Dominion Briging Egg", 1]] } },
+    actions: {
+      loot: { interaction: "Loot", gives: [["Dominion Briging Egg", 1]] },
+    },
   },
   "Trendor From IIA": {
     location: {
@@ -111,7 +121,7 @@ const npcs: Record<string, NPC> = {
     },
     actions: {
       teleport: {
-        name: "Teleport to",
+        interaction: "Teleport to",
         teleport: {
           map: "trendor",
           coordinates: [0, 0],
@@ -128,7 +138,7 @@ const npcs: Record<string, NPC> = {
     },
     actions: {
       strRingQuest: {
-        name: "Talk to",
+        interaction: "Talk to",
         requires: [
           ["Dominion Drout Egg", 1],
           ["Dominion Cripton Egg", 1],

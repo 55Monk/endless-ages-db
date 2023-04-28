@@ -80,8 +80,8 @@ export default function PlotMap() {
   const [lines, setLines] = useState<any[]>([]);
 
   useEffect(() => {
+    const newLines = [];
     if (markers.length > 1) {
-      const newLines = [];
       for (let i = 1; i < markers.length; i++) {
         const previousMarker = markers[i - 1];
         const marker = markers[i];
@@ -105,8 +105,8 @@ export default function PlotMap() {
           });
         }
       }
-      setLines(newLines);
     }
+    setLines(newLines);
   }, [markers, selectedMap]);
 
   return (
