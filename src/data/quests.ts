@@ -31,6 +31,27 @@ const quests: Record<string, Quest> = {
       { npcName: "G'fron", action: "strRingQuest" },
     ],
   },
+  "BuckBuck Quest": {
+    name: "BuckBuck Quest",
+    shortDesc: "Collect crates from around AK",
+    preface: "",
+    steps: [
+      { npcName: "BuckBuck Crate #2", action: "loot" },
+      { npcName: "BuckBuck Crate #3", action: "loot" },
+      { npcName: "BuckBuck Crate #6", action: "loot" },
+      { npcName: "BuckBuck Crate #5", action: "loot" },
+      { npcName: "BuckBuck Crate #1", action: "loot" },
+      { npcName: "BuckBuck Crate #10", action: "loot" },
+      { npcName: "BuckBuck Crate #11", action: "loot" },
+      { npcName: "BuckBuck Crate #4", action: "loot" },
+      { npcName: "BuckBuck Crate #12", action: "loot" },
+      { npcName: "BuckBuck Crate #7", action: "loot" },
+      { npcName: "BuckBuck Crate #8", action: "loot" },
+      { npcName: "BuckBuck Crate #9", action: "loot" },
+      { npcName: "BuckBuck Crate #13", action: "loot" },
+      { npcName: "BuckBuck", action: "buckBuckQuest" },
+    ],
+  },
 };
 
 export default function getQuestMap() {

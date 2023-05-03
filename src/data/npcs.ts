@@ -14,6 +14,7 @@ export type NPC = MapEntity & {
 };
 
 const npcs: Record<string, NPC> = {
+  // Eggs
   "Dominion Drout Egg": {
     location: {
       map: "mainworld",
@@ -113,6 +114,182 @@ const npcs: Record<string, NPC> = {
       loot: { interaction: "Loot", gives: [["Dominion Briging Egg", 1]] },
     },
   },
+  // Buck Buck
+  "BuckBuck Crate #1": {
+    location: {
+      map: "ak",
+      coordinates: [2840, -14410],
+      description:
+        "Quadoty Island (Cave under the island, from the farm look to the south east at 3 Peaks, the cave entrance is off that edge)",
+    },
+    icon: "qi",
+    actions: {
+      loot: { interaction: "Loot", gives: [["BuckBuck Crate #1", 1]] },
+    },
+  },
+  "BuckBuck Crate #2": {
+    location: {
+      map: "ak",
+      coordinates: [5855, 11000],
+      description: "Link B",
+    },
+    icon: "qi",
+    actions: {
+      loot: { interaction: "Loot", gives: [["BuckBuck Crate #2", 1]] },
+    },
+  },
+  "BuckBuck Crate #3": {
+    location: {
+      map: "ak",
+      coordinates: [7460, 16049],
+      description: "Farm B",
+    },
+    icon: "qi",
+    actions: {
+      loot: { interaction: "Loot", gives: [["BuckBuck Crate #3", 1]] },
+    },
+  },
+  "BuckBuck Crate #4": {
+    location: {
+      map: "ak",
+      coordinates: [-5757, -5818],
+      description:
+        "SS Entrance (Approach really low off the island from the south, in the room with the portal)",
+    },
+    icon: "qi",
+    actions: {
+      loot: { interaction: "Loot", gives: [["BuckBuck Crate #4", 1]] },
+    },
+  },
+  "BuckBuck Crate #5": {
+    location: {
+      map: "ak",
+      coordinates: [5525, 692],
+      description: "Embassy",
+    },
+    icon: "qi",
+    actions: {
+      loot: { interaction: "Loot", gives: [["BuckBuck Crate #5", 1]] },
+    },
+  },
+  "BuckBuck Crate #6": {
+    location: {
+      map: "ak",
+      coordinates: [15159, 3736],
+      description: "Quadune (Really high up)",
+    },
+    icon: "qi",
+    actions: {
+      loot: { interaction: "Loot", gives: [["BuckBuck Crate #6", 1]] },
+    },
+  },
+  "BuckBuck Crate #7": {
+    location: {
+      map: "ak",
+      coordinates: [-19274, 54],
+      description: "Link K",
+    },
+    icon: "qi",
+    actions: {
+      loot: { interaction: "Loot", gives: [["BuckBuck Crate #7", 1]] },
+    },
+  },
+  "BuckBuck Crate #8": {
+    location: {
+      map: "ak",
+      coordinates: [-15176, 10504],
+      description: "Link H",
+    },
+    icon: "qi",
+    actions: {
+      loot: { interaction: "Loot", gives: [["BuckBuck Crate #8", 1]] },
+    },
+  },
+  "BuckBuck Crate #9": {
+    location: {
+      map: "ak",
+      coordinates: [-11172, 23296],
+      description: "Link G",
+    },
+    icon: "qi",
+    actions: {
+      loot: { interaction: "Loot", gives: [["BuckBuck Crate #9", 1]] },
+    },
+  },
+  "BuckBuck Crate #10": {
+    location: {
+      map: "ak",
+      coordinates: [-3487, -3825],
+      description:
+        "3Peaks Caves (Approach really low off the island north east of the marker, enter the cave, left at the split, cross the gap, turn around and its on a high ledge over the gap to the north west)",
+    },
+    icon: "qi",
+    actions: {
+      loot: { interaction: "Loot", gives: [["BuckBuck Crate #10", 1]] },
+    },
+  },
+  "BuckBuck Crate #11": {
+    location: {
+      map: "ak",
+      coordinates: [-4091, -2732],
+      description: "Nest C",
+    },
+    icon: "qi",
+    actions: {
+      loot: { interaction: "Loot", gives: [["BuckBuck Crate #11", 1]] },
+    },
+  },
+  "BuckBuck Crate #12": {
+    location: {
+      map: "ak",
+      coordinates: [-17324, -19106],
+      description: "Debri H",
+    },
+    icon: "qi",
+    actions: {
+      loot: { interaction: "Loot", gives: [["BuckBuck Crate #12", 1]] },
+    },
+  },
+  "BuckBuck Crate #13": {
+    location: {
+      map: "ak",
+      coordinates: [-5919, 1950],
+      description: "Commerce",
+    },
+    icon: "qi",
+    actions: {
+      loot: { interaction: "Loot", gives: [["BuckBuck Crate #13", 1]] },
+    },
+  },
+  BuckBuck: {
+    location: {
+      map: "ak",
+      coordinates: [-4096, 6019],
+      description: "Inside the building",
+    },
+    actions: {
+      buckBuckQuest: {
+        interaction: "Talk to",
+        requires: [
+          ["BuckBuck Crate #1", 1],
+          ["BuckBuck Crate #2", 1],
+          ["BuckBuck Crate #3", 1],
+          ["BuckBuck Crate #4", 1],
+          ["BuckBuck Crate #5", 1],
+          ["BuckBuck Crate #6", 1],
+          ["BuckBuck Crate #7", 1],
+          ["BuckBuck Crate #8", 1],
+          ["BuckBuck Crate #9", 1],
+          ["BuckBuck Crate #10", 1],
+          ["BuckBuck Crate #11", 1],
+          ["BuckBuck Crate #12", 1],
+          ["BuckBuck Crate #13", 1],
+        ],
+        gives: [["Jetpack", 1]],
+      },
+    },
+  },
+  // Teleporters
   "Trendor From IIA": {
     location: {
       map: "mainworld",
@@ -130,6 +307,7 @@ const npcs: Record<string, NPC> = {
       },
     },
   },
+  // NPC
   "G'fron": {
     location: {
       map: "trendor",

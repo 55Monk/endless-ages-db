@@ -129,7 +129,7 @@ export default function PlotMap() {
               }
               position={marker.location.coordinates}
             >
-              <Tooltip>Test</Tooltip>
+              <Tooltip>{marker.location.description}</Tooltip>
             </Marker>
           ))}
         {lines.map((line) => (

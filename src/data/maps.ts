@@ -47,6 +47,14 @@ const maps: MapEntry[] = [
     name: "dungeon",
     displayName: "Dungeon (15)",
   },
+  {
+    name: "ak",
+    displayName: "Air Kingdom",
+    bounds: [
+      [-29400, -24542],
+      [18600, 39458],
+    ],
+  },
 ];
 
 const mapMap: Partial<Record<string, MapEntry>> = {};
