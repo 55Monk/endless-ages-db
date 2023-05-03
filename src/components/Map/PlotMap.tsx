@@ -7,25 +7,9 @@ import {
   Polyline,
   Tooltip,
 } from "react-leaflet";
-import { useContentStore } from "../WebsiteContent";
+import { getMapMap } from "../../data/maps";
+import useContentStore from "../../hooks/UseContentStore";
 import MapSelectionHeader from "./MapSelectionHeader";
-
-type MapEntry = {
-  displayName: string;
-};
-
-export const maps: Record<string, MapEntry> = {
-  mainworld: { displayName: "Mainworld" },
-  trendor: { displayName: "Trendor" },
-  "4f": { displayName: "4Falls" },
-  ft: { displayName: "Firetown" },
-  cata: { displayName: "Catacombs (12)" },
-  coa: { displayName: "COA (13)" },
-  temple: { displayName: "Temple (14)" },
-  dungeon: { displayName: "Dungeon (15)" },
-  iias: { displayName: "IIA South" },
-  ak: { displayName: "Air Kingdom" },
-};
 
 const OrbIcon: any = L.Icon.extend({
   options: {
@@ -77,6 +61,8 @@ export default function PlotMap() {
   const selectMap = useContentStore((state) => state.selectMap);
   const markers = useContentStore((state) => state.markers);
 
+  const selectedMapDetails = getMapMap()[selectedMap];
+
   const [lines, setLines] = useState<any[]>([]);
 
   useEffect(() => {
@@ -120,17 +106,16 @@ export default function PlotMap() {
         maxZoom={0}
         scrollWheelZoom={true}
         crs={L.CRS.Simple}
-        maxBounds={[
-          [-25506, -25852],
-          [25694, 25348],
-        ]}
+        maxBounds={selectedMapDetails?.bounds}
       >
         <ImageOverlay
-          url={`${process.env.PUBLIC_URL}/assets/maps/mainworld.png`}
-          bounds={[
-            [-21506, -21852],
-            [21694, 21348],
-          ]}
+          url={`${process.env.PUBLIC_URL}/assets/maps/${selectedMapDetails?.name}.png`}
+          bounds={
+            selectedMapDetails?.bounds ?? [
+              [-1, -1],
+              [1, 1],
+            ]
+          }
         />
         {markers
           .filter((marker) => marker.location.map === selectedMap)

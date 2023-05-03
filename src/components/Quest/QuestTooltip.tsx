@@ -1,6 +1,7 @@
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/20/solid";
 import { Quest } from "../../data/quests";
-import { useContentStore } from "../WebsiteContent";
+
+import useContentStore from "../../hooks/UseContentStore";
 
 type Props = {
   quest: Quest;

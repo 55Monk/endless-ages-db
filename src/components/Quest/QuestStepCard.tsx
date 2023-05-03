@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from "react";
 import getNpcMap from "../../data/npcs";
 import { QuestStep } from "../../data/quests";
-import { useContentStore } from "../WebsiteContent";
+import useContentStore from "../../hooks/UseContentStore";
 
 type Props = {
   step: QuestStep;

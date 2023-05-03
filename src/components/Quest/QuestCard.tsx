@@ -1,5 +1,5 @@
 import { Quest } from "../../data/quests";
-import { useContentStore } from "../WebsiteContent";
+import useContentStore from "../../hooks/UseContentStore";
 import QuestStepCard from "./QuestStepCard";
 
 type Props = {

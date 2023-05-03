@@ -1,7 +1,7 @@
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import { Fragment } from "react";
-import { maps } from "./PlotMap";
+import getMaps, { getMapMap } from "../../data/maps";
 
 type Props = {
   selectedMap: string;
@@ -10,7 +10,7 @@ type Props = {
 
 export default function MapSelectionHeader(props: Props) {
   const { selectedMap, selectMap } = props;
-  const selectedMapEntry = maps[selectedMap];
+  const selectedMapEntry = getMapMap()[selectedMap];
 
   return (
     <div className="absolute z-[999] flex w-full justify-center gap-2 p-2">
@@ -18,7 +18,7 @@ export default function MapSelectionHeader(props: Props) {
         <div className="relative">
           <Listbox.Button className="relative w-96 cursor-default rounded-lg border border-neutral-300 bg-white py-1 pl-3 pr-10 text-left">
             <span className="block truncate">
-              {selectedMapEntry.displayName}
+              {selectedMapEntry?.displayName}
             </span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               <ChevronUpDownIcon className="h-5 w-5 text-gray-400" />
@@ -31,7 +31,7 @@ export default function MapSelectionHeader(props: Props) {
             leaveTo="opacity-0"
           >
             <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base sm:text-sm">
-              {Object.entries(maps).map(([map, mapEntry], index) => (
+              {getMaps().map((mapEntry, index) => (
                 <Listbox.Option
                   key={index}
                   className={({ active }) =>
@@ -39,7 +39,7 @@ export default function MapSelectionHeader(props: Props) {
                       active ? "bg-blue-300" : ""
                     }`
                   }
-                  value={map}
+                  value={mapEntry.name}
                 >
                   {({ selected }) => (
                     <>

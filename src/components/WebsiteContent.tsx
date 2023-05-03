@@ -1,14 +1,9 @@
 import { Tab } from "@headlessui/react";
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import { Fragment, useState } from "react";
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
 import getItems, { Race } from "../data/items";
-import { maps } from "../data/maps";
-import getNpcMap from "../data/npcs";
-import { Quest } from "../data/quests";
 import { MapLocation } from "../data/shared";
+import useContentStore from "../hooks/UseContentStore";
 import FiltersPanel from "./FiltersPanel";
 import ItemCard from "./Item/ItemCard";
 import PlotMap from "./Map/PlotMap";
@@ -16,89 +11,15 @@ import QuestPanel from "./Quest/QuestPanel";
 import RaceFilterPanel, { Filters } from "./RaceFilterPanel";
 import TextRef from "./Reference/TextRef";
 
-const tabs: string[] = ["Items", "Monsters", "NPCs", "Quests"];
+export const tabs: string[] = ["Items", "Monsters", "NPCs", "Quests"];
 
 const races: Race[] = ["AP", "BL", "HF", "HM"];
 
-type Marker = {
+export type Marker = {
   location: MapLocation;
   icon?: string;
   complete?: boolean;
 };
-
-type ContentState = {
-  selectedTab: number;
-  selectedMap: string;
-  markers: Marker[];
-  lines: any;
-  selectTab: (tab: number | string) => void;
-  selectMap: (map: string) => void;
-  clearMap: () => void;
-  plotQuest: (quest: Quest) => void;
-  setMarkerComplete: (index: number, complete: boolean) => void;
-};
-
-export const useContentStore = create<ContentState>()(
-  immer(
-    persist(
-      (set) => ({
-        selectedTab: 0,
-        selectedMap: Object.keys(maps)[0],
-        markers: [],
-        lines: [],
-        selectTab: (tab: number | string) =>
-          set(() => {
-            if (typeof tab === "string") {
-              return { selectedTab: tabs.indexOf(tab) };
-            } else {
-              return { selectedTab: tab };
-            }
-          }),
-        selectMap: (map: string) => set(() => ({ selectedMap: map })),
-        clearMap: () => set(() => ({ markers: [], lines: [] })),
-        plotQuest: (quest: Quest) =>
-          set(() => {
-            const npcs = getNpcMap();
-            const markers = quest.steps.map((step) => ({
-              location: npcs[step.npcName].location,
-              icon: npcs[step.npcName].icon,
-            }));
-            return { markers, selectedMap: markers[0].location.map };
-          }),
-        setMarkerComplete: (index: number, complete: boolean) =>
-          set((state) => {
-            state.markers[index].complete = complete;
-            if (complete) {
-              if (state.markers.length > index + 1) {
-                state.selectedMap = state.markers[index + 1].location.map;
-              } else {
-                state.selectedMap = state.markers[index].location.map;
-              }
-            } else {
-              const lastCompletedMarker = state.markers
-                .slice()
-                .reverse()
-                .find((marker) => marker.complete);
-              if (lastCompletedMarker) {
-                const lastCompletedMarkerIndex =
-                  state.markers.indexOf(lastCompletedMarker);
-                if (state.markers.length > lastCompletedMarkerIndex + 1) {
-                  state.selectedMap =
-                    state.markers[lastCompletedMarkerIndex + 1].location.map;
-                } else {
-                  state.selectedMap =
-                    state.markers[lastCompletedMarkerIndex].location.map;
-                }
-              } else {
-                state.selectedMap = state.markers[0].location.map;
-              }
-            }
-          }),
-      }),
-      { name: "eadb-content-storage" }
-    )
-  )
-);
 
 export default function WebsiteContent() {
   const [searchRef, setSearchRef] = useState<HTMLInputElement | null>(null);

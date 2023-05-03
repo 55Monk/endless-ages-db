@@ -1,17 +1,64 @@
 import { LatLngBoundsLiteral } from "leaflet";
 
 export type MapEntry = {
+  name: string;
   displayName: string;
   bounds?: LatLngBoundsLiteral;
 };
 
-export const maps: Record<string, MapEntry> = {
-  mainworld: { displayName: "Mainworld" },
-  trendor: { displayName: "Trendor" },
-  "4f": { displayName: "4Falls" },
-  ft: { displayName: "Firetown" },
-  cata: { displayName: "Catacombs (12)" },
-  coa: { displayName: "COA (13)" },
-  temple: { displayName: "Temple (14)" },
-  dungeon: { displayName: "Dungeon (15)" },
-};
+const maps: MapEntry[] = [
+  {
+    name: "mainworld",
+    displayName: "Mainworld",
+    bounds: [
+      [-25506, -25852],
+      [25694, 25348],
+    ],
+  },
+  {
+    name: "trendor",
+    displayName: "Trendor",
+  },
+  {
+    name: "4falls",
+    displayName: "4Falls",
+    bounds: [
+      [-8500, -8500],
+      [8500, 8500],
+    ],
+  },
+  {
+    name: "ft",
+    displayName: "Firetown",
+  },
+  {
+    name: "cata",
+    displayName: "Catacombs (12)",
+  },
+  {
+    name: "coa",
+    displayName: "COA (13)",
+  },
+  {
+    name: "temple",
+    displayName: "Temple (14)",
+  },
+  {
+    name: "dungeon",
+    displayName: "Dungeon (15)",
+  },
+];
+
+const mapMap: Partial<Record<string, MapEntry>> = {};
+maps.reduce((map, mapEntry) => {
+  map[mapEntry.name] = mapEntry;
+  return map;
+}, mapMap);
+
+export function getMapMap() {
+  return mapMap;
+}
+
+export default function getMaps() {
+  return maps;
+}
