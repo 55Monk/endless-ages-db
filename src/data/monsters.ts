@@ -1,3 +1,3 @@
 import { MapEntity } from "./shared";
 
-export type Mob = MapEntity & {};
+export type Monster = MapEntity & {};

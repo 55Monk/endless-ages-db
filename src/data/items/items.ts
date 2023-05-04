@@ -1,5 +1,9 @@
-export type Race = "AP" | "BL" | "HF" | "HM";
-export type ItemType = "ARMOR" | "GUN" | "SWORD" | "QI";
+import apArmor from "./ap/armor";
+
+export const playerRaces = ["AP", "BL", "HF", "HM"] as const;
+export type PlayerRace = (typeof playerRaces)[number];
+
+export type ItemType = "ARMOR" | "GUN" | "MELEE" | "QI" | "MISC";
 type Stat = "STR" | "DEX" | "WIS";
 type CraftSkill = "ALCH" | "ENG" | "SMITH";
 type Skill =
@@ -21,6 +25,21 @@ export type Item = {
   iconLocation?: [x: number, y: number];
   drops?: boolean;
   marketCost?: number;
+  // Requirements to equip/use
+  race?: PlayerRace;
+  requirements?: Partial<Record<Requirement, number>>;
+  // Stats
+  defenses?: Partial<Record<Element, number>>;
+  bonuses?: Partial<Record<Bonus, number>>;
+  damage?: {
+    directElement?: Element;
+    directAmount?: number;
+    splashElement?: Element;
+    splashAmount?: number;
+    reloadDurationSeconds: number;
+  };
+  flightDurationSeconds?: number;
+  // How to get, eventually remove and generate from mobs, npcs, and quests
   rewardFrom?: string;
   fromVendor?: string;
   craftedBy?: {
@@ -35,17 +54,6 @@ export type Item = {
     name: string;
     rate: number;
   };
-  race?: Race;
-  requirements?: Partial<Record<Requirement, number>>;
-  defenses?: Partial<Record<Element, number>>;
-  bonuses?: Partial<Record<Bonus, number>>;
-  damage?: {
-    element: Element;
-    direct?: number;
-    splash?: number;
-    reloadDuration: number;
-  };
-  flight?: number;
 };
 
 const items: Item[] = [
@@ -53,7 +61,6 @@ const items: Item[] = [
     name: "[AP] Ontroytag",
     iconLocation: [14, 9],
     drops: false,
-    fromVendor: "Multiple",
     race: "AP",
     requirements: {
       STR: 10,
@@ -61,10 +68,11 @@ const items: Item[] = [
       WIS: 20,
     },
     damage: {
-      element: "NORMAL",
-      direct: 12,
-      reloadDuration: 0.5,
+      directElement: "NORMAL",
+      directAmount: 12,
+      reloadDurationSeconds: 0.5,
     },
+    fromVendor: "Multiple",
   },
   {
     name: "Peroxi Rebuilder Heal",
@@ -83,9 +91,9 @@ const items: Item[] = [
       ],
     },
     damage: {
-      element: "HEAL",
-      direct: 180,
-      reloadDuration: 6,
+      directElement: "HEAL",
+      directAmount: 180,
+      reloadDurationSeconds: 6,
     },
   },
   {
@@ -129,7 +137,7 @@ const items: Item[] = [
     requirements: {
       PILOT: 2,
     },
-    flight: 51,
+    flightDurationSeconds: 51,
   },
   {
     name: "[HF] Netlauncher",
@@ -144,14 +152,14 @@ const items: Item[] = [
       WIS: 80,
     },
     damage: {
-      element: "DEATH",
-      direct: 120,
-      splash: 60,
-      reloadDuration: 1.93,
+      directElement: "DEATH",
+      directAmount: 120,
+      splashAmount: 60,
+      reloadDurationSeconds: 1.93,
     },
   },
   {
-    name: "[HF] Ring of Power -20",
+    name: "[HF] Ring of Power +20",
     iconLocation: [8, 6],
     drops: false,
     rewardFrom: "Dominion Egg Quest",
@@ -161,6 +169,8 @@ const items: Item[] = [
     },
   },
 ];
+
+items.push(...apArmor);
 
 items.forEach((item) => {
   if (!item.iconLocation) {
@@ -174,13 +184,14 @@ items.forEach((item) => {
 });
 
 export function getItemSalePrice(item: Item) {
-  return item.marketCost ? Math.floor(item.marketCost / 3) : 0;
+  return item.marketCost ? Math.floor(item.marketCost / 4) : 0;
 }
 
 export function getItemDps(item: Item) {
   if (item.damage) {
-    const totalDamage = (item.damage.direct ?? 0) + (item.damage.splash ?? 0);
-    const dps = totalDamage / item.damage.reloadDuration;
+    const totalDamage =
+      (item.damage.directAmount ?? 0) + (item.damage.splashAmount ?? 0);
+    const dps = totalDamage / item.damage.reloadDurationSeconds;
     return Math.floor(dps);
   }
   return undefined;

@@ -11,8 +11,8 @@ const maps: MapEntry[] = [
     name: "mainworld",
     displayName: "Mainworld",
     bounds: [
-      [-25506, -25852],
-      [25694, 25348],
+      [-21506, -21852],
+      [21694, 21348],
     ],
   },
   {

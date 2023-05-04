@@ -6,13 +6,23 @@ import { getMapMap } from "../data/maps";
 import getNpcMap from "../data/npcs";
 import { Quest } from "../data/quests";
 
+export type SelectedCard = {
+  type: "Quest" | "NPC" | "Monster";
+  name: string;
+};
+
 type ContentState = {
   selectedTab: number;
+  selectTab: (tab: number | string) => void;
+
   selectedMap: string;
+  selectMap: (map: string) => void;
+
+  selectedCard?: SelectedCard;
+  selectCard: (selectedCard?: SelectedCard) => void;
+
   markers: Marker[];
   lines: any;
-  selectTab: (tab: number | string) => void;
-  selectMap: (map: string) => void;
   clearMap: () => void;
   plotQuest: (quest: Quest) => void;
   setMarkerComplete: (index: number, complete: boolean) => void;
@@ -28,6 +38,10 @@ function selectTab(tab: number | string) {
 
 function selectMap(map: string) {
   return { selectedMap: map };
+}
+
+function selectCard(selectedCard?: SelectedCard) {
+  return { selectedCard: selectedCard };
 }
 
 function clearMap() {
@@ -81,11 +95,13 @@ const useContentStore = create<ContentState>()(
     persist(
       (set) => ({
         selectedTab: 0,
+        selectTab: (tab) => set(() => selectTab(tab)),
         selectedMap: Object.keys(getMapMap())[0],
+        selectMap: (map) => set(() => selectMap(map)),
+        selectedCard: undefined,
+        selectCard: (selectedCard) => set(() => selectCard(selectedCard)),
         markers: [],
         lines: [],
-        selectTab: (tab) => set(() => selectTab(tab)),
-        selectMap: (map) => set(() => selectMap(map)),
         clearMap: () => set(() => clearMap()),
         plotQuest: (quest) => set(() => plotQuest(quest)),
         setMarkerComplete: (index, complete) =>

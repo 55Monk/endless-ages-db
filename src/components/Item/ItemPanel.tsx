@@ -1,23 +1,37 @@
 import { Tab } from "@headlessui/react";
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import { useState } from "react";
-import getQuestMap from "../../data/quests";
+import getItems, { PlayerRace, playerRaces } from "../../data/items/items";
+import FiltersPanel from "../FiltersPanel";
 import NoMatchCard from "../NoMatchCard";
-import QuestCard from "./QuestCard";
+import ItemCard from "./ItemCard";
+import ItemRaceFilterPanel, { Filters } from "./ItemRaceFilterPanel";
 
-const quests = Object.values(getQuestMap());
+const items = getItems();
 
-export default function QuestPanel() {
+// let filteredItems = [...items];
+// // filter by search
+// if (searchValue.length > 0) {
+//   filteredItems = items.filter((item) =>
+//     item.name.toLowerCase().includes(searchValue.toLowerCase())
+//   );
+// }
+// // filter by race
+// const toKeepRaces = Object.entries(racesFilter)
+//   .filter(([race, keep]) => keep)
+//   .map(([race]) => race);
+// filteredItems = filteredItems.filter(
+//   (item) => !item.race || toKeepRaces.includes(item.race)
+// );
+
+export default function ItemPanel() {
   const [searchRef, setSearchRef] = useState<HTMLInputElement | null>(null);
   const [searchValue, setSearchValue] = useState<string>("");
 
-  let filteredQuests = [...quests];
-  // filter by search
-  if (searchValue.length > 0) {
-    filteredQuests = filteredQuests.filter((quest) =>
-      quest.name.toLowerCase().includes(searchValue.toLowerCase())
-    );
-  }
+  const initialRacesFilter: any = {};
+  playerRaces.forEach((race) => (initialRacesFilter[race] = true));
+  const [racesFilter, setRacesFilter] =
+    useState<Filters<PlayerRace>>(initialRacesFilter);
 
   return (
     <Tab.Panel className="flex flex-grow flex-col">
@@ -43,12 +57,20 @@ export default function QuestPanel() {
             </button>
           )}
         </div>
+        <ItemRaceFilterPanel
+          racesFilter={racesFilter}
+          setRacesFilter={setRacesFilter}
+        />
+        <FiltersPanel
+          name="Additional Filters"
+          filters={["Armor", "Gun", "Sword", "Quest Item"]}
+        />
       </div>
       <hr />
       <div className="flex flex-grow basis-0 flex-col gap-2 overflow-y-scroll p-2">
-        {filteredQuests.length === 0 && <NoMatchCard type="Quest" />}
-        {filteredQuests.map((quest) => (
-          <QuestCard key={quest.name} quest={quest} />
+        {items.length === 0 && <NoMatchCard type="Item" />}
+        {items.map((item) => (
+          <ItemCard key={item.name} item={item} />
         ))}
       </div>
     </Tab.Panel>

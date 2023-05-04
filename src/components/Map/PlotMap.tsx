@@ -56,12 +56,14 @@ const icons: Record<string, any> = {
   }),
 };
 
+const mapMap = getMapMap();
+
 export default function PlotMap() {
   const selectedMap = useContentStore((state) => state.selectedMap);
   const selectMap = useContentStore((state) => state.selectMap);
   const markers = useContentStore((state) => state.markers);
 
-  const selectedMapDetails = getMapMap()[selectedMap];
+  const selectedMapDetails = mapMap[selectedMap];
 
   const [lines, setLines] = useState<any[]>([]);
 
@@ -106,7 +108,6 @@ export default function PlotMap() {
         maxZoom={0}
         scrollWheelZoom={true}
         crs={L.CRS.Simple}
-        maxBounds={selectedMapDetails?.bounds}
       >
         <ImageOverlay
           url={`${process.env.PUBLIC_URL}/assets/maps/${selectedMapDetails?.name}.png`}

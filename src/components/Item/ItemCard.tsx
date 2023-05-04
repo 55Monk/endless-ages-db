@@ -12,7 +12,7 @@ import {
   TrophyIcon,
   WrenchScrewdriverIcon,
 } from "@heroicons/react/20/solid";
-import { getItemDps, getItemSalePrice, Item } from "../../data/items";
+import { getItemDps, getItemSalePrice, Item } from "../../data/items/items";
 import icons from "../icons.png";
 import TextRef from "../Reference/TextRef";
 
@@ -98,23 +98,24 @@ export default function ItemCard(props: Props) {
         <div className="flex items-center gap-2">
           <BoltIcon className="group h-4 w-4" />
           <span className="mb-[-1px] text-sm">
-            {item.damage.element} <strong>{item.damage.direct ?? 0}</strong>
-            {item.damage.splash && (
+            {item.damage.directElement}{" "}
+            <strong>{item.damage.directAmount ?? 0}</strong>
+            {item.damage.splashAmount && (
               <span>
                 {" "}
-                /<strong> {item.damage.splash}</strong>
+                /<strong> {item.damage.splashAmount}</strong>
               </span>
             )}{" "}
-            per <strong>{item.damage.reloadDuration}</strong>s (
+            per <strong>{item.damage.reloadDurationSeconds}</strong>s (
             <strong>{getItemDps(item)}</strong>/s)
           </span>
         </div>
       )}
-      {item.flight && (
+      {item.flightDurationSeconds && (
         <div className="flex items-center gap-2">
           <RocketLaunchIcon className="group h-4 w-4" />
           <span className="mb-[-1px] text-sm">
-            Flight Duration <strong>{item.flight}</strong>s
+            Flight Duration <strong>{item.flightDurationSeconds}</strong>s
           </span>
         </div>
       )}

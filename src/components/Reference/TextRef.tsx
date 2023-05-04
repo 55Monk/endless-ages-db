@@ -1,5 +1,5 @@
 import { Popover } from "@headlessui/react";
-import { getItemMap } from "../../data/items";
+import { getItemMap } from "../../data/items/items";
 import getNpcMap from "../../data/npcs";
 import getQuestMap from "../../data/quests";
 import { DataType, getDataTypeColor } from "../../data/shared";
