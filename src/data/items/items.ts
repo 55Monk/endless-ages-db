@@ -1,8 +1,6 @@
 import apArmor from "./ap/armor";
 
-export const playerRaces = ["AP", "BL", "HF", "HM"] as const;
-export type PlayerRace = (typeof playerRaces)[number];
-
+const playerRaces = ["AP", "BL", "HF", "HM"] as const;
 export const races = [...playerRaces, "SS", "Other"] as const;
 export type Race = (typeof races)[number];
 
@@ -40,7 +38,7 @@ export type Item = {
   drops?: boolean;
   marketCost?: number;
   // Requirements to equip/use
-  race?: PlayerRace;
+  race?: Race;
   requirements?: Partial<Record<Requirement, number>>;
   // Stats
   defenses?: Partial<Record<Element, number>>;
