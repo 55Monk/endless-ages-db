@@ -9,21 +9,6 @@ import ItemRaceFilterPanel, { Filters } from "./ItemRaceFilterPanel";
 
 const items = getItems();
 
-// let filteredItems = [...items];
-// // filter by search
-// if (searchValue.length > 0) {
-//   filteredItems = items.filter((item) =>
-//     item.name.toLowerCase().includes(searchValue.toLowerCase())
-//   );
-// }
-// // filter by race
-// const toKeepRaces = Object.entries(racesFilter)
-//   .filter(([race, keep]) => keep)
-//   .map(([race]) => race);
-// filteredItems = filteredItems.filter(
-//   (item) => !item.race || toKeepRaces.includes(item.race)
-// );
-
 export default function ItemPanel() {
   const [searchRef, setSearchRef] = useState<HTMLInputElement | null>(null);
   const [searchValue, setSearchValue] = useState<string>("");
@@ -32,6 +17,23 @@ export default function ItemPanel() {
   races.forEach((race) => (initialRacesFilter[race] = true));
   const [racesFilter, setRacesFilter] = useState<Filters<Race>>(
     initialRacesFilter as Filters<Race>,
+  );
+
+  let filteredItems = [...items];
+  // filter by search
+  if (searchValue.length > 0) {
+    filteredItems = items.filter((item) =>
+      item.name.toLowerCase().includes(searchValue.toLowerCase()),
+    );
+  }
+  // filter by race
+  const toKeepRaces = Object.entries(racesFilter)
+    .filter(([, keep]) => keep)
+    .map(([race]) => race);
+  filteredItems = filteredItems.filter(
+    (item) =>
+      (!item.race && toKeepRaces.includes("Other")) ||
+      toKeepRaces.includes(item.race || ""),
   );
 
   return (
@@ -69,8 +71,8 @@ export default function ItemPanel() {
       </div>
       <hr />
       <div className="flex flex-grow basis-0 flex-col gap-2 overflow-y-scroll p-2">
-        {items.length === 0 && <NoMatchCard type="Item" />}
-        {items.map((item) => (
+        {filteredItems.length === 0 && <NoMatchCard type="Item" />}
+        {filteredItems.map((item) => (
           <ItemCard key={item.name} item={item} />
         ))}
       </div>
