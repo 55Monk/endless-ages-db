@@ -3,6 +3,9 @@ import apArmor from "./ap/armor";
 export const playerRaces = ["AP", "BL", "HF", "HM"] as const;
 export type PlayerRace = (typeof playerRaces)[number];
 
+export const races = [...playerRaces, "SS", "Other"] as const;
+export type Race = (typeof races)[number];
+
 export type ItemType = "ARMOR" | "GUN" | "MELEE" | "QI" | "MISC";
 type Stat = "STR" | "DEX" | "WIS";
 type CraftSkill = "ALCH" | "ENG" | "SMITH";

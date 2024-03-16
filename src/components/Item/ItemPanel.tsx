@@ -1,7 +1,7 @@
 import { Tab } from "@headlessui/react";
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import { useState } from "react";
-import getItems, { PlayerRace, playerRaces } from "../../data/items/items";
+import getItems, { Race, races } from "../../data/items/items";
 import FiltersPanel from "../FiltersPanel";
 import NoMatchCard from "../NoMatchCard";
 import ItemCard from "./ItemCard";
@@ -28,10 +28,10 @@ export default function ItemPanel() {
   const [searchRef, setSearchRef] = useState<HTMLInputElement | null>(null);
   const [searchValue, setSearchValue] = useState<string>("");
 
-  const initialRacesFilter: Partial<Filters<PlayerRace>> = {};
-  playerRaces.forEach((race) => (initialRacesFilter[race] = true));
-  const [racesFilter, setRacesFilter] = useState<Filters<PlayerRace>>(
-    initialRacesFilter as Filters<PlayerRace>,
+  const initialRacesFilter: Partial<Filters<Race>> = {};
+  races.forEach((race) => (initialRacesFilter[race] = true));
+  const [racesFilter, setRacesFilter] = useState<Filters<Race>>(
+    initialRacesFilter as Filters<Race>,
   );
 
   return (
