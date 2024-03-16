@@ -14,7 +14,7 @@ import {
 } from "@heroicons/react/20/solid";
 import { Item, getItemDps, getItemSalePrice } from "../../data/items/items";
 import TextRef from "../Reference/TextRef";
-import icons from "../icons.png";
+import icons from "../icons.webp";
 
 type Props = { item: Item };
 
