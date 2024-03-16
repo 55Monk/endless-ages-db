@@ -53,7 +53,7 @@ export default function TextRef(props: Props) {
   }
 
   return (
-    <Popover className="inline">
+    <Popover className="relative inline">
       <Popover.Button className={`font-bold ${color}`}>{name}</Popover.Button>
       <Popover.Panel className="absolute z-[999] mt-2">
         {panelContent}
