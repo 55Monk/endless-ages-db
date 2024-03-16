@@ -14,7 +14,7 @@ export default function ItemRaceFilterPanel(props: Props) {
   const { racesFilter, setRacesFilter } = props;
 
   return (
-    <div className="flex justify-around rounded border border-neutral-300 p-1">
+    <div className="flex justify-between rounded border border-neutral-300 px-2 py-1">
       {races.map((race) => (
         <div key={race}>
           <input
