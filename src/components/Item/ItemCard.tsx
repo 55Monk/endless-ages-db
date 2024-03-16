@@ -1,20 +1,20 @@
+import { ClockIcon, SparklesIcon } from "@heroicons/react/16/solid";
 import {
   AdjustmentsHorizontalIcon,
-  ArrowDownTrayIcon,
   BoltIcon,
   BugAntIcon,
   ChartBarIcon,
-  LockClosedIcon,
   RocketLaunchIcon,
   ShieldExclamationIcon,
   ShoppingCartIcon,
-  TagIcon,
   TrophyIcon,
   WrenchScrewdriverIcon,
 } from "@heroicons/react/20/solid";
-import { Item, getItemDps, getItemSalePrice } from "../../data/items/items";
+import { getElementIcon } from "../../Elements";
+import { Item, elements } from "../../data/items/items";
 import TextRef from "../Reference/TextRef";
-import icons from "../icons.webp";
+import { Attribute, AttributeRow } from "./ItemCardAttribute";
+import { ItemCardTitleRow } from "./ItemCardTitleRow";
 
 type Props = { item: Item };
 
@@ -23,110 +23,75 @@ export default function ItemCard(props: Props) {
 
   return (
     <div className="flex flex-col gap-1 rounded border border-neutral-300 p-1">
-      <div className="flex items-center gap-2">
-        <div
-          className="h-8 w-8"
-          style={{
-            background: `url(${icons}) no-repeat`,
-            backgroundPosition: `-${(item.iconLocation?.[0] ?? 0) * 32}px -${
-              (item.iconLocation?.[1] ?? 0) * 32
-            }px`,
-          }}
-        />
-        <div className="flex-grow">
-          <div className="flex items-center gap-4">
-            <strong className="text-sm leading-none">{item.name}</strong>
-            <div className="flex-grow" />
-            {item.marketCost && (
-              <div className="mb-[-1px] flex items-center gap-1">
-                <TagIcon className="h-4 w-4" />
-                <span className="text-sm leading-none">
-                  {getItemSalePrice(item)}
-                </span>
-              </div>
-            )}
-            {item.drops ? (
-              <ArrowDownTrayIcon className="group h-4 w-4" />
-            ) : (
-              <LockClosedIcon className="group h-4 w-4" />
-            )}
-          </div>
-          <div className="text-xs">&#xfeff;</div>
-        </div>
-      </div>
+      <ItemCardTitleRow item={item} />
       {item.requirements && (
-        <div className="flex items-center gap-2">
-          <ChartBarIcon className="group h-4 w-4" />
-          <span className="mb-[-1px] flex gap-2 text-sm">
-            {Object.entries(item.requirements).map(([req, value], index) => (
-              <span key={index}>
-                {req} <strong>{value}</strong>
-              </span>
-            ))}
-          </span>
-        </div>
+        <AttributeRow name="Use Requirements" icon={<ChartBarIcon />}>
+          {Object.entries(item.requirements).map(([req, value], index) => (
+            <Attribute key={index} qualifiers={req} value={value} />
+          ))}
+        </AttributeRow>
       )}
       {item.defenses && (
-        <div className="flex items-center gap-2">
-          <ShieldExclamationIcon className="group h-4 w-4" />
-          <span className="mb-[-1px] flex gap-2 text-sm">
-            {Object.entries(item.defenses).map(([defense, value], index) => (
-              <span key={index}>
-                {defense} <strong>{value}</strong>
-              </span>
-            ))}
-          </span>
-        </div>
+        <AttributeRow name="Resistances Given" icon={<ShieldExclamationIcon />}>
+          {elements.map((ele, index) => (
+            <Attribute
+              key={index}
+              qualifiers={getElementIcon(ele)}
+              value={item.defenses?.[ele] || 0}
+            />
+          ))}
+        </AttributeRow>
       )}
       {item.bonuses && (
-        <div className="flex items-center gap-2">
-          <AdjustmentsHorizontalIcon className="group h-4 w-4" />
-          <span className="mb-[-1px] flex gap-2 text-sm">
-            {Object.entries(item.bonuses).map(([bonus, value], index) => (
-              <span key={index}>
-                {bonus} <strong>+{value}</strong>
-              </span>
-            ))}
-          </span>
-        </div>
+        <AttributeRow name="Bonuses Given" icon={<AdjustmentsHorizontalIcon />}>
+          {Object.entries(item.bonuses).map(([bonus, value], index) => (
+            <Attribute key={index} qualifiers={bonus} value={value} />
+          ))}
+        </AttributeRow>
       )}
       {item.damage && (
-        <div className="flex items-center gap-2">
-          <BoltIcon className="group h-4 w-4" />
-          <span className="mb-[-1px] text-sm">
-            {item.damage.directElement}{" "}
-            <strong>{item.damage.directAmount ?? 0}</strong>
-            {item.damage.splashAmount && (
-              <span>
-                {" "}
-                /<strong> {item.damage.splashAmount}</strong>
-              </span>
-            )}{" "}
-            per <strong>{item.damage.reloadDurationSeconds}</strong>s (
-            <strong>{getItemDps(item)}</strong>/s)
-          </span>
-        </div>
+        <AttributeRow name="Damage" icon={<BoltIcon />}>
+          {item.damage.directAmount && (
+            <Attribute
+              qualifiers={getElementIcon(item.damage.directElement ?? "")}
+              value={item.damage.directAmount}
+            />
+          )}
+          {item.damage.splashAmount && (
+            <Attribute
+              qualifiers={
+                <span className="flex gap-1">
+                  <SparklesIcon className="h-4 w-4" title="Splash" />
+                  {getElementIcon(item.damage.splashElement ?? "")}
+                </span>
+              }
+              value={item.damage.splashAmount}
+            />
+          )}
+          <Attribute
+            qualifiers={<ClockIcon className="h-4 w-4" title="Cooldown" />}
+            value={item.damage.reloadDurationSeconds}
+          />
+          {/*(<strong>{getItemDps(item)}</strong>/s)*/}
+        </AttributeRow>
       )}
       {item.flightDurationSeconds && (
-        <div className="flex items-center gap-2">
-          <RocketLaunchIcon className="group h-4 w-4" />
-          <span className="mb-[-1px] text-sm">
-            Flight Duration <strong>{item.flightDurationSeconds}</strong>s
-          </span>
-        </div>
+        <AttributeRow name="Bonuses Given" icon={<RocketLaunchIcon />}>
+          <Attribute
+            qualifiers={<ClockIcon className="h-4 w-4" title="Cooldown" />}
+            value={item.flightDurationSeconds}
+          />
+        </AttributeRow>
       )}
       {item.fromVendor && (
-        <div className="flex items-center gap-2">
-          <ShoppingCartIcon className="group h-4 w-4" />
-          <span className="mb-[-1px] text-sm">
-            Purchased from <TextRef name={item.fromVendor} type="npc" />
-          </span>
-        </div>
+        <AttributeRow name="Purchased from" icon={<ShoppingCartIcon />}>
+          <Attribute value={<TextRef name={item.fromVendor} type="npc" />} />
+        </AttributeRow>
       )}
       {item.craftedBy && (
         <>
           <div className="flex items-center gap-2">
-            <WrenchScrewdriverIcon className="group h-4 w-4" />
+            <WrenchScrewdriverIcon className="group h-5 w-5" title="Crafted" />
             <span className="mb-[-1px] text-sm">
               Crafted by{" "}
               <span className="font-bold text-cyan-500">
@@ -144,21 +109,17 @@ export default function ItemCard(props: Props) {
         </>
       )}
       {item.rewardFrom && (
-        <div className="flex items-center gap-2">
-          <TrophyIcon className="group h-4 w-4" />
-          <span className="mb-[-1px] text-sm">
-            Reward From <TextRef name={item.rewardFrom} type="quest" />
-          </span>
-        </div>
+        <AttributeRow name="Reward From" icon={<TrophyIcon />}>
+          <Attribute value={<TextRef name={item.rewardFrom} type="quest" />} />
+        </AttributeRow>
       )}
       {item.droppedBy && (
-        <div className="flex items-center gap-2">
-          <BugAntIcon className="group h-4 w-4" />
-          <span className="mb-[-1px] text-sm">
-            Dropped by <TextRef name={item.droppedBy.name} type="mob" /> (
-            <strong>{item.droppedBy.rate}</strong>%)
-          </span>
-        </div>
+        <AttributeRow name="Dropped By" icon={<BugAntIcon />}>
+          <Attribute
+            qualifiers={<TextRef name={item.droppedBy.name} type="mob" />}
+            value={`${item.droppedBy.rate}%`}
+          />
+        </AttributeRow>
       )}
     </div>
   );

@@ -16,7 +16,18 @@ type Skill =
   | "FAMILIARS"
   | CraftSkill;
 type Requirement = Stat | Skill;
-type Element = "NORMAL" | "RUNE" | "DEATH" | "HEAL";
+export const elements = [
+  "NORMAL",
+  "FIRE",
+  "WATER",
+  "RUNE",
+  "RELIC",
+  "EARTH",
+  "AIR",
+  "DEATH",
+] as const;
+export type Element = (typeof elements)[number];
+type DamageType = Element | "HEAL";
 type Bonus = Stat | "HEALTH";
 
 export type Item = {
@@ -32,9 +43,9 @@ export type Item = {
   defenses?: Partial<Record<Element, number>>;
   bonuses?: Partial<Record<Bonus, number>>;
   damage?: {
-    directElement?: Element;
+    directElement?: DamageType;
     directAmount?: number;
-    splashElement?: Element;
+    splashElement?: DamageType;
     splashAmount?: number;
     reloadDurationSeconds: number;
   };
@@ -154,6 +165,7 @@ const items: Item[] = [
     damage: {
       directElement: "DEATH",
       directAmount: 120,
+      splashElement: "NORMAL",
       splashAmount: 60,
       reloadDurationSeconds: 1.93,
     },
