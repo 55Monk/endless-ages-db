@@ -12,9 +12,9 @@ import {
   TrophyIcon,
   WrenchScrewdriverIcon,
 } from "@heroicons/react/20/solid";
-import { getItemDps, getItemSalePrice, Item } from "../../data/items/items";
-import icons from "../icons.png";
+import { Item, getItemDps, getItemSalePrice } from "../../data/items/items";
 import TextRef from "../Reference/TextRef";
+import icons from "../icons.png";
 
 type Props = { item: Item };
 
@@ -58,13 +58,11 @@ export default function ItemCard(props: Props) {
         <div className="flex items-center gap-2">
           <ChartBarIcon className="group h-4 w-4" />
           <span className="mb-[-1px] flex gap-2 text-sm">
-            {Object.entries(item.requirements).map(
-              ([req, value]: any, index) => (
-                <span key={index}>
-                  {req} <strong>{value}</strong>
-                </span>
-              )
-            )}
+            {Object.entries(item.requirements).map(([req, value], index) => (
+              <span key={index}>
+                {req} <strong>{value}</strong>
+              </span>
+            ))}
           </span>
         </div>
       )}
@@ -72,13 +70,11 @@ export default function ItemCard(props: Props) {
         <div className="flex items-center gap-2">
           <ShieldExclamationIcon className="group h-4 w-4" />
           <span className="mb-[-1px] flex gap-2 text-sm">
-            {Object.entries(item.defenses).map(
-              ([defense, value]: any, index) => (
-                <span key={index}>
-                  {defense} <strong>{value}</strong>
-                </span>
-              )
-            )}
+            {Object.entries(item.defenses).map(([defense, value], index) => (
+              <span key={index}>
+                {defense} <strong>{value}</strong>
+              </span>
+            ))}
           </span>
         </div>
       )}
@@ -86,7 +82,7 @@ export default function ItemCard(props: Props) {
         <div className="flex items-center gap-2">
           <AdjustmentsHorizontalIcon className="group h-4 w-4" />
           <span className="mb-[-1px] flex gap-2 text-sm">
-            {Object.entries(item.bonuses).map(([bonus, value]: any, index) => (
+            {Object.entries(item.bonuses).map(([bonus, value], index) => (
               <span key={index}>
                 {bonus} <strong>+{value}</strong>
               </span>

@@ -28,10 +28,11 @@ export default function ItemPanel() {
   const [searchRef, setSearchRef] = useState<HTMLInputElement | null>(null);
   const [searchValue, setSearchValue] = useState<string>("");
 
-  const initialRacesFilter: any = {};
+  const initialRacesFilter: Partial<Filters<PlayerRace>> = {};
   playerRaces.forEach((race) => (initialRacesFilter[race] = true));
-  const [racesFilter, setRacesFilter] =
-    useState<Filters<PlayerRace>>(initialRacesFilter);
+  const [racesFilter, setRacesFilter] = useState<Filters<PlayerRace>>(
+    initialRacesFilter as Filters<PlayerRace>,
+  );
 
   return (
     <Tab.Panel className="flex flex-grow flex-col">

@@ -1,7 +1,8 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
-import { Marker, tabs } from "../components/WebsiteContent";
+import { tabs } from "../components/Tabs.tsx";
+import { Marker } from "../components/WebsiteContent";
 import { getMapMap } from "../data/maps";
 import getNpcMap from "../data/npcs";
 import { Quest } from "../data/quests";
@@ -60,7 +61,7 @@ function plotQuest(quest: Quest) {
 function setMarkerComplete(
   state: ContentState,
   index: number,
-  complete: boolean
+  complete: boolean,
 ) {
   state.markers[index].complete = complete;
   if (complete) {
@@ -107,9 +108,9 @@ const useContentStore = create<ContentState>()(
         setMarkerComplete: (index, complete) =>
           set((state) => setMarkerComplete(state, index, complete)),
       }),
-      { name: "eadb-content-storage" }
-    )
-  )
+      { name: "eadb-content-storage" },
+    ),
+  ),
 );
 
 export default useContentStore;

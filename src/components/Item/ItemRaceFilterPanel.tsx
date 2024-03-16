@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from "react";
 import { PlayerRace, playerRaces } from "../../data/items/items";
 
 export type Filters<T extends string> = {
@@ -6,7 +7,7 @@ export type Filters<T extends string> = {
 
 type Props = {
   racesFilter: Filters<PlayerRace>;
-  setRacesFilter: any;
+  setRacesFilter: Dispatch<SetStateAction<Filters<"AP" | "BL" | "HF" | "HM">>>;
 };
 
 export default function ItemRaceFilterPanel(props: Props) {
