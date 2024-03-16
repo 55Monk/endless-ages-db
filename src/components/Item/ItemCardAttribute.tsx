@@ -8,8 +8,8 @@ type AttributeRowProps = {
 export function AttributeRow(props: PropsWithChildren<AttributeRowProps>) {
   const { name, icon, children } = props;
   return (
-    <div className="flex items-center gap-2 pl-[6px]">
-      <div className="h-5 w-5" title={name}>
+    <div className="flex items-center gap-2">
+      <div className="mx-[6px] h-5 w-5" title={name}>
         {icon}
       </div>
       <span className="flex gap-1 text-sm">{children}</span>
