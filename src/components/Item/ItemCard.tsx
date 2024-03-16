@@ -11,7 +11,7 @@ import {
   WrenchScrewdriverIcon,
 } from "@heroicons/react/20/solid";
 import { getElementIcon } from "../../Elements";
-import { Item, elements } from "../../data/items/items";
+import { Item, elements, getItemDps } from "../../data/items/items";
 import TextRef from "../Reference/TextRef";
 import { Attribute, AttributeRow } from "./ItemCardAttribute";
 import { ItemCardTitleRow } from "./ItemCardTitleRow";
@@ -72,7 +72,7 @@ export default function ItemCard(props: Props) {
             qualifiers={<ClockIcon className="h-4 w-4" title="Cooldown" />}
             value={item.damage.reloadDurationSeconds}
           />
-          {/*(<strong>{getItemDps(item)}</strong>/s)*/}
+          <Attribute qualifiers="DPS" value={getItemDps(item)} />
         </AttributeRow>
       )}
       {item.flightDurationSeconds && (
