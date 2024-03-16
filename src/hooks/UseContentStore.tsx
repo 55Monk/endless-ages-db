@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
-import { tabs } from "../components/Tabs.tsx";
+import { tabs } from "../components/Tabs";
 import { Marker } from "../components/WebsiteContent";
 import { getMapMap } from "../data/maps";
 import getNpcMap from "../data/npcs";

@@ -6,7 +6,7 @@ import ItemPanel from "./Item/ItemPanel";
 import MonsterPanel from "./Monster/MonsterPanel";
 import NpcPanel from "./Npc/NpcPanel";
 import QuestPanel from "./Quest/QuestPanel";
-import { tabs } from "./Tabs.tsx";
+import { tabs } from "./Tabs";
 
 export type Marker = {
   location: MapLocation;
