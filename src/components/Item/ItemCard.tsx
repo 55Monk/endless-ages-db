@@ -72,7 +72,10 @@ export default function ItemCard(props: Props) {
             qualifiers={<ClockIcon className="h-4 w-4" title="Cooldown" />}
             value={item.damage.reloadDurationSeconds}
           />
-          <Attribute qualifiers="DPS" value={item.damage.dps} />
+          <Attribute
+            qualifiers={item.damage.directElement === "HEAL" ? "HPS" : "DPS"}
+            value={item.damage.dps}
+          />
         </AttributeRow>
       )}
       {item.flightDurationSeconds && (
