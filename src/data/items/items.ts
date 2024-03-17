@@ -4,7 +4,44 @@ const playerRaces = ["AP", "BL", "HF", "HM"] as const;
 export const races = [...playerRaces, "SS", "Other"] as const;
 export type Race = (typeof races)[number];
 
-export type ItemType = "ARMOR" | "GUN" | "MELEE" | "QI" | "MISC";
+export const tags = [
+  "ARMOR",
+  "BODY",
+  "LEGS",
+  "HANDS",
+  "HEAD/FEET",
+  "ACCESSORY",
+  "RING",
+  "AMULET",
+  "BADGE",
+  "MISCACCESSORY",
+  "COSMETIC",
+  "GUN",
+  "DIRECTDAMAGEONLYGUN",
+  "AOEDAMAGEONLYGUN",
+  "BOTHDAMAGEGUN",
+  "UTILITYGUN",
+  "MELEE",
+  "PILOT",
+  "JETPACK",
+  "VEHICLE",
+  "FAMILIAR",
+  "MAGIC",
+  "DIRECTDAMAGEONLYSPELL",
+  "AOEDAMAGEONLYSPELL",
+  "BOTHDAMAGESPELL",
+  "HEALSPELL",
+  "UTILITYSPELL",
+  "SS",
+  "POTION",
+  "ALCH",
+  "ENG",
+  "SMITH",
+  "QI",
+  "JUNK",
+] as const;
+export type Tag = (typeof tags)[number];
+
 type Stat = "STR" | "DEX" | "WIS";
 type CraftSkill = "ALCH" | "ENG" | "SMITH";
 type Skill =
@@ -33,7 +70,8 @@ type Bonus = Stat | "HEALTH";
 
 export type Item = {
   name: string;
-  itemType?: ItemType;
+  tags: Tag[];
+  level?: number; // this is a soft level, e.g. armor doesn't have wt requirement but is called lv11, 12, etc. For many items this will just match SS, WT, etc requirements
   iconLocation?: [x: number, y: number];
   drops?: boolean;
   marketCost?: number;
@@ -88,6 +126,7 @@ const items: Item[] = [
   },
   {
     name: "Peroxi Rebuilder Heal",
+    tags: ["POTION", "ALCH"],
     iconLocation: [3, 1],
     drops: true,
     marketCost: 60,
@@ -110,10 +149,11 @@ const items: Item[] = [
   },
   {
     name: "Quest Item",
-    itemType: "QI",
+    tags: ["QI"],
   },
   {
     name: "Agate",
+    tags: ["JUNK"],
     iconLocation: [5, 1],
     drops: true,
     marketCost: 150,
@@ -124,7 +164,7 @@ const items: Item[] = [
   },
   {
     name: "[HF] Phision Torso Armor",
-    itemType: "ARMOR",
+    tags: ["ARMOR", "BODY"],
     iconLocation: [0, 13],
     drops: false,
     marketCost: 250000,
@@ -142,6 +182,7 @@ const items: Item[] = [
   },
   {
     name: "[AP] Wings of Crom",
+    tags: ["PILOT", "JETPACK"],
     iconLocation: [12, 5],
     drops: false,
     rewardFrom: "Crom Keys",
@@ -153,6 +194,7 @@ const items: Item[] = [
   },
   {
     name: "[HF] Netlauncher",
+    tags: ["GUN", "BOTHDAMAGEGUN"],
     iconLocation: [5, 4],
     drops: false,
     rewardFrom: "Netlauncher Quest",
@@ -173,6 +215,7 @@ const items: Item[] = [
   },
   {
     name: "[HF] Ring of Power +20",
+    tags: ["ACCESSORY", "RING"],
     iconLocation: [8, 6],
     drops: false,
     rewardFrom: "Dominion Egg Quest",
@@ -187,11 +230,8 @@ items.push(...apArmor);
 
 items.forEach((item) => {
   if (!item.iconLocation) {
-    switch (item.itemType) {
-      case "QI": {
-        item.iconLocation = [0, 1];
-        break;
-      }
+    if (item.tags.includes("QI")) {
+      item.iconLocation = [0, 1];
     }
   }
 });
