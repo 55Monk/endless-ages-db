@@ -70,7 +70,7 @@ export default function ItemPanel() {
         />
       </div>
       <hr />
-      <div className="flex flex-grow basis-0 flex-col gap-2 overflow-y-scroll p-2">
+      <div className="flex flex-grow basis-0 flex-col gap-2 overflow-y-scroll bg-neutral-100 p-2">
         {filteredItems.length === 0 && <NoMatchCard type="Item" />}
         {filteredItems.map((item) => (
           <ItemCard key={item.name} item={item} />

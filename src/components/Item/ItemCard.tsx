@@ -22,7 +22,7 @@ export default function ItemCard(props: Props) {
   const { item } = props;
 
   return (
-    <div className="flex flex-col gap-1 rounded border border-neutral-300 p-1">
+    <div className="flex flex-col gap-1 rounded border border-neutral-300 bg-white p-1">
       <ItemCardTitleRow item={item} />
       {item.requirements && (
         <AttributeRow name="Use Requirements" icon={<ChartBarIcon />}>
