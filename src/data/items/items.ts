@@ -1,4 +1,6 @@
 import apArmor from "./ap/armor";
+import apGuns from "./ap/guns.ts";
+import apMelee from "./ap/melee.ts";
 
 const playerRaces = ["AP", "BL", "HF", "HM"] as const;
 export const races = [...playerRaces, "SS", "Other"] as const;
@@ -109,23 +111,6 @@ export type Item = {
 
 const items: Item[] = [
   {
-    name: "[AP] Ontroytag",
-    iconLocation: [14, 9],
-    drops: false,
-    race: "AP",
-    requirements: {
-      STR: 10,
-      DEX: 10,
-      WIS: 20,
-    },
-    damage: {
-      directElement: "NORMAL",
-      directAmount: 12,
-      reloadDurationSeconds: 0.5,
-    },
-    fromVendor: "Multiple",
-  },
-  {
     name: "Peroxi Rebuilder Heal",
     tags: ["POTION", "ALCH"],
     iconLocation: [3, 1],
@@ -228,6 +213,8 @@ const items: Item[] = [
 ];
 
 items.push(...apArmor);
+items.push(...apGuns);
+items.push(...apMelee);
 
 items.forEach((item) => {
   if (!item.iconLocation) {
