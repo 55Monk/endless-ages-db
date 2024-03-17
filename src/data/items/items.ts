@@ -87,6 +87,7 @@ export type Item = {
     splashElement?: DamageType;
     splashAmount?: number;
     reloadDurationSeconds: number;
+    dps?: number;
   };
   flightDurationSeconds?: number;
   // How to get, eventually remove and generate from mobs, npcs, and quests
@@ -233,6 +234,10 @@ items.forEach((item) => {
     if (item.tags.includes("QI")) {
       item.iconLocation = [0, 1];
     }
+  }
+
+  if (item.damage) {
+    item.damage.dps = getItemDps(item);
   }
 });
 
