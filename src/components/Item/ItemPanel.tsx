@@ -1,13 +1,30 @@
 import { Tab } from "@headlessui/react";
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import get from "lodash-es/get";
+import intersection from "lodash-es/intersection";
 import { useState } from "react";
-import getItems, { Race, races } from "../../data/items/items";
-import FiltersPanel from "../FiltersPanel";
+import getItems, { Race, Tag, races } from "../../data/items/items";
 import NoMatchCard from "../NoMatchCard";
+import AdditionalFiltersItemPanel from "./AdditionalFiltersItemPanel.tsx";
 import ItemCard from "./ItemCard";
 import ItemRaceFilterPanel, { Filters } from "./ItemRaceFilterPanel";
 import ItemSortPanel, { Sort } from "./ItemSortPanel.tsx";
+
+const allPrimaryTags: Tag[] = [
+  "ARMOR",
+  "ACCESSORY",
+  "PILOT",
+  "MAGIC",
+  "GUN",
+  "MELEE",
+  "SS",
+  "POTION",
+  "ALCH",
+  "ENG",
+  "SMITH",
+  "QI",
+  "JUNK",
+];
 
 const items = getItems();
 
@@ -20,6 +37,8 @@ export default function ItemPanel() {
   const [racesFilter, setRacesFilter] = useState<Filters<Race>>(
     initialRacesFilter as Filters<Race>,
   );
+  const [additionalFilters, setAdditionalFilters] =
+    useState<Tag[]>(allPrimaryTags);
 
   let filteredItems = [...items];
   // filter by search
@@ -36,6 +55,10 @@ export default function ItemPanel() {
     (item) =>
       (!item.race && toKeepRaces.includes("Other")) ||
       toKeepRaces.includes(item.race || ""),
+  );
+
+  filteredItems = filteredItems.filter(
+    (item) => intersection(item.tags, additionalFilters).length > 0,
   );
 
   const [sort, setSort] = useState<Sort>({
@@ -100,9 +123,10 @@ export default function ItemPanel() {
           racesFilter={racesFilter}
           setRacesFilter={setRacesFilter}
         />
-        <FiltersPanel
-          name="Additional Filters"
-          filters={["Armor", "Gun", "Sword", "Quest Item"]}
+        <AdditionalFiltersItemPanel
+          additionalFilters={additionalFilters}
+          setAdditionalFilters={setAdditionalFilters}
+          allPrimaryTags={allPrimaryTags}
         />
         <ItemSortPanel sort={sort} setSort={setSort} />
       </div>
