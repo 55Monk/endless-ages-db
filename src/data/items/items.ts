@@ -1,3 +1,4 @@
+import apAccessories from "./ap/accessories.ts";
 import apArmor from "./ap/armor";
 import apGuns from "./ap/guns.ts";
 import apMelee from "./ap/melee.ts";
@@ -213,6 +214,7 @@ const items: Item[] = [
 ];
 
 items.push(...apArmor);
+items.push(...apAccessories);
 items.push(...apGuns);
 items.push(...apMelee);
 
