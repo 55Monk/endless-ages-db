@@ -1,6 +1,7 @@
 import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/20/solid";
-import { Dispatch, SetStateAction, useState } from "react";
+import intersection from "lodash-es/intersection";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { Tag } from "../../data/items/items.ts";
 
 type TagDisplay = {
@@ -83,7 +84,26 @@ type Props = {
 export default function AdditionalFiltersItemPanel(props: Props) {
   const { additionalFilters, setAdditionalFilters, allPrimaryTags } = props;
 
-  const [allChecked, setAllChecked] = useState(true);
+  const [allChecked, setAllChecked] = useState("checked");
+  const allCheckedRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (allCheckedRef !== null && allCheckedRef.current !== null) {
+      if (additionalFilters.length === 0) {
+        setAllChecked("unchecked");
+        allCheckedRef.current.indeterminate = false;
+      } else if (
+        intersection(additionalFilters, allPrimaryTags).length ===
+        allPrimaryTags.length
+      ) {
+        setAllChecked("checked");
+        allCheckedRef.current.indeterminate = false;
+      } else {
+        setAllChecked("indeterminate");
+        allCheckedRef.current.indeterminate = true;
+      }
+    }
+  }, [additionalFilters, allPrimaryTags, setAllChecked]);
 
   return (
     <div className="overflow-hidden rounded border border-neutral-300">
@@ -96,21 +116,22 @@ export default function AdditionalFiltersItemPanel(props: Props) {
                 <input
                   type="checkbox"
                   name="all"
-                  checked={allChecked}
+                  checked={allChecked === "checked"}
+                  ref={allCheckedRef}
                   onClick={(e) => {
                     e.stopPropagation();
                   }}
                   onChange={(e) => {
                     if (e.target.checked) {
-                      setAllChecked(true);
+                      setAllChecked("checked");
                       setAdditionalFilters(allPrimaryTags);
                     } else {
-                      setAllChecked(false);
+                      setAllChecked("unchecked");
                       setAdditionalFilters([]);
                     }
                   }}
                 />
-                <label htmlFor="all">&nbsp;All/None</label>
+                <label htmlFor="all">&nbsp;All</label>
               </span>
               <ChevronUpIcon
                 className={`${
