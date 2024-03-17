@@ -1,11 +1,13 @@
 import { Tab } from "@headlessui/react";
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/20/solid";
+import get from "lodash-es/get";
 import { useState } from "react";
 import getItems, { Race, races } from "../../data/items/items";
 import FiltersPanel from "../FiltersPanel";
 import NoMatchCard from "../NoMatchCard";
 import ItemCard from "./ItemCard";
 import ItemRaceFilterPanel, { Filters } from "./ItemRaceFilterPanel";
+import ItemSortPanel, { Sort } from "./ItemSortPanel.tsx";
 
 const items = getItems();
 
@@ -35,6 +37,40 @@ export default function ItemPanel() {
       (!item.race && toKeepRaces.includes("Other")) ||
       toKeepRaces.includes(item.race || ""),
   );
+
+  const [sort, setSort] = useState<Sort>({
+    name: "Level",
+    field: "level",
+    direction: "asc",
+  });
+
+  // sort
+  if (sort.direction !== "none") {
+    filteredItems.sort((item1, item2) => {
+      const v1 = get(item1, sort.field);
+      const v2 = get(item2, sort.field);
+
+      // equal
+      if (v1 === v2) {
+        return 0;
+      }
+
+      // nulls last
+      if (v1 === undefined) {
+        return 1;
+      }
+      if (v2 === undefined) {
+        return -1;
+      }
+
+      // sort normally
+      let comp = v1 < v2 ? -1 : 1;
+      if (sort.direction === "desc") {
+        comp *= -1;
+      }
+      return comp;
+    });
+  }
 
   return (
     <Tab.Panel className="flex flex-grow flex-col">
@@ -68,6 +104,7 @@ export default function ItemPanel() {
           name="Additional Filters"
           filters={["Armor", "Gun", "Sword", "Quest Item"]}
         />
+        <ItemSortPanel sort={sort} setSort={setSort} />
       </div>
       <hr />
       <div className="flex flex-grow basis-0 flex-col gap-2 overflow-y-scroll bg-neutral-100 p-2">
