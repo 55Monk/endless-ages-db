@@ -6,7 +6,7 @@ import {
   CheckIcon,
   ChevronUpDownIcon,
 } from "@heroicons/react/20/solid";
-import { Dispatch, Fragment, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, Fragment, SetStateAction, useState } from "react";
 
 type Option = {
   name: string;
@@ -54,12 +54,13 @@ export default function ItemSortPanel(props: Props) {
 
   const [selected, setSelected] = useState(options[0]);
 
-  useEffect(() => {
+  function setSelectedAndUpdateSort(option: Option) {
+    setSelected(option);
     const newSort = { ...sort };
     newSort.name = selected.name;
     newSort.field = selected.field;
     setSort(newSort);
-  }, [selected, setSort, sort]);
+  }
 
   function changeSortDirection() {
     const newSort = { ...sort };
@@ -78,7 +79,7 @@ export default function ItemSortPanel(props: Props) {
     <div className="flex items-center gap-2 rounded border border-neutral-300 px-2 py-1">
       <span>Sort By</span>
       <span className="flex-grow">
-        <Listbox value={selected} onChange={setSelected}>
+        <Listbox value={selected} onChange={setSelectedAndUpdateSort}>
           <Listbox.Button className="relative w-full rounded border border-neutral-300 pl-1 pr-10 text-left ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-700 hover:bg-neutral-100 focus:outline-none focus:ring-2">
             <span className="truncate">{selected.name}</span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center">
