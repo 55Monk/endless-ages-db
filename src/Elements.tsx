@@ -1,12 +1,12 @@
 import { HeartIcon } from "@heroicons/react/20/solid";
-import air from "./elements/air.webp";
-import death from "./elements/death.webp";
-import earth from "./elements/earth.webp";
-import fire from "./elements/fire.webp";
-import normal from "./elements/normal.webp";
-import relic from "./elements/relic.webp";
-import rune from "./elements/rune.webp";
-import water from "./elements/water.webp";
+import air from "./assets/elements/air.webp";
+import death from "./assets/elements/death.webp";
+import earth from "./assets/elements/earth.webp";
+import fire from "./assets/elements/fire.webp";
+import normal from "./assets/elements/normal.webp";
+import relic from "./assets/elements/relic.webp";
+import rune from "./assets/elements/rune.webp";
+import water from "./assets/elements/water.webp";
 
 const srcMap: Record<string, string> = {
   normal: normal,

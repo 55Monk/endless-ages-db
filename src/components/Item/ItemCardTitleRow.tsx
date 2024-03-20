@@ -4,7 +4,6 @@ import {
   TagIcon,
 } from "@heroicons/react/20/solid";
 import { Item, getItemSalePrice } from "../../data/items/items";
-import icons from "../icons.webp";
 
 type Props = {
   item: Item;
@@ -19,13 +18,13 @@ export function ItemCardTitleRow(props: Props) {
         <div
           className="h-8 w-8"
           style={{
-            background: `url(${icons}) no-repeat`,
+            background: `url(${import.meta.env.BASE_URL}/assets/icons.webp) no-repeat`,
           }}
         />
         <div
           className="absolute h-8 w-8"
           style={{
-            background: `url(${icons}) no-repeat`,
+            background: `url(${import.meta.env.BASE_URL}/assets/icons.webp) no-repeat`,
             backgroundPosition: `-${(item.iconLocation?.[0] ?? 0) * 32}px -${
               (item.iconLocation?.[1] ?? 0) * 32
             }px`,

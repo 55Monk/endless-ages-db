@@ -3,6 +3,7 @@ import { Fragment } from "react";
 import { MapLocation } from "../data/shared";
 import useContentStore from "../hooks/UseContentStore";
 import ItemPanel from "./Item/ItemPanel";
+import PlotMap from "./Map/PlotMap.tsx";
 import MonsterPanel from "./Monster/MonsterPanel";
 import NpcPanel from "./Npc/NpcPanel";
 import QuestPanel from "./Quest/QuestPanel";
@@ -46,7 +47,7 @@ export default function WebsiteContent() {
           </Tab.Panels>
         </Tab.Group>
       </div>
-      {/*<PlotMap />*/}
+      <PlotMap />
     </div>
   );
 }
