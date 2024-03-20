@@ -28,47 +28,47 @@ const OrbIcon = L.Icon.extend({
 const icons: Record<string, Icon> = {
   // @ts-expect-error idk
   complete: new OrbIcon({
-    iconUrl: `${import.meta.env.BASE_URL}/assets/icons/complete-marker-icon.webp`,
+    iconUrl: `${import.meta.env.BASE_URL}/assets/maps/icons/complete-marker-icon.webp`,
   }),
   // @ts-expect-error idk
   orb: new OrbIcon({
-    iconUrl: `${import.meta.env.BASE_URL}/assets/icons/orb-marker-icon.webp`,
+    iconUrl: `${import.meta.env.BASE_URL}/assets/maps/icons/orb-marker-icon.webp`,
   }),
   // @ts-expect-error idk
   ap: new OrbIcon({
-    iconUrl: `${import.meta.env.BASE_URL}/assets/icons/ap-marker-icon.webp`,
+    iconUrl: `${import.meta.env.BASE_URL}/assets/maps/icons/ap-marker-icon.webp`,
   }),
   // @ts-expect-error idk
   bl: new OrbIcon({
-    iconUrl: `${import.meta.env.BASE_URL}/assets/icons/bl-marker-icon.webp`,
+    iconUrl: `${import.meta.env.BASE_URL}/assets/maps/icons/bl-marker-icon.webp`,
   }),
   // @ts-expect-error idk
   hf: new OrbIcon({
-    iconUrl: `${import.meta.env.BASE_URL}/assets/icons/hf-marker-icon.webp`,
+    iconUrl: `${import.meta.env.BASE_URL}/assets/maps/icons/hf-marker-icon.webp`,
   }),
   // @ts-expect-error idk
   hm: new OrbIcon({
-    iconUrl: `${import.meta.env.BASE_URL}/assets/icons/hm-marker-icon.webp`,
+    iconUrl: `${import.meta.env.BASE_URL}/assets/maps/icons/hm-marker-icon.webp`,
   }),
   // @ts-expect-error idk
   qi: new OrbIcon({
-    iconUrl: `${import.meta.env.BASE_URL}/assets/icons/qi-marker-icon.webp`,
+    iconUrl: `${import.meta.env.BASE_URL}/assets/maps/icons/qi-marker-icon.webp`,
   }),
   // @ts-expect-error idk
   egg: new OrbIcon({
-    iconUrl: `${import.meta.env.BASE_URL}/assets/icons/egg-marker-icon.webp`,
+    iconUrl: `${import.meta.env.BASE_URL}/assets/maps/icons/egg-marker-icon.webp`,
   }),
   // @ts-expect-error idk
   plant: new OrbIcon({
-    iconUrl: `${import.meta.env.BASE_URL}/assets/icons/plant-marker-icon.webp`,
+    iconUrl: `${import.meta.env.BASE_URL}/assets/maps/icons/plant-marker-icon.webp`,
   }),
   // @ts-expect-error idk
   mineral: new OrbIcon({
-    iconUrl: `${import.meta.env.BASE_URL}/assets/icons/mineral-marker-icon.webp`,
+    iconUrl: `${import.meta.env.BASE_URL}/assets/maps/icons/mineral-marker-icon.webp`,
   }),
   // @ts-expect-error idk
   chest: new OrbIcon({
-    iconUrl: `${import.meta.env.BASE_URL}/assets/icons/chest-marker-icon.webp`,
+    iconUrl: `${import.meta.env.BASE_URL}/assets/maps/icons/chest-marker-icon.webp`,
   }),
 };
 
