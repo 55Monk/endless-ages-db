@@ -2,13 +2,16 @@ import { Tab } from "@headlessui/react";
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import get from "lodash-es/get";
 import intersection from "lodash-es/intersection";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import getItems, { Race, Tag, races } from "../../data/items/items";
 import NoMatchCard from "../NoMatchCard";
 import AdditionalFiltersItemPanel from "./AdditionalFiltersItemPanel.tsx";
 import ItemCard from "./ItemCard";
 import ItemRaceFilterPanel, { Filters } from "./ItemRaceFilterPanel";
 import ItemSortPanel, { Sort } from "./ItemSortPanel.tsx";
+
+const initialRacesFilter: Partial<Filters<Race>> = {};
+races.forEach((race) => (initialRacesFilter[race] = true));
 
 const allPrimaryTags: Tag[] = [
   "ARMOR",
@@ -31,69 +34,69 @@ const items = getItems();
 export default function ItemPanel() {
   const [searchRef, setSearchRef] = useState<HTMLInputElement | null>(null);
   const [searchValue, setSearchValue] = useState<string>("");
-
-  const initialRacesFilter: Partial<Filters<Race>> = {};
-  races.forEach((race) => (initialRacesFilter[race] = true));
   const [racesFilter, setRacesFilter] = useState<Filters<Race>>(
     initialRacesFilter as Filters<Race>,
   );
   const [additionalFilters, setAdditionalFilters] =
     useState<Tag[]>(allPrimaryTags);
-
-  let filteredItems = [...items];
-  // filter by search
-  if (searchValue.length > 0) {
-    filteredItems = items.filter((item) =>
-      item.name.toLowerCase().includes(searchValue.toLowerCase()),
-    );
-  }
-  // filter by race
-  const toKeepRaces = Object.entries(racesFilter)
-    .filter(([, keep]) => keep)
-    .map(([race]) => race);
-  filteredItems = filteredItems.filter(
-    (item) =>
-      (!item.race && toKeepRaces.includes("Other")) ||
-      toKeepRaces.includes(item.race || ""),
-  );
-
-  filteredItems = filteredItems.filter(
-    (item) => intersection(item.tags, additionalFilters).length > 0,
-  );
-
   const [sort, setSort] = useState<Sort>({
     name: "Level",
     field: "level",
     direction: "asc",
   });
 
-  // sort
-  if (sort.direction !== "none") {
-    filteredItems.sort((item1, item2) => {
-      const v1 = get(item1, sort.field);
-      const v2 = get(item2, sort.field);
+  const filteredItems = useMemo(() => {
+    const toKeepRaces = Object.entries(racesFilter)
+      .filter(([, keep]) => keep)
+      .map(([race]) => race);
 
-      // equal
-      if (v1 === v2) {
-        return 0;
+    // Filter items
+    const filteredItems = items.filter((item) => {
+      const keepRace =
+        (!item.race && toKeepRaces.includes("Other")) ||
+        toKeepRaces.includes(item.race || "");
+      if (!keepRace) {
+        return false;
       }
-
-      // nulls last
-      if (v1 === undefined) {
-        return 1;
+      const keepSearch = item.name
+        .toLowerCase()
+        .includes(searchValue.toLowerCase());
+      if (!keepSearch) {
+        return false;
       }
-      if (v2 === undefined) {
-        return -1;
-      }
-
-      // sort normally
-      let comp = v1 < v2 ? -1 : 1;
-      if (sort.direction === "desc") {
-        comp *= -1;
-      }
-      return comp;
+      return intersection(item.tags, additionalFilters).length > 0;
     });
-  }
+
+    // sort
+    if (sort.direction !== "none") {
+      filteredItems.sort((item1, item2) => {
+        const v1 = get(item1, sort.field);
+        const v2 = get(item2, sort.field);
+
+        // equal
+        if (v1 === v2) {
+          return 0;
+        }
+
+        // nulls last
+        if (v1 === undefined) {
+          return 1;
+        }
+        if (v2 === undefined) {
+          return -1;
+        }
+
+        // sort normally
+        let comp = v1 < v2 ? -1 : 1;
+        if (sort.direction === "desc") {
+          comp *= -1;
+        }
+        return comp;
+      });
+    }
+    console.log("ReLogic");
+    return filteredItems;
+  }, [additionalFilters, racesFilter, searchValue, sort]);
 
   return (
     <Tab.Panel className="flex flex-grow flex-col">
