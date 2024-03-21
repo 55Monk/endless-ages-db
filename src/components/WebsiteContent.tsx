@@ -21,7 +21,7 @@ export default function WebsiteContent() {
 
   return (
     <div className="flex flex-grow">
-      <div className="flex w-[400px] flex-col border-r border-neutral-300">
+      <div className="flex w-[500px] flex-col border-r border-neutral-300">
         <Tab.Group selectedIndex={selectedTab} onChange={selectTab}>
           <Tab.List className="flex justify-between p-2">
             {tabs.map((tab) => (
@@ -44,6 +44,7 @@ export default function WebsiteContent() {
             <MonsterPanel />
             <NpcPanel />
             <QuestPanel />
+            <Tab.Panel></Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
       </div>

@@ -1,1 +1,1 @@
-export const tabs: string[] = ["Items", "Monsters", "NPCs", "Quests"];
+export const tabs: string[] = ["Items", "Monsters", "NPCs", "Quests", "Misc"];
