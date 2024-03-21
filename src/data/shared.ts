@@ -2,6 +2,23 @@ import { LatLngExpression } from "leaflet";
 
 export type DataType = "item" | "mob" | "npc" | "quest";
 
+const playerRaces = ["AP", "BL", "HF", "HM"] as const;
+export const races = [...playerRaces, "SS", "Other"] as const;
+export type Race = (typeof races)[number];
+
+export const elements = [
+  "NORMAL",
+  "FIRE",
+  "WATER",
+  "RUNE",
+  "RELIC",
+  "EARTH",
+  "AIR",
+  "DEATH",
+] as const;
+export type Element = (typeof elements)[number];
+export type DamageType = Element | "HEAL";
+
 export function getDataTypeColor(type: DataType) {
   switch (type) {
     case "item":

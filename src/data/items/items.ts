@@ -1,11 +1,8 @@
+import { DamageType, Element, Race } from "../shared.ts";
 import apAccessories from "./ap/accessories.ts";
 import apArmor from "./ap/armor";
 import apGuns from "./ap/guns.ts";
 import apMelee from "./ap/melee.ts";
-
-const playerRaces = ["AP", "BL", "HF", "HM"] as const;
-export const races = [...playerRaces, "SS", "Other"] as const;
-export type Race = (typeof races)[number];
 
 export const tags = [
   "ARMOR",
@@ -46,6 +43,8 @@ export const tags = [
 export type Tag = (typeof tags)[number];
 
 type Stat = "STR" | "DEX" | "WIS";
+type Bonus = Stat | "HEALTH";
+
 type CraftSkill = "ALCH" | "ENG" | "SMITH";
 type Skill =
   | "WT"
@@ -56,20 +55,8 @@ type Skill =
   | "MAGIC"
   | "FAMILIARS"
   | CraftSkill;
+
 type Requirement = Stat | Skill;
-export const elements = [
-  "NORMAL",
-  "FIRE",
-  "WATER",
-  "RUNE",
-  "RELIC",
-  "EARTH",
-  "AIR",
-  "DEATH",
-] as const;
-export type Element = (typeof elements)[number];
-type DamageType = Element | "HEAL";
-type Bonus = Stat | "HEALTH";
 
 export type Item = {
   name: string;
@@ -218,6 +205,16 @@ items.push(...apAccessories);
 items.push(...apGuns);
 items.push(...apMelee);
 
+function getItemDps(item: Item) {
+  if (item.damage) {
+    const totalDamage =
+      (item.damage.directAmount ?? 0) + (item.damage.splashAmount ?? 0);
+    const dps = totalDamage / item.damage.reloadDurationSeconds;
+    return Math.floor(dps);
+  }
+  return undefined;
+}
+
 items.forEach((item) => {
   if (!item.iconLocation) {
     if (item.tags.includes("QI")) {
@@ -232,16 +229,6 @@ items.forEach((item) => {
 
 export function getItemSalePrice(item: Item) {
   return item.marketCost ? Math.floor(item.marketCost / 4) : 0;
-}
-
-export function getItemDps(item: Item) {
-  if (item.damage) {
-    const totalDamage =
-      (item.damage.directAmount ?? 0) + (item.damage.splashAmount ?? 0);
-    const dps = totalDamage / item.damage.reloadDurationSeconds;
-    return Math.floor(dps);
-  }
-  return undefined;
 }
 
 const itemMap: Partial<Record<string, Item>> = {};
