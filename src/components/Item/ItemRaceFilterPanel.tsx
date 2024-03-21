@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { Race, races } from "../../data/items/items";
+import { Race, races } from "../../data/shared";
 
 export type Filters<T extends string> = {
   [x in T]: boolean;
