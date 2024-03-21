@@ -1,56 +1,30 @@
 import { Listbox, Transition } from "@headlessui/react";
 import {
+  ArrowLongDownIcon,
+  ArrowLongUpIcon,
   Bars3Icon,
-  BarsArrowDownIcon,
-  BarsArrowUpIcon,
   CheckIcon,
   ChevronUpDownIcon,
 } from "@heroicons/react/20/solid";
 import { Dispatch, Fragment, SetStateAction, useState } from "react";
 
-type Option = {
+export type Option = {
   name: string;
   field: string;
 };
-
-const options: Option[] = [
-  {
-    name: "Level",
-    field: "level",
-  },
-  {
-    name: "Name",
-    field: "name",
-  },
-  {
-    name: "DPS",
-    field: "damage.dps",
-  },
-  {
-    name: "Strength Requirement",
-    field: "requirements.STR",
-  },
-  {
-    name: "Dexterity Requirement",
-    field: "requirements.DEX",
-  },
-  {
-    name: "Wisdom Requirement",
-    field: "requirements.WIS",
-  },
-];
 
 type SortDirection = "asc" | "desc" | "none";
 
 export type Sort = Option & { direction: SortDirection };
 
 type Props = {
+  options: Option[];
   sort: Sort;
   setSort: Dispatch<SetStateAction<Sort>>;
 };
 
-export default function ItemSortPanel(props: Props) {
-  const { sort, setSort } = props;
+export default function SortPanel(props: Props) {
+  const { options, sort, setSort } = props;
 
   const [selected, setSelected] = useState(options[0]);
 
@@ -92,7 +66,7 @@ export default function ItemSortPanel(props: Props) {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Listbox.Options className="absolute overflow-auto rounded border border-neutral-300 bg-white py-1">
+            <Listbox.Options className="absolute z-[999] overflow-auto rounded border border-neutral-300 bg-white py-1">
               {options.map((option, index) => (
                 <Listbox.Option
                   key={index}
@@ -131,10 +105,10 @@ export default function ItemSortPanel(props: Props) {
       >
         {sort.direction === "none" && <Bars3Icon className="m-1 h-5 w-5" />}
         {sort.direction === "asc" && (
-          <BarsArrowUpIcon className="m-1 h-5 w-5" />
+          <ArrowLongUpIcon className="m-1 h-5 w-5" />
         )}
         {sort.direction === "desc" && (
-          <BarsArrowDownIcon className="m-1 h-5 w-5" />
+          <ArrowLongDownIcon className="m-1 h-5 w-5" />
         )}
       </button>
     </div>

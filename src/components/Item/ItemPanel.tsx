@@ -5,10 +5,10 @@ import intersection from "lodash-es/intersection";
 import { useMemo, useState } from "react";
 import getItems, { Race, Tag, races } from "../../data/items/items";
 import NoMatchCard from "../NoMatchCard";
+import SortPanel, { Option, Sort } from "../SortPanel.tsx";
 import AdditionalFiltersItemPanel from "./AdditionalFiltersItemPanel.tsx";
 import ItemCard from "./ItemCard";
 import ItemRaceFilterPanel, { Filters } from "./ItemRaceFilterPanel";
-import ItemSortPanel, { Sort } from "./ItemSortPanel.tsx";
 
 const initialRacesFilter: Partial<Filters<Race>> = {};
 races.forEach((race) => (initialRacesFilter[race] = true));
@@ -27,6 +27,33 @@ const allPrimaryTags: Tag[] = [
   "SMITH",
   "QI",
   "JUNK",
+];
+
+const sortOptions: Option[] = [
+  {
+    name: "Level",
+    field: "level",
+  },
+  {
+    name: "Name",
+    field: "name",
+  },
+  {
+    name: "DPS",
+    field: "damage.dps",
+  },
+  {
+    name: "Strength Requirement",
+    field: "requirements.STR",
+  },
+  {
+    name: "Dexterity Requirement",
+    field: "requirements.DEX",
+  },
+  {
+    name: "Wisdom Requirement",
+    field: "requirements.WIS",
+  },
 ];
 
 const items = getItems();
@@ -130,7 +157,7 @@ export default function ItemPanel() {
           setAdditionalFilters={setAdditionalFilters}
           allPrimaryTags={allPrimaryTags}
         />
-        <ItemSortPanel sort={sort} setSort={setSort} />
+        <SortPanel options={sortOptions} sort={sort} setSort={setSort} />
       </div>
       <hr />
       <div className="flex flex-grow basis-0 flex-col gap-2 overflow-y-scroll bg-neutral-100 p-2">
