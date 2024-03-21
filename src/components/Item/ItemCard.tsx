@@ -13,8 +13,8 @@ import {
 } from "@heroicons/react/24/outline";
 import { getElementIcon } from "../../Elements";
 import { Item, elements } from "../../data/items/items";
+import { Attribute, AttributeRow } from "../CardAttribute";
 import TextRef from "../Reference/TextRef";
-import { Attribute, AttributeRow } from "./ItemCardAttribute";
 import { ItemCardTitleRow } from "./ItemCardTitleRow";
 
 type Props = { item: Item };
