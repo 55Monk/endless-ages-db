@@ -117,7 +117,7 @@ export default function PlotMap() {
     <div className="relative flex flex-grow flex-col">
       <MapSelectionHeader selectedMap={selectedMap} selectMap={selectMap} />
       <MapContainer
-        className="flex-grow"
+        className="flex-grow !bg-sky-200"
         center={[0, 0]}
         zoom={-6}
         minZoom={-6}
