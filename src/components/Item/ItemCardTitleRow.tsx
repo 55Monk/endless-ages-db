@@ -51,7 +51,9 @@ export function ItemCardTitleRow(props: Props) {
             <LockClosedIcon className="group h-5 w-5" title="Nondrop" />
           )}
         </div>
-        {/*<div className="text-xs">&#xfeff;</div> 2nd line for subtext*/}
+        <div className="text-xs">
+          {item.level ? `Lv${item.level}` : ""}&#xfeff;
+        </div>
       </div>
     </div>
   );
