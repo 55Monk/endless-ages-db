@@ -20,13 +20,14 @@ export function AttributeRow(props: PropsWithChildren<AttributeRowProps>) {
 type AttributeProps = {
   qualifiers?: ReactNode;
   value: ReactNode;
+  faded?: boolean;
 };
 export function Attribute(props: AttributeProps) {
-  const { qualifiers, value } = props;
+  const { qualifiers, value, faded } = props;
   return (
     <span className="flex items-center gap-1 rounded border border-neutral-300 px-0.5">
       {qualifiers}
-      <strong>{value}</strong>
+      <strong className={faded ? "opacity-70" : ""}>{value}</strong>
     </span>
   );
 }

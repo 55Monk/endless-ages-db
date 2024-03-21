@@ -2,7 +2,7 @@ import {
   ArrowDownTrayIcon,
   LockClosedIcon,
   TagIcon,
-} from "@heroicons/react/20/solid";
+} from "@heroicons/react/24/outline";
 import { Item, getItemSalePrice } from "../../data/items/items";
 
 type Props = {

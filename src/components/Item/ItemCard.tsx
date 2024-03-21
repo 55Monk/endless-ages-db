@@ -1,15 +1,16 @@
-import { ClockIcon, SparklesIcon } from "@heroicons/react/16/solid";
 import {
   AdjustmentsHorizontalIcon,
   BoltIcon,
   BugAntIcon,
   ChartBarIcon,
+  ClockIcon,
   RocketLaunchIcon,
   ShieldExclamationIcon,
   ShoppingCartIcon,
+  SparklesIcon,
   TrophyIcon,
   WrenchScrewdriverIcon,
-} from "@heroicons/react/20/solid";
+} from "@heroicons/react/24/outline";
 import { getElementIcon } from "../../Elements";
 import { Item, elements } from "../../data/items/items";
 import TextRef from "../Reference/TextRef";
@@ -33,13 +34,18 @@ export default function ItemCard(props: Props) {
       )}
       {item.defenses && (
         <AttributeRow name="Resistances Given" icon={<ShieldExclamationIcon />}>
-          {elements.map((ele, index) => (
-            <Attribute
-              key={index}
-              qualifiers={getElementIcon(ele)}
-              value={item.defenses?.[ele] || 0}
-            />
-          ))}
+          {elements.map((ele, index) => {
+            const v = item.defenses?.[ele] || 0;
+            const vString = String(v).padStart(2, "0");
+            return (
+              <Attribute
+                key={index}
+                qualifiers={getElementIcon(ele)}
+                value={vString}
+                faded={v === 0}
+              />
+            );
+          })}
         </AttributeRow>
       )}
       {item.bonuses && (
