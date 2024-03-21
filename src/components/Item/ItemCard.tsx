@@ -12,7 +12,8 @@ import {
   WrenchScrewdriverIcon,
 } from "@heroicons/react/24/outline";
 import { getElementIcon } from "../../Elements";
-import { Item, elements } from "../../data/items/items";
+import { Item } from "../../data/items/items";
+import { elements } from "../../data/shared";
 import { Attribute, AttributeRow } from "../CardAttribute";
 import TextRef from "../Reference/TextRef";
 import { ItemCardTitleRow } from "./ItemCardTitleRow";
