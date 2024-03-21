@@ -57,8 +57,8 @@ export default function ItemSortPanel(props: Props) {
   function setSelectedAndUpdateSort(option: Option) {
     setSelected(option);
     const newSort = { ...sort };
-    newSort.name = selected.name;
-    newSort.field = selected.field;
+    newSort.name = option.name;
+    newSort.field = option.field;
     setSort(newSort);
   }
 

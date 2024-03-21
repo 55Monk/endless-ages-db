@@ -94,7 +94,6 @@ export default function ItemPanel() {
         return comp;
       });
     }
-    console.log("ReLogic");
     return filteredItems;
   }, [additionalFilters, racesFilter, searchValue, sort]);
 
