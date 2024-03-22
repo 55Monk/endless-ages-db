@@ -147,21 +147,23 @@ export default function ItemPanel() {
         <SortBar options={sortOptions} sort={sort} setSort={setSort} />
       </div>
       <hr />
-      <div className="flex flex-grow basis-0 flex-col gap-2 overflow-y-scroll bg-neutral-100 p-2">
-        {filteredItems.length === 0 && <NoMatchCard type="Item" />}
-        {(selected ? [selected] : filteredItems).map((item) => (
-          <Card
-            key={item.name}
-            titleContent={<ItemCardTitle item={item} />}
-            previewContent={<ItemCardPreviewContent item={item} />}
-            expand={{
-              fullContent: <ItemCardPreviewContent item={item} />,
-              full: !!selected,
-              select: () => setSelected(item),
-              close: () => setSelected(undefined),
-            }}
-          />
-        ))}
+      <div className="relative flex flex-grow flex-col">
+        <div className="flex flex-grow basis-0 flex-col gap-2 overflow-y-scroll bg-neutral-100 p-2">
+          {filteredItems.length === 0 && <NoMatchCard type="Item" />}
+          {filteredItems.map((item) => (
+            <Card
+              key={item.name}
+              titleContent={<ItemCardTitle item={item} />}
+              previewContent={<ItemCardPreviewContent item={item} />}
+              expand={{
+                fullContent: <ItemCardPreviewContent item={item} />,
+                full: item === selected,
+                select: () => setSelected(item),
+                close: () => setSelected(undefined),
+              }}
+            />
+          ))}
+        </div>
       </div>
     </Tab.Panel>
   );

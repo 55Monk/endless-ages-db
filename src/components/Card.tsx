@@ -32,7 +32,7 @@ export default function Card(props: Props) {
     <div
       ref={ref}
       onClick={handleOnClick}
-      className={`gap-1 rounded border border-neutral-300 bg-white p-1 ${full ? "flex-grow" : expand ? "cursor-pointer hover:bg-neutral-50" : ""}`}
+      className={`border bg-white ${full ? "absolute left-0 top-0 z-[998] h-full w-full border-white p-3" : expand ? "cursor-pointer rounded border-neutral-300 p-1 hover:bg-neutral-50" : ""}`}
     >
       {inView ? (
         <div className={defaultSize === "SMALL" ? "min-h-10" : "min-h-20"}>

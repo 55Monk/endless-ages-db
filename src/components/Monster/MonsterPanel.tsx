@@ -78,21 +78,23 @@ export default function MonsterPanel() {
         <SortBar options={sortOptions} sort={sort} setSort={setSort} />
       </div>
       <hr />
-      <div className="flex flex-grow basis-0 flex-col gap-2 overflow-y-scroll bg-neutral-100 p-2">
-        {filteredMonsters.length === 0 && <NoMatchCard type="Monster" />}
-        {(selected ? [selected] : filteredMonsters).map((monster) => (
-          <Card
-            key={monster.name}
-            titleContent={<MonsterCardTitle monster={monster} />}
-            previewContent={<MonsterCardPreviewContent monster={monster} />}
-            expand={{
-              fullContent: <MonsterCardPreviewContent monster={monster} />,
-              full: !!selected,
-              select: () => setSelected(monster),
-              close: () => setSelected(undefined),
-            }}
-          />
-        ))}
+      <div className="relative flex flex-grow flex-col">
+        <div className="flex flex-grow basis-0 flex-col gap-2 overflow-y-scroll bg-neutral-100 p-2">
+          {filteredMonsters.length === 0 && <NoMatchCard type="Monster" />}
+          {(selected ? [selected] : filteredMonsters).map((monster) => (
+            <Card
+              key={monster.name}
+              titleContent={<MonsterCardTitle monster={monster} />}
+              previewContent={<MonsterCardPreviewContent monster={monster} />}
+              expand={{
+                fullContent: <MonsterCardPreviewContent monster={monster} />,
+                full: !!selected,
+                select: () => setSelected(monster),
+                close: () => setSelected(undefined),
+              }}
+            />
+          ))}
+        </div>
       </div>
     </Tab.Panel>
   );
