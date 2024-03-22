@@ -3,6 +3,7 @@ import apAccessories from "./ap/accessories.ts";
 import apArmor from "./ap/armor";
 import apGuns from "./ap/guns.ts";
 import apMelee from "./ap/melee.ts";
+import magics from "./magic.ts";
 
 export const tags = [
   "ARMOR",
@@ -58,6 +59,11 @@ type Skill =
 
 type Requirement = Stat | Skill;
 
+export type UseCost = {
+  name: string;
+  quantity: number;
+};
+
 export type Item = {
   name: string;
   tags: Tag[];
@@ -80,6 +86,7 @@ export type Item = {
     dps?: number;
   };
   flightDurationSeconds?: number;
+  useCost?: UseCost[];
   // How to get, eventually remove and generate from mobs, npcs, and quests
   rewardFrom?: string;
   fromVendor?: string;
@@ -204,6 +211,8 @@ items.push(...apArmor);
 items.push(...apAccessories);
 items.push(...apGuns);
 items.push(...apMelee);
+
+items.push(...magics);
 
 function getItemDps(item: Item) {
   if (item.damage) {
