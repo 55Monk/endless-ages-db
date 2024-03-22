@@ -27,6 +27,7 @@ export default function MiscPanel() {
               select: () => setSelected(misc),
               close: () => setSelected(undefined),
             }}
+            defaultSize="SMALL"
           />
         ))}
       </div>

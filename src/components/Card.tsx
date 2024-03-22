@@ -13,10 +13,11 @@ type Props = {
   titleContent: ReactNode;
   previewContent: ReactNode;
   expand?: Expand;
+  defaultSize?: "SMALL" | "MEDIUM";
 };
 
 export default function Card(props: Props) {
-  const { titleContent, previewContent, expand } = props;
+  const { titleContent, previewContent, expand, defaultSize } = props;
   const { fullContent, full, select, close } = expand ?? {};
 
   const { ref, inView } = useInView({ threshold: 0 });
@@ -34,7 +35,7 @@ export default function Card(props: Props) {
       className={`gap-1 rounded border border-neutral-300 bg-white p-1 ${full ? "flex-grow" : expand ? "cursor-pointer hover:bg-neutral-50" : ""}`}
     >
       {inView ? (
-        <div>
+        <div className={defaultSize === "SMALL" ? "min-h-10" : "min-h-20"}>
           <div className="flex items-start justify-between gap-2">
             {titleContent}
             <button
@@ -47,7 +48,7 @@ export default function Card(props: Props) {
           {full ? fullContent : previewContent}
         </div>
       ) : (
-        <div className="h-24" />
+        <div className={defaultSize === "SMALL" ? "min-h-10" : "min-h-20"} />
       )}
     </div>
   );
