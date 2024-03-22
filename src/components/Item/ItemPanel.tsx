@@ -7,11 +7,11 @@ import { Race, races } from "../../data/shared";
 import Card from "../Card.tsx";
 import NoMatchCard from "../NoMatchCard";
 import Search from "../Search.tsx";
-import SortPanel, { Option, Sort } from "../SortPanel.tsx";
-import AdditionalFiltersItemPanel from "./AdditionalFiltersItemPanel.tsx";
+import SortBar, { Option, Sort } from "../SortBar.tsx";
 import ItemCardPreviewContent from "./ItemCardPreviewContent.tsx";
 import { ItemCardTitle } from "./ItemCardTitle.tsx";
-import ItemRaceFilterPanel, { Filters } from "./ItemRaceFilterPanel";
+import ItemRaceFilterBar, { Filters } from "./ItemRaceFilterBar.tsx";
+import ItemTagFilterBar from "./ItemTagFilterBar.tsx";
 
 const initialRacesFilter: Partial<Filters<Race>> = {};
 races.forEach((race) => (initialRacesFilter[race] = true));
@@ -70,8 +70,7 @@ export default function ItemPanel() {
   const [racesFilter, setRacesFilter] = useState<Filters<Race>>(
     initialRacesFilter as Filters<Race>,
   );
-  const [additionalFilters, setAdditionalFilters] =
-    useState<Tag[]>(allPrimaryTags);
+  const [tagsFilter, setTagsFilter] = useState<Tag[]>(allPrimaryTags);
   const [sort, setSort] = useState<Sort>({
     name: "Level",
     field: "level",
@@ -99,7 +98,7 @@ export default function ItemPanel() {
       if (!keepSearch) {
         return false;
       }
-      return intersection(item.tags, additionalFilters).length > 0;
+      return intersection(item.tags, tagsFilter).length > 0;
     });
 
     // sort
@@ -130,22 +129,22 @@ export default function ItemPanel() {
       });
     }
     return filteredItems;
-  }, [additionalFilters, racesFilter, searchValue, sort]);
+  }, [tagsFilter, racesFilter, searchValue, sort]);
 
   return (
     <Tab.Panel className="flex flex-grow flex-col">
       <div className="flex flex-col gap-1 px-2 pb-2">
         <Search searchValue={searchValue} setSearchValue={setSearchValue} />
-        <ItemRaceFilterPanel
+        <ItemRaceFilterBar
           racesFilter={racesFilter}
           setRacesFilter={setRacesFilter}
         />
-        <AdditionalFiltersItemPanel
-          additionalFilters={additionalFilters}
-          setAdditionalFilters={setAdditionalFilters}
+        <ItemTagFilterBar
+          additionalFilters={tagsFilter}
+          setAdditionalFilters={setTagsFilter}
           allPrimaryTags={allPrimaryTags}
         />
-        <SortPanel options={sortOptions} sort={sort} setSort={setSort} />
+        <SortBar options={sortOptions} sort={sort} setSort={setSort} />
       </div>
       <hr />
       <div className="flex flex-grow basis-0 flex-col gap-2 overflow-y-scroll bg-neutral-100 p-2">

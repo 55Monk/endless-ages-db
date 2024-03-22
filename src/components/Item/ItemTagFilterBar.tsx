@@ -81,7 +81,7 @@ type Props = {
   allPrimaryTags: Tag[];
 };
 
-export default function AdditionalFiltersItemPanel(props: Props) {
+export default function ItemTagFilterBar(props: Props) {
   const { additionalFilters, setAdditionalFilters, allPrimaryTags } = props;
 
   const [allChecked, setAllChecked] = useState("checked");

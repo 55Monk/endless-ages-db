@@ -23,7 +23,7 @@ type Props = {
   setSort: Dispatch<SetStateAction<Sort>>;
 };
 
-export default function SortPanel(props: Props) {
+export default function SortBar(props: Props) {
   const { options, sort, setSort } = props;
 
   const [selected, setSelected] = useState(options[0]);

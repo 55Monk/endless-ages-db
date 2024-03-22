@@ -5,7 +5,7 @@ import getMonsters, { Monster } from "../../data/monsters.ts";
 import Card from "../Card.tsx";
 import NoMatchCard from "../NoMatchCard";
 import Search from "../Search.tsx";
-import SortPanel, { Option, Sort } from "../SortPanel.tsx";
+import SortBar, { Option, Sort } from "../SortBar.tsx";
 import MonsterCardPreviewContent from "./MonsterCardPreviewContent.tsx";
 import { MonsterCardTitle } from "./MonsterCardTitle.tsx";
 
@@ -75,7 +75,7 @@ export default function MonsterPanel() {
     <Tab.Panel className="flex flex-grow flex-col">
       <div className="flex flex-col gap-1 px-2 pb-2">
         <Search searchValue={searchValue} setSearchValue={setSearchValue} />
-        <SortPanel options={sortOptions} sort={sort} setSort={setSort} />
+        <SortBar options={sortOptions} sort={sort} setSort={setSort} />
       </div>
       <hr />
       <div className="flex flex-grow basis-0 flex-col gap-2 overflow-y-scroll bg-neutral-100 p-2">

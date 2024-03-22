@@ -10,7 +10,7 @@ type Props = {
   setRacesFilter: Dispatch<SetStateAction<Filters<Race>>>;
 };
 
-export default function ItemRaceFilterPanel(props: Props) {
+export default function ItemRaceFilterBar(props: Props) {
   const { racesFilter, setRacesFilter } = props;
 
   return (
