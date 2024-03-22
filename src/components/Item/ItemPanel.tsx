@@ -40,6 +40,10 @@ const sortOptions: Option[] = [
     field: "name",
   },
   {
+    name: "Price",
+    field: "marketCost",
+  },
+  {
     name: "DPS",
     field: "damage.dps",
   },
