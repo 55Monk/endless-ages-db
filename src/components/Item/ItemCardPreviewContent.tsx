@@ -16,16 +16,14 @@ import { Item } from "../../data/items/items";
 import { elements } from "../../data/shared";
 import { Attribute, AttributeRow } from "../CardAttribute";
 import TextRef from "../Reference/TextRef";
-import { ItemCardTitleRow } from "./ItemCardTitleRow";
 
 type Props = { item: Item };
 
-export default function ItemCard(props: Props) {
+export default function ItemCardPreviewContent(props: Props) {
   const { item } = props;
 
   return (
-    <div className="flex flex-col gap-1 rounded border border-neutral-300 bg-white p-1">
-      <ItemCardTitleRow item={item} />
+    <div className="flex flex-col gap-1">
       {item.requirements && (
         <AttributeRow name="Use Requirements" icon={<ChartBarIcon />}>
           {Object.entries(item.requirements).map(([req, value], index) => (

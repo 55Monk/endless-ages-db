@@ -9,7 +9,7 @@ type Props = {
   item: Item;
 };
 
-export function ItemCardTitleRow(props: Props) {
+export function ItemCardTitle(props: Props) {
   const { item } = props;
 
   return (
@@ -32,16 +32,8 @@ export function ItemCardTitleRow(props: Props) {
         />
       </div>
       <div className="flex-grow">
-        <div className="flex items-center gap-4">
-          <strong className="flex-grow leading-none">{item.name}</strong>
-          {item.marketCost && (
-            <div className="mb-[-1px] flex items-center gap-1">
-              <TagIcon className="h-5 w-5" title="Sell Price" />
-              <span className="text-sm leading-none">
-                {getItemSalePrice(item)}
-              </span>
-            </div>
-          )}
+        <div className="flex items-center gap-2">
+          <strong className="leading-none">{item.name}</strong>
           {item.drops ? (
             <ArrowDownTrayIcon
               className="group h-5 w-5"
@@ -50,9 +42,17 @@ export function ItemCardTitleRow(props: Props) {
           ) : (
             <LockClosedIcon className="group h-5 w-5" title="Nondrop" />
           )}
+          {item.marketCost && (
+            <div className="mb-[-1px] flex items-center gap-1">
+              <TagIcon className="h-5 w-5" title="Sell Price" />
+              <span className="text-sm leading-none">
+                {getItemSalePrice(item)}
+              </span>
+            </div>
+          )}
         </div>
-        <div className="text-xs">
-          {item.level ? `Lv${item.level}` : ""}&#xfeff;
+        <div className="min-h-4 text-xs">
+          {item.level ? `Lv${item.level}` : ""}
         </div>
       </div>
     </div>

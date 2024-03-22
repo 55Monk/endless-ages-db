@@ -3,7 +3,7 @@ import { getItemMap } from "../../data/items/items";
 import getNpcMap from "../../data/npcs";
 import getQuestMap from "../../data/quests";
 import { DataType, getDataTypeColor } from "../../data/shared";
-import ItemCard from "../Item/ItemCard";
+import ItemCardPreviewContent from "../Item/ItemCardPreviewContent.tsx";
 import QuestTooltip from "../Quest/QuestTooltip";
 
 type Props = {
@@ -29,7 +29,7 @@ export default function TextRef(props: Props) {
     case "item": {
       const item = itemMap[name];
       if (item) {
-        panelContent = <ItemCard item={item} />;
+        panelContent = <ItemCardPreviewContent item={item} />;
       }
       break;
     }

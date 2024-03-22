@@ -3,12 +3,14 @@ import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import get from "lodash-es/get";
 import intersection from "lodash-es/intersection";
 import { useMemo, useState } from "react";
-import getItems, { Tag } from "../../data/items/items";
+import getItems, { Item, Tag } from "../../data/items/items";
 import { Race, races } from "../../data/shared";
+import Card from "../Card.tsx";
 import NoMatchCard from "../NoMatchCard";
 import SortPanel, { Option, Sort } from "../SortPanel.tsx";
 import AdditionalFiltersItemPanel from "./AdditionalFiltersItemPanel.tsx";
-import ItemCard from "./ItemCard";
+import ItemCardPreviewContent from "./ItemCardPreviewContent.tsx";
+import { ItemCardTitle } from "./ItemCardTitle.tsx";
 import ItemRaceFilterPanel, { Filters } from "./ItemRaceFilterPanel";
 
 const initialRacesFilter: Partial<Filters<Race>> = {};
@@ -76,6 +78,8 @@ export default function ItemPanel() {
     field: "level",
     direction: "asc",
   });
+
+  const [selected, setSelected] = useState<Item>();
 
   const filteredItems = useMemo(() => {
     const toKeepRaces = Object.entries(racesFilter)
@@ -167,8 +171,18 @@ export default function ItemPanel() {
       <hr />
       <div className="flex flex-grow basis-0 flex-col gap-2 overflow-y-scroll bg-neutral-100 p-2">
         {filteredItems.length === 0 && <NoMatchCard type="Item" />}
-        {filteredItems.map((item) => (
-          <ItemCard key={item.name} item={item} />
+        {(selected ? [selected] : filteredItems).map((item) => (
+          <Card
+            key={item.name}
+            titleContent={<ItemCardTitle item={item} />}
+            previewContent={<ItemCardPreviewContent item={item} />}
+            expand={{
+              fullContent: <ItemCardPreviewContent item={item} />,
+              full: !!selected,
+              select: () => setSelected(item),
+              close: () => setSelected(undefined),
+            }}
+          />
         ))}
       </div>
     </Tab.Panel>
