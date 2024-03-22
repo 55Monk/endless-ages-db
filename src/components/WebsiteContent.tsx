@@ -4,6 +4,7 @@ import { MapLocation } from "../data/shared";
 import useContentStore from "../hooks/UseContentStore";
 import ItemPanel from "./Item/ItemPanel";
 import PlotMap from "./Map/PlotMap.tsx";
+import MiscPanel from "./Misc/MiscPanel";
 import MonsterPanel from "./Monster/MonsterPanel";
 import NpcPanel from "./Npc/NpcPanel";
 import QuestPanel from "./Quest/QuestPanel";
@@ -44,7 +45,7 @@ export default function WebsiteContent() {
             <MonsterPanel />
             <NpcPanel />
             <QuestPanel />
-            <Tab.Panel></Tab.Panel>
+            <MiscPanel />
           </Tab.Panels>
         </Tab.Group>
       </div>
