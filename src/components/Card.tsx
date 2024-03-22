@@ -28,12 +28,13 @@ export default function Card(props: Props) {
   }
 
   return (
-    <div ref={ref}>
+    <div
+      ref={ref}
+      onClick={handleOnClick}
+      className={`gap-1 rounded border border-neutral-300 bg-white p-1 ${full ? "flex-grow" : expand ? "cursor-pointer hover:bg-neutral-50" : ""}`}
+    >
       {inView ? (
-        <div
-          onClick={handleOnClick}
-          className={`gap-1 rounded border border-neutral-300 bg-white p-1 ${full ? "flex-grow" : expand ? "cursor-pointer hover:bg-neutral-50" : ""}`}
-        >
+        <div>
           <div className="flex items-start justify-between gap-2">
             {titleContent}
             <button
