@@ -1,15 +1,15 @@
 import { Tab } from "@headlessui/react";
-import get from "lodash-es/get";
 import { useEffect, useMemo, useState } from "react";
 import { Monster, monsters } from "../../data/monsters.ts";
+import { sortData } from "../../data/shared.ts";
 import Card from "../Card.tsx";
 import NoMatchCard from "../NoMatchCard";
 import Search from "../Search.tsx";
-import SortBar, { Option, Sort } from "../SortBar.tsx";
+import SortBar, { Sort, SortOption } from "../SortBar.tsx";
 import MonsterCardPreviewContent from "./MonsterCardPreviewContent.tsx";
 import { MonsterCardTitle } from "./MonsterCardTitle.tsx";
 
-const sortOptions: Option[] = [
+const sortOptions: SortOption[] = [
   {
     name: "Level",
     field: "level",
@@ -48,30 +48,7 @@ export default function MonsterPanel() {
 
     // sort
     if (sort.direction !== "none") {
-      filteredMonsters.sort((monster1, monster2) => {
-        const v1 = get(monster1, sort.field);
-        const v2 = get(monster2, sort.field);
-
-        // equal
-        if (v1 === v2) {
-          return 0;
-        }
-
-        // nulls last
-        if (v1 === undefined) {
-          return 1;
-        }
-        if (v2 === undefined) {
-          return -1;
-        }
-
-        // sort normally
-        let comp = v1 < v2 ? -1 : 1;
-        if (sort.direction === "desc") {
-          comp *= -1;
-        }
-        return comp;
-      });
+      filteredMonsters.sort((one, two) => sortData(one, two, sort));
     }
     return filteredMonsters;
   }, [searchValue, sort]);

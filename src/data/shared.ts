@@ -1,3 +1,6 @@
+import get from "lodash-es/get";
+import { Sort } from "../components/SortBar.tsx";
+
 export type DataType = "item" | "mob" | "npc" | "quest";
 
 const playerRaces = ["AP", "BL", "HF", "HM"] as const;
@@ -51,3 +54,28 @@ export type MapEntity = {
   location: MapLocation;
   icon?: string;
 };
+
+export function sortData(d1: unknown, d2: unknown, sort: Sort) {
+  const v1 = get(d1, sort.field);
+  const v2 = get(d2, sort.field);
+
+  // equal
+  if (v1 === v2) {
+    return 0;
+  }
+
+  // nulls last
+  if (v1 === undefined) {
+    return 1;
+  }
+  if (v2 === undefined) {
+    return -1;
+  }
+
+  // sort normally
+  let comp = v1 < v2 ? -1 : 1;
+  if (sort.direction === "desc") {
+    comp *= -1;
+  }
+  return comp;
+}

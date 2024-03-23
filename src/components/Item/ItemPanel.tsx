@@ -1,13 +1,12 @@
 import { Tab } from "@headlessui/react";
-import get from "lodash-es/get";
 import intersection from "lodash-es/intersection";
 import { useEffect, useMemo, useState } from "react";
 import { Item, Tag, items } from "../../data/items/items";
-import { Race, races } from "../../data/shared";
+import { Race, races, sortData } from "../../data/shared";
 import Card from "../Card.tsx";
 import NoMatchCard from "../NoMatchCard";
 import Search from "../Search.tsx";
-import SortBar, { Option, Sort } from "../SortBar.tsx";
+import SortBar, { Sort, SortOption } from "../SortBar.tsx";
 import ItemCardPreviewContent from "./ItemCardPreviewContent.tsx";
 import { ItemCardTitle } from "./ItemCardTitle.tsx";
 import ItemRaceFilterBar, { Filters } from "./ItemRaceFilterBar.tsx";
@@ -32,7 +31,7 @@ const allPrimaryTags: Tag[] = [
   "JUNK",
 ];
 
-const sortOptions: Option[] = [
+const sortOptions: SortOption[] = [
   {
     name: "Level",
     field: "level",
@@ -105,30 +104,7 @@ export default function ItemPanel() {
 
     // sort
     if (sort.direction !== "none") {
-      filteredItems.sort((item1, item2) => {
-        const v1 = get(item1, sort.field);
-        const v2 = get(item2, sort.field);
-
-        // equal
-        if (v1 === v2) {
-          return 0;
-        }
-
-        // nulls last
-        if (v1 === undefined) {
-          return 1;
-        }
-        if (v2 === undefined) {
-          return -1;
-        }
-
-        // sort normally
-        let comp = v1 < v2 ? -1 : 1;
-        if (sort.direction === "desc") {
-          comp *= -1;
-        }
-        return comp;
-      });
+      filteredItems.sort((one, two) => sortData(one, two, sort));
     }
     return filteredItems;
   }, [tagsFilter, racesFilter, searchValue, sort]);

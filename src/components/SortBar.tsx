@@ -8,17 +8,17 @@ import {
 } from "@heroicons/react/20/solid";
 import { Dispatch, Fragment, SetStateAction, useState } from "react";
 
-export type Option = {
+export type SortOption = {
   name: string;
   field: string;
 };
 
 type SortDirection = "asc" | "desc" | "none";
 
-export type Sort = Option & { direction: SortDirection };
+export type Sort = SortOption & { direction: SortDirection };
 
 type Props = {
-  options: Option[];
+  options: SortOption[];
   sort: Sort;
   setSort: Dispatch<SetStateAction<Sort>>;
 };
@@ -28,7 +28,7 @@ export default function SortBar(props: Props) {
 
   const [selected, setSelected] = useState(options[0]);
 
-  function setSelectedAndUpdateSort(option: Option) {
+  function setSelectedAndUpdateSort(option: SortOption) {
     setSelected(option);
     const newSort = { ...sort };
     newSort.name = option.name;
