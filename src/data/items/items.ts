@@ -1,3 +1,4 @@
+import { keyBy } from "lodash-es";
 import { DamageType, Element, Race } from "../shared.ts";
 import apAccessories from "./ap/accessories.ts";
 import apArmor from "./ap/armor";
@@ -101,7 +102,7 @@ export type Item = {
   };
 };
 
-const items: Item[] = [
+export const items: Item[] = [
   {
     name: "Peroxi Rebuilder Heal",
     tags: ["POTION", "ALCH"],
@@ -202,14 +203,12 @@ const items: Item[] = [
       STR: 20,
     },
   },
+  ...apArmor,
+  ...apAccessories,
+  ...apGuns,
+  ...apMelee,
+  ...magics,
 ];
-
-items.push(...apArmor);
-items.push(...apAccessories);
-items.push(...apGuns);
-items.push(...apMelee);
-
-items.push(...magics);
 
 function getItemDps(item: Item) {
   if (item.damage) {
@@ -237,16 +236,4 @@ export function getItemSalePrice(item: Item) {
   return item.marketCost ? Math.floor(item.marketCost / 4) : 0;
 }
 
-const itemMap: Partial<Record<string, Item>> = {};
-items.reduce((map, item) => {
-  map[item.name] = item;
-  return map;
-}, itemMap);
-
-export function getItemMap() {
-  return itemMap;
-}
-
-export default function getItems() {
-  return items;
-}
+export const itemMap = keyBy(items, (item) => item.name);

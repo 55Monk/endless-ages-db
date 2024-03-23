@@ -1,16 +1,15 @@
 import { Tab } from "@headlessui/react";
 import { useState } from "react";
-import getQuestMap from "../../data/quests";
+import { quests } from "../../data/quests.ts";
 import NoMatchCard from "../NoMatchCard";
 import Search from "../Search.tsx";
 import QuestCard from "./QuestCard";
-
-const quests = Object.values(getQuestMap());
 
 export default function QuestPanel() {
   const [searchValue, setSearchValue] = useState<string>("");
 
   let filteredQuests = [...quests];
+
   // filter by search
   if (searchValue.length > 0) {
     filteredQuests = filteredQuests.filter((quest) =>

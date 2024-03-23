@@ -1,5 +1,3 @@
-import { LatLngExpression } from "leaflet";
-
 export type DataType = "item" | "mob" | "npc" | "quest";
 
 const playerRaces = ["AP", "BL", "HF", "HM"] as const;
@@ -32,9 +30,19 @@ export function getDataTypeColor(type: DataType) {
   }
 }
 
+// Ingame coordinates: [X, Y, Z]
+// <br> +X = east
+// <br> -X = west
+// <br> +Y = up
+// <br> -Y = down
+// <br> +Z = north
+// <br> -Z = south
+// <br>Leaflet coordinates (standard latlng): [Z, X]
+type Coordinates = [number, number, number];
+
 export type MapLocation = {
   map: string;
-  coordinates: LatLngExpression;
+  coordinates: Coordinates;
   radius?: number;
   description: string;
 };

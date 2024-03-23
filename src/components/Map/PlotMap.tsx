@@ -102,9 +102,12 @@ export default function PlotMap() {
           }
           newLines.push({
             lineCoordinates: [
-              previousMarker.location.coordinates,
-              marker.location.coordinates,
-            ],
+              [
+                previousMarker.location.coordinates[2],
+                previousMarker.location.coordinates[0],
+              ],
+              [marker.location.coordinates[2], marker.location.coordinates[0]],
+            ] as L.LatLngExpression[],
             color: color,
           });
         }
@@ -144,7 +147,10 @@ export default function PlotMap() {
                   ? icons["complete"]
                   : icons[marker.icon ?? "orb"]
               }
-              position={marker.location.coordinates}
+              position={[
+                marker.location.coordinates[2],
+                marker.location.coordinates[0],
+              ]}
             >
               <Tooltip>{marker.location.description}</Tooltip>
             </Marker>

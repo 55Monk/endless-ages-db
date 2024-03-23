@@ -4,7 +4,7 @@ import { immer } from "zustand/middleware/immer";
 import { tabs } from "../components/Tabs";
 import { Marker } from "../components/WebsiteContent";
 import { getMapMap } from "../data/maps";
-import getNpcMap from "../data/npcs";
+import { npcMap } from "../data/npcs/npcs.ts";
 import { Quest } from "../data/quests";
 
 export type SelectedCard = {
@@ -50,7 +50,7 @@ function clearMap() {
 }
 
 function plotQuest(quest: Quest) {
-  const npcs = getNpcMap();
+  const npcs = npcMap;
   const markers = quest.steps.map((step) => ({
     location: npcs[step.npcName].location,
     icon: npcs[step.npcName].icon,
