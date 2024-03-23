@@ -59,10 +59,7 @@ type Skill =
 
 type Requirement = Stat | Skill;
 
-export type UseCost = {
-  name: string;
-  quantity: number;
-};
+export type ItemQuantity = [name: string, quantity: number];
 
 export type Item = {
   name: string;
@@ -86,7 +83,7 @@ export type Item = {
     dps?: number;
   };
   flightDurationSeconds?: number;
-  useCost?: UseCost[];
+  useCost?: ItemQuantity[];
   // How to get, eventually remove and generate from mobs, npcs, and quests
   rewardFrom?: string;
   fromVendor?: string;

@@ -15,12 +15,7 @@ const magics: Item[] = [
     requirements: {
       MAGIC: 1,
     },
-    useCost: [
-      {
-        name: "Poison Herb",
-        quantity: 1,
-      },
-    ],
+    useCost: [["Poison Herb", 1]],
   },
   {
     name: "Weak Heal",
@@ -36,12 +31,7 @@ const magics: Item[] = [
     requirements: {
       MAGIC: 1,
     },
-    useCost: [
-      {
-        name: "Bone",
-        quantity: 1,
-      },
-    ],
+    useCost: [["Bone", 1]],
   },
   {
     name: "Create Food",
@@ -53,14 +43,8 @@ const magics: Item[] = [
       MAGIC: 1,
     },
     useCost: [
-      {
-        name: "Ash",
-        quantity: 1,
-      },
-      {
-        name: "Bone",
-        quantity: 1,
-      },
+      ["Ash", 1],
+      ["Bone", 1],
     ],
   },
   {
@@ -77,12 +61,7 @@ const magics: Item[] = [
     requirements: {
       MAGIC: 3,
     },
-    useCost: [
-      {
-        name: "Bone",
-        quantity: 1,
-      },
-    ],
+    useCost: [["Bone", 1]],
   },
   {
     name: "Flame Missile",
@@ -99,14 +78,8 @@ const magics: Item[] = [
       MAGIC: 3,
     },
     useCost: [
-      {
-        name: "Orb Root",
-        quantity: 1,
-      },
-      {
-        name: "Ash",
-        quantity: 1,
-      },
+      ["Orb Root", 1],
+      ["Ash", 1],
     ],
   },
   {
@@ -118,12 +91,7 @@ const magics: Item[] = [
     requirements: {
       MAGIC: 3,
     },
-    useCost: [
-      {
-        name: "Bone",
-        quantity: 1,
-      },
-    ],
+    useCost: [["Bone", 1]],
   },
   {
     name: "Meteor",
@@ -140,14 +108,8 @@ const magics: Item[] = [
       MAGIC: 3,
     },
     useCost: [
-      {
-        name: "Ash",
-        quantity: 2,
-      },
-      {
-        name: "Blood Sand",
-        quantity: 1,
-      },
+      ["Ash", 2],
+      ["Blood Sand", 1],
     ],
   },
   {
@@ -165,18 +127,9 @@ const magics: Item[] = [
       MAGIC: 5,
     },
     useCost: [
-      {
-        name: "Ash",
-        quantity: 1,
-      },
-      {
-        name: "Orb Root",
-        quantity: 1,
-      },
-      {
-        name: "Bone",
-        quantity: 1,
-      },
+      ["Ash", 1],
+      ["Orb Root", 1],
+      ["Bone", 1],
     ],
   },
   {
@@ -193,12 +146,7 @@ const magics: Item[] = [
     requirements: {
       MAGIC: 5,
     },
-    useCost: [
-      {
-        name: "Ash",
-        quantity: 3,
-      },
-    ],
+    useCost: [["Ash", 3]],
   },
   {
     name: "Gas Attack",
@@ -214,12 +162,7 @@ const magics: Item[] = [
     requirements: {
       MAGIC: 5,
     },
-    useCost: [
-      {
-        name: "Blood Sand",
-        quantity: 1,
-      },
-    ],
+    useCost: [["Blood Sand", 1]],
   },
   {
     name: "Greater Light",
@@ -231,14 +174,8 @@ const magics: Item[] = [
       MAGIC: 5,
     },
     useCost: [
-      {
-        name: "Ash",
-        quantity: 2,
-      },
-      {
-        name: "Blood Grass",
-        quantity: 1,
-      },
+      ["Ash", 2],
+      ["Blood Grass", 1],
     ],
   },
   {
@@ -256,14 +193,8 @@ const magics: Item[] = [
       MAGIC: 5,
     },
     useCost: [
-      {
-        name: "Eye of Elder Clegurk",
-        quantity: 1,
-      },
-      {
-        name: "Ash",
-        quantity: 1,
-      },
+      ["Eye of Elder Clegurk", 1],
+      ["Ash", 1],
     ],
   },
   {
@@ -281,14 +212,8 @@ const magics: Item[] = [
       MAGIC: 5,
     },
     useCost: [
-      {
-        name: "Bone",
-        quantity: 1,
-      },
-      {
-        name: "Blood Grass",
-        quantity: 1,
-      },
+      ["Bone", 1],
+      ["Blood Grass", 1],
     ],
   },
   {
@@ -306,18 +231,9 @@ const magics: Item[] = [
       MAGIC: 7,
     },
     useCost: [
-      {
-        name: "Ash",
-        quantity: 1,
-      },
-      {
-        name: "Blood Sand",
-        quantity: 2,
-      },
-      {
-        name: "Eye of Elder Clegurk",
-        quantity: 1,
-      },
+      ["Ash", 1],
+      ["Blood Sand", 2],
+      ["Eye of Elder Clegurk", 1],
     ],
   },
   {
@@ -335,18 +251,9 @@ const magics: Item[] = [
       MAGIC: 7,
     },
     useCost: [
-      {
-        name: "Ash",
-        quantity: 1,
-      },
-      {
-        name: "Bone",
-        quantity: 1,
-      },
-      {
-        name: "Orb Root",
-        quantity: 1,
-      },
+      ["Ash", 1],
+      ["Bone", 1],
+      ["Orb Root", 1],
     ],
   },
   {
@@ -359,14 +266,8 @@ const magics: Item[] = [
       MAGIC: 7,
     },
     useCost: [
-      {
-        name: "Bone",
-        quantity: 1,
-      },
-      {
-        name: "Poison Herb",
-        quantity: 1,
-      },
+      ["Bone", 1],
+      ["Poison Herb", 1],
     ],
   },
   {
@@ -384,18 +285,9 @@ const magics: Item[] = [
       MAGIC: 9,
     },
     useCost: [
-      {
-        name: "Orb Root",
-        quantity: 3,
-      },
-      {
-        name: "Ash",
-        quantity: 2,
-      },
-      {
-        name: "Bone",
-        quantity: 1,
-      },
+      ["Orb Root", 3],
+      ["Ash", 2],
+      ["Bone", 1],
     ],
   },
   {
@@ -413,18 +305,9 @@ const magics: Item[] = [
       MAGIC: 9,
     },
     useCost: [
-      {
-        name: "Ash",
-        quantity: 2,
-      },
-      {
-        name: "Blood Sand",
-        quantity: 2,
-      },
-      {
-        name: "Blood Grass",
-        quantity: 1,
-      },
+      ["Ash", 2],
+      ["Blood Sand", 2],
+      ["Blood Grass", 1],
     ],
   },
   {
@@ -442,18 +325,9 @@ const magics: Item[] = [
       MAGIC: 9,
     },
     useCost: [
-      {
-        name: "Poison Herb",
-        quantity: 6,
-      },
-      {
-        name: "Eye of Elder Clegurk",
-        quantity: 1,
-      },
-      {
-        name: "Poison Base Cassius",
-        quantity: 1,
-      },
+      ["Poison Herb", 6],
+      ["Eye of Elder Clegurk", 1],
+      ["Poison Base Cassius", 1],
     ],
   },
   {
@@ -471,18 +345,9 @@ const magics: Item[] = [
       MAGIC: 9,
     },
     useCost: [
-      {
-        name: "Orb Root",
-        quantity: 1,
-      },
-      {
-        name: "Hyssop Herb",
-        quantity: 1,
-      },
-      {
-        name: "Slingthrex Twig",
-        quantity: 1,
-      },
+      ["Orb Root", 1],
+      ["Hyssop Herb", 1],
+      ["Slingthrex Twig", 1],
     ],
   },
   {
@@ -500,18 +365,9 @@ const magics: Item[] = [
       MAGIC: 9,
     },
     useCost: [
-      {
-        name: "Ash",
-        quantity: 8,
-      },
-      {
-        name: "Uenos Root",
-        quantity: 1,
-      },
-      {
-        name: "Eye of Elder Clegurk",
-        quantity: 1,
-      },
+      ["Ash", 8],
+      ["Uenos Root", 1],
+      ["Eye of Elder Clegurk", 1],
     ],
   },
   {
@@ -529,18 +385,9 @@ const magics: Item[] = [
       MAGIC: 9,
     },
     useCost: [
-      {
-        name: "Orb Root",
-        quantity: 1,
-      },
-      {
-        name: "Tanzin Bush",
-        quantity: 1,
-      },
-      {
-        name: "Uenos Root",
-        quantity: 1,
-      },
+      ["Orb Root", 1],
+      ["Tanzin Bush", 1],
+      ["Uenos Root", 1],
     ],
   },
 ];
