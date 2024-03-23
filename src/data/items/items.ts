@@ -4,6 +4,9 @@ import apAccessories from "./ap/accessories.ts";
 import apArmor from "./ap/armor";
 import apGuns from "./ap/guns.ts";
 import apMelee from "./ap/melee.ts";
+import blArmor from "./bl/armor.ts";
+import hfArmor from "./hf/armor.ts";
+import hmArmor from "./hm/armor.ts";
 import magics from "./magic.ts";
 
 export const tags = [
@@ -142,24 +145,6 @@ export const items: Item[] = [
     },
   },
   {
-    name: "[HF] Phision Torso Armor",
-    tags: ["ARMOR", "BODY"],
-    iconLocation: [0, 13],
-    drops: false,
-    marketCost: 250000,
-    rewardFrom: "11 Armor Quest",
-    race: "HF",
-    requirements: {
-      STR: 165,
-      DEX: 155,
-      WIS: 78,
-    },
-    defenses: {
-      NORMAL: 22,
-      RUNE: 7,
-    },
-  },
-  {
     name: "[AP] Wings of Crom",
     tags: ["PILOT", "JETPACK"],
     iconLocation: [12, 5],
@@ -207,6 +192,9 @@ export const items: Item[] = [
   ...apAccessories,
   ...apGuns,
   ...apMelee,
+  ...blArmor,
+  ...hfArmor,
+  ...hmArmor,
   ...magics,
 ];
 
