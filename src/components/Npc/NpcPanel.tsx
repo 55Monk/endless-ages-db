@@ -1,7 +1,8 @@
 import { Tab } from "@headlessui/react";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { NPC, npcs } from "../../data/npcs/npcs.ts";
 import { sortData } from "../../data/shared.ts";
+import useContentStore from "../../hooks/UseContentStore.tsx";
 import Card from "../Card.tsx";
 import NoMatchCard from "../NoMatchCard.tsx";
 import Search from "../Search.tsx";
@@ -28,11 +29,37 @@ export default function NpcPanel() {
     direction: "asc",
   });
 
-  const [selected, setSelected] = useState<NPC>();
+  const selectCard = useContentStore((state) => state.selectCard);
+  const selectedCard = useContentStore((state) => state.selectedCard);
+  const plotNpc = useContentStore((state) => state.plotNpc);
+  const clearMap = useContentStore((state) => state.clearMap);
 
-  useEffect(() => {
-    setSelected(undefined);
-  }, [searchValue]);
+  const isSelectedNpc = useCallback(
+    (npc: NPC) => {
+      return !!(
+        selectedCard &&
+        selectedCard.type === "NPC" &&
+        selectedCard.name.toLowerCase() === npc.name.toLowerCase()
+      );
+    },
+    [selectedCard],
+  );
+
+  const selectNpc = useCallback(
+    (npc: NPC) => {
+      selectCard({ type: "NPC", name: npc.name });
+      plotNpc(npc);
+    },
+    [plotNpc, selectCard],
+  );
+
+  const deselectNpc = useCallback(() => {
+    selectCard();
+    clearMap();
+  }, [clearMap, selectCard]);
+
+  // Clear the selection if any filters change
+  useEffect(() => deselectNpc, [deselectNpc, searchValue]);
 
   const filteredNpcs = useMemo(() => {
     // Filter npcs
@@ -63,9 +90,9 @@ export default function NpcPanel() {
               titleContent={<NpcCardTitle npc={npc} />}
               expand={{
                 fullContent: <div />,
-                full: npc === selected,
-                select: () => setSelected(npc),
-                close: () => setSelected(undefined),
+                full: isSelectedNpc(npc),
+                select: () => selectNpc(npc),
+                close: () => deselectNpc(),
               }}
             />
           ))}

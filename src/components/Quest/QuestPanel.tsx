@@ -62,7 +62,6 @@ export default function QuestPanel() {
         <div className="flex flex-grow basis-0 flex-col gap-2 overflow-y-scroll bg-neutral-100 p-2">
           {filteredQuests.length === 0 && <NoMatchCard type="Quest" />}
           {filteredQuests.map((quest) => (
-            // <QuestCard key={quest.name} quest={quest} />
             <Card
               key={quest.name}
               titleContent={<QuestCardTitle quest={quest} />}
