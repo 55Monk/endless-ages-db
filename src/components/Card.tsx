@@ -35,7 +35,7 @@ export default function Card(props: Props) {
     >
       {inView ? (
         <div
-          className={`flex flex-col gap-1 ${previewContent ? "min-h-[88px]" : "min-h-10"}`}
+          className={`flex flex-col gap-1 ${previewContent ? "min-h-[88px]" : "min-h-10"} ${full ? "h-full" : ""}`}
         >
           <div className="flex items-start justify-between gap-2">
             {titleContent}
