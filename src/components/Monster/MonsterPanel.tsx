@@ -37,15 +37,18 @@ export default function MonsterPanel() {
   const [selected, setSelected] = useState<Monster>();
 
   const filteredMonsters = useMemo(() => {
-    const filteredMonsters = monsters.filter((item) => {
-      return item.name.toLowerCase().includes(searchValue.toLowerCase());
+    const filteredMonsters = monsters.filter((monster) => {
+      return [monster.name, monster.race]
+        .join("|")
+        .toLowerCase()
+        .includes(searchValue.toLowerCase());
     });
 
     // sort
     if (sort.direction !== "none") {
-      filteredMonsters.sort((item1, item2) => {
-        const v1 = get(item1, sort.field);
-        const v2 = get(item2, sort.field);
+      filteredMonsters.sort((monster1, monster2) => {
+        const v1 = get(monster1, sort.field);
+        const v2 = get(monster2, sort.field);
 
         // equal
         if (v1 === v2) {
@@ -81,14 +84,14 @@ export default function MonsterPanel() {
       <div className="relative flex flex-grow flex-col">
         <div className="flex flex-grow basis-0 flex-col gap-2 overflow-y-scroll bg-neutral-100 p-2">
           {filteredMonsters.length === 0 && <NoMatchCard type="Monster" />}
-          {(selected ? [selected] : filteredMonsters).map((monster) => (
+          {filteredMonsters.map((monster) => (
             <Card
               key={monster.name}
               titleContent={<MonsterCardTitle monster={monster} />}
               previewContent={<MonsterCardPreviewContent monster={monster} />}
               expand={{
                 fullContent: <MonsterCardPreviewContent monster={monster} />,
-                full: !!selected,
+                full: monster === selected,
                 select: () => setSelected(monster),
                 close: () => setSelected(undefined),
               }}
