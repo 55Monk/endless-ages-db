@@ -29,7 +29,7 @@ export type Monster = {
   };
 };
 
-const monsters: Monster[] = [
+export const monsters: Monster[] = [
   {
     name: "Flob",
     level: 1,
@@ -3927,7 +3927,3 @@ const monsters: Monster[] = [
     },
   },
 ];
-
-export default function getMonsters() {
-  return monsters;
-}

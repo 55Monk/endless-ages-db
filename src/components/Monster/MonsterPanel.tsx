@@ -1,7 +1,7 @@
 import { Tab } from "@headlessui/react";
 import get from "lodash-es/get";
 import { useEffect, useMemo, useState } from "react";
-import getMonsters, { Monster } from "../../data/monsters.ts";
+import { Monster, monsters } from "../../data/monsters.ts";
 import Card from "../Card.tsx";
 import NoMatchCard from "../NoMatchCard";
 import Search from "../Search.tsx";
@@ -23,8 +23,6 @@ const sortOptions: Option[] = [
     field: "damage.dps",
   },
 ];
-
-const monsters = getMonsters();
 
 export default function MonsterPanel() {
   const [searchValue, setSearchValue] = useState<string>("");
