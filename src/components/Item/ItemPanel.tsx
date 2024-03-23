@@ -1,8 +1,8 @@
 import { Tab } from "@headlessui/react";
 import get from "lodash-es/get";
 import intersection from "lodash-es/intersection";
-import { useMemo, useState } from "react";
-import getItems, { Item, Tag } from "../../data/items/items";
+import { useEffect, useMemo, useState } from "react";
+import { Item, Tag, items } from "../../data/items/items";
 import { Race, races } from "../../data/shared";
 import Card from "../Card.tsx";
 import NoMatchCard from "../NoMatchCard";
@@ -63,8 +63,6 @@ const sortOptions: Option[] = [
   },
 ];
 
-const items = getItems();
-
 export default function ItemPanel() {
   const [searchValue, setSearchValue] = useState<string>("");
   const [racesFilter, setRacesFilter] = useState<Filters<Race>>(
@@ -78,6 +76,10 @@ export default function ItemPanel() {
   });
 
   const [selected, setSelected] = useState<Item>();
+
+  useEffect(() => {
+    setSelected(undefined);
+  }, [searchValue, racesFilter, tagsFilter]);
 
   const filteredItems = useMemo(() => {
     const toKeepRaces = Object.entries(racesFilter)

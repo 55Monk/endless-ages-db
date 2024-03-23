@@ -1,6 +1,6 @@
 import { Tab } from "@headlessui/react";
 import get from "lodash-es/get";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import getMonsters, { Monster } from "../../data/monsters.ts";
 import Card from "../Card.tsx";
 import NoMatchCard from "../NoMatchCard";
@@ -35,6 +35,10 @@ export default function MonsterPanel() {
   });
 
   const [selected, setSelected] = useState<Monster>();
+
+  useEffect(() => {
+    setSelected(undefined);
+  }, [searchValue]);
 
   const filteredMonsters = useMemo(() => {
     const filteredMonsters = monsters.filter((monster) => {
