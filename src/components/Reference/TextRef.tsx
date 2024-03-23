@@ -1,19 +1,15 @@
 import { Popover } from "@headlessui/react";
-import { getItemMap } from "../../data/items/items";
-import getNpcMap from "../../data/npcs";
-import getQuestMap from "../../data/quests";
+import { itemMap } from "../../data/items/items.ts";
+import { npcMap } from "../../data/npcs/npcs.ts";
+import { questMap } from "../../data/quests.ts";
 import { DataType, getDataTypeColor } from "../../data/shared";
-import ItemCard from "../Item/ItemCard";
+import ItemCardPreviewContent from "../Item/ItemCardPreviewContent.tsx";
 import QuestTooltip from "../Quest/QuestTooltip";
 
 type Props = {
   name: string;
   type: DataType;
 };
-
-const itemMap = getItemMap();
-const npcMap = getNpcMap();
-const questMap = getQuestMap();
 
 export default function TextRef(props: Props) {
   const { name, type } = props;
@@ -29,7 +25,7 @@ export default function TextRef(props: Props) {
     case "item": {
       const item = itemMap[name];
       if (item) {
-        panelContent = <ItemCard item={item} />;
+        panelContent = <ItemCardPreviewContent item={item} />;
       }
       break;
     }
@@ -53,7 +49,7 @@ export default function TextRef(props: Props) {
   }
 
   return (
-    <Popover className="inline">
+    <Popover className="relative inline">
       <Popover.Button className={`font-bold ${color}`}>{name}</Popover.Button>
       <Popover.Panel className="absolute z-[999] mt-2">
         {panelContent}

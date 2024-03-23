@@ -1,4 +1,4 @@
-import L from "leaflet";
+import L, { Icon } from "leaflet";
 import { useEffect, useState } from "react";
 import {
   ImageOverlay,
@@ -11,7 +11,12 @@ import { getMapMap } from "../../data/maps";
 import useContentStore from "../../hooks/UseContentStore";
 import MapSelectionHeader from "./MapSelectionHeader";
 
-const OrbIcon: any = L.Icon.extend({
+type Line = {
+  lineCoordinates: L.LatLngExpression[];
+  color: string;
+};
+
+const OrbIcon = L.Icon.extend({
   options: {
     iconSize: [34, 51],
     iconAnchor: [17, 51],
@@ -20,39 +25,50 @@ const OrbIcon: any = L.Icon.extend({
   },
 });
 
-const icons: Record<string, any> = {
+const icons: Record<string, Icon> = {
+  // @ts-expect-error idk
   complete: new OrbIcon({
-    iconUrl: `${process.env.PUBLIC_URL}/assets/icons/complete-marker-icon.png`,
+    iconUrl: `${import.meta.env.BASE_URL}/assets/maps/icons/complete-marker-icon.webp`,
   }),
+  // @ts-expect-error idk
   orb: new OrbIcon({
-    iconUrl: `${process.env.PUBLIC_URL}/assets/icons/orb-marker-icon.png`,
+    iconUrl: `${import.meta.env.BASE_URL}/assets/maps/icons/orb-marker-icon.webp`,
   }),
+  // @ts-expect-error idk
   ap: new OrbIcon({
-    iconUrl: `${process.env.PUBLIC_URL}/assets/icons/ap-marker-icon.png`,
+    iconUrl: `${import.meta.env.BASE_URL}/assets/maps/icons/ap-marker-icon.webp`,
   }),
+  // @ts-expect-error idk
   bl: new OrbIcon({
-    iconUrl: `${process.env.PUBLIC_URL}/assets/icons/bl-marker-icon.png`,
+    iconUrl: `${import.meta.env.BASE_URL}/assets/maps/icons/bl-marker-icon.webp`,
   }),
+  // @ts-expect-error idk
   hf: new OrbIcon({
-    iconUrl: `${process.env.PUBLIC_URL}/assets/icons/hf-marker-icon.png`,
+    iconUrl: `${import.meta.env.BASE_URL}/assets/maps/icons/hf-marker-icon.webp`,
   }),
+  // @ts-expect-error idk
   hm: new OrbIcon({
-    iconUrl: `${process.env.PUBLIC_URL}/assets/icons/hm-marker-icon.png`,
+    iconUrl: `${import.meta.env.BASE_URL}/assets/maps/icons/hm-marker-icon.webp`,
   }),
+  // @ts-expect-error idk
   qi: new OrbIcon({
-    iconUrl: `${process.env.PUBLIC_URL}/assets/icons/qi-marker-icon.png`,
+    iconUrl: `${import.meta.env.BASE_URL}/assets/maps/icons/qi-marker-icon.webp`,
   }),
+  // @ts-expect-error idk
   egg: new OrbIcon({
-    iconUrl: `${process.env.PUBLIC_URL}/assets/icons/egg-marker-icon.png`,
+    iconUrl: `${import.meta.env.BASE_URL}/assets/maps/icons/egg-marker-icon.webp`,
   }),
+  // @ts-expect-error idk
   plant: new OrbIcon({
-    iconUrl: `${process.env.PUBLIC_URL}/assets/icons/plant-marker-icon.png`,
+    iconUrl: `${import.meta.env.BASE_URL}/assets/maps/icons/plant-marker-icon.webp`,
   }),
+  // @ts-expect-error idk
   mineral: new OrbIcon({
-    iconUrl: `${process.env.PUBLIC_URL}/assets/icons/mineral-marker-icon.png`,
+    iconUrl: `${import.meta.env.BASE_URL}/assets/maps/icons/mineral-marker-icon.webp`,
   }),
+  // @ts-expect-error idk
   chest: new OrbIcon({
-    iconUrl: `${process.env.PUBLIC_URL}/assets/icons/chest-marker-icon.png`,
+    iconUrl: `${import.meta.env.BASE_URL}/assets/maps/icons/chest-marker-icon.webp`,
   }),
 };
 
@@ -65,7 +81,7 @@ export default function PlotMap() {
 
   const selectedMapDetails = mapMap[selectedMap];
 
-  const [lines, setLines] = useState<any[]>([]);
+  const [lines, setLines] = useState<Line[]>([]);
 
   useEffect(() => {
     const newLines = [];
@@ -86,9 +102,12 @@ export default function PlotMap() {
           }
           newLines.push({
             lineCoordinates: [
-              previousMarker.location.coordinates,
-              marker.location.coordinates,
-            ],
+              [
+                previousMarker.location.coordinates[2],
+                previousMarker.location.coordinates[0],
+              ],
+              [marker.location.coordinates[2], marker.location.coordinates[0]],
+            ] as L.LatLngExpression[],
             color: color,
           });
         }
@@ -101,7 +120,7 @@ export default function PlotMap() {
     <div className="relative flex flex-grow flex-col">
       <MapSelectionHeader selectedMap={selectedMap} selectMap={selectMap} />
       <MapContainer
-        className="flex-grow"
+        className="flex-grow !bg-sky-200"
         center={[0, 0]}
         zoom={-6}
         minZoom={-6}
@@ -110,7 +129,7 @@ export default function PlotMap() {
         crs={L.CRS.Simple}
       >
         <ImageOverlay
-          url={`${process.env.PUBLIC_URL}/assets/maps/${selectedMapDetails?.name}.png`}
+          url={`${import.meta.env.BASE_URL}/assets/maps/${selectedMapDetails?.name}.webp`}
           bounds={
             selectedMapDetails?.bounds ?? [
               [-1, -1],
@@ -128,7 +147,10 @@ export default function PlotMap() {
                   ? icons["complete"]
                   : icons[marker.icon ?? "orb"]
               }
-              position={marker.location.coordinates}
+              position={[
+                marker.location.coordinates[2],
+                marker.location.coordinates[0],
+              ]}
             >
               <Tooltip>{marker.location.description}</Tooltip>
             </Marker>

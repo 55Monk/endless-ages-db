@@ -3,12 +3,12 @@ import { Fragment } from "react";
 import { MapLocation } from "../data/shared";
 import useContentStore from "../hooks/UseContentStore";
 import ItemPanel from "./Item/ItemPanel";
-import PlotMap from "./Map/PlotMap";
+import PlotMap from "./Map/PlotMap.tsx";
+import MiscPanel from "./Misc/MiscPanel";
 import MonsterPanel from "./Monster/MonsterPanel";
 import NpcPanel from "./Npc/NpcPanel";
 import QuestPanel from "./Quest/QuestPanel";
-
-export const tabs: string[] = ["Items", "Monsters", "NPCs", "Quests"];
+import { tabs } from "./Tabs";
 
 export type Marker = {
   location: MapLocation;
@@ -22,7 +22,7 @@ export default function WebsiteContent() {
 
   return (
     <div className="flex flex-grow">
-      <div className="flex w-[356px] flex-col border-r border-neutral-300">
+      <div className="flex w-[500px] flex-col border-r border-neutral-300">
         <Tab.Group selectedIndex={selectedTab} onChange={selectTab}>
           <Tab.List className="flex justify-between p-2">
             {tabs.map((tab) => (
@@ -45,6 +45,7 @@ export default function WebsiteContent() {
             <MonsterPanel />
             <NpcPanel />
             <QuestPanel />
+            <MiscPanel />
           </Tab.Panels>
         </Tab.Group>
       </div>

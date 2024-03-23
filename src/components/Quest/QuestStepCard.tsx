@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from "react";
-import getNpcMap from "../../data/npcs";
+import { npcMap } from "../../data/npcs/npcs.ts";
 import { QuestStep } from "../../data/quests";
 import useContentStore from "../../hooks/UseContentStore";
 
@@ -15,8 +15,7 @@ export default function QuestStepCard(props: Props) {
 
   const setMarkerComplete = useContentStore((state) => state.setMarkerComplete);
 
-  const npcs = getNpcMap();
-  const stepAction = npcs[step.npcName]?.actions?.[step.action];
+  const stepAction = npcMap[step.npcName]?.actions?.[step.action];
 
   function onStepCheckChange(event: ChangeEvent<HTMLInputElement>) {
     setComplete(event.target.checked);

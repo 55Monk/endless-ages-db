@@ -4,6 +4,8 @@ const apArmor: Item[] = [
   // T1
   {
     name: "[AP] Plandon Helmet",
+    tags: ["HEAD/FEET"],
+    level: 1,
     iconLocation: [5, 15],
     drops: false,
     marketCost: 85,
@@ -18,6 +20,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Plandon Chest Armor",
+    tags: ["BODY"],
+    level: 1,
     iconLocation: [5, 13],
     drops: false,
     marketCost: 169,
@@ -32,6 +36,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Plandon Bracers",
+    tags: ["HANDS"],
+    level: 1,
     iconLocation: [6, 13],
     drops: false,
     marketCost: 85,
@@ -46,6 +52,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Plandon Shin Armor",
+    tags: ["LEGS"],
+    level: 1,
     iconLocation: [5, 14],
     drops: false,
     marketCost: 85,
@@ -61,6 +69,8 @@ const apArmor: Item[] = [
   // T2
   {
     name: "[AP] Sondron Helmet",
+    tags: ["HEAD/FEET"],
+    level: 2,
     iconLocation: [5, 15],
     drops: true,
     marketCost: 110,
@@ -75,6 +85,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Sondron Chest Armor",
+    tags: ["BODY"],
+    level: 2,
     iconLocation: [5, 13],
     drops: true,
     marketCost: 216,
@@ -89,6 +101,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Sondron Bracers",
+    tags: ["HANDS"],
+    level: 2,
     iconLocation: [6, 13],
     drops: true,
     marketCost: 116,
@@ -103,6 +117,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Sondron Shin Armor",
+    tags: ["LEGS"],
+    level: 2,
     iconLocation: [5, 14],
     drops: true,
     marketCost: 116,
@@ -118,6 +134,8 @@ const apArmor: Item[] = [
   // T3
   {
     name: "[AP] Sision Helmet",
+    tags: ["HEAD/FEET"],
+    level: 3,
     iconLocation: [5, 15],
     drops: true,
     marketCost: 244,
@@ -132,6 +150,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Sision Chest Armor",
+    tags: ["BODY"],
+    level: 3,
     iconLocation: [5, 13],
     drops: true,
     marketCost: 484,
@@ -146,6 +166,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Sision Bracers",
+    tags: ["HANDS"],
+    level: 3,
     iconLocation: [6, 13],
     drops: true,
     marketCost: 142,
@@ -160,6 +182,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Sision Shin Armor",
+    tags: ["LEGS"],
+    level: 3,
     iconLocation: [5, 14],
     drops: true,
     marketCost: 284,
@@ -175,6 +199,8 @@ const apArmor: Item[] = [
   // T4
   {
     name: "[AP] Vidon Helmet",
+    tags: ["HEAD/FEET"],
+    level: 4,
     iconLocation: [5, 15],
     drops: true,
     marketCost: 504,
@@ -189,6 +215,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Vidon Chest Armor",
+    tags: ["BODY"],
+    level: 4,
     iconLocation: [5, 13],
     drops: true,
     marketCost: 502,
@@ -203,6 +231,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Vidon Bracers",
+    tags: ["HANDS"],
+    level: 4,
     iconLocation: [6, 13],
     drops: true,
     marketCost: 804,
@@ -217,6 +247,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Vidon Shin Armor",
+    tags: ["LEGS"],
+    level: 4,
     iconLocation: [5, 14],
     drops: true,
     marketCost: 804,
@@ -232,6 +264,8 @@ const apArmor: Item[] = [
   // T5
   {
     name: "[AP] Quazon Helmet",
+    tags: ["HEAD/FEET"],
+    level: 5,
     iconLocation: [5, 15],
     drops: true,
     marketCost: 804,
@@ -246,6 +280,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Quazon Chest Armor",
+    tags: ["BODY"],
+    level: 5,
     iconLocation: [5, 13],
     drops: true,
     marketCost: 1604,
@@ -260,6 +296,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Quazon Bracers",
+    tags: ["HANDS"],
+    level: 5,
     iconLocation: [6, 13],
     drops: true,
     marketCost: 1004,
@@ -274,6 +312,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Quazon Shin Armor",
+    tags: ["LEGS"],
+    level: 5,
     iconLocation: [5, 14],
     drops: true,
     marketCost: 1004,
@@ -289,6 +329,8 @@ const apArmor: Item[] = [
   // T6
   {
     name: "[AP] Tigon Helmet",
+    tags: ["HEAD/FEET"],
+    level: 6,
     iconLocation: [5, 15],
     drops: true,
     requirements: {
@@ -302,6 +344,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Tigon Chest Armor",
+    tags: ["BODY"],
+    level: 6,
     iconLocation: [5, 13],
     drops: true,
     requirements: {
@@ -315,6 +359,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Tigon Bracers",
+    tags: ["HANDS"],
+    level: 6,
     iconLocation: [6, 13],
     drops: true,
     requirements: {
@@ -328,6 +374,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Tigon Shin Armor",
+    tags: ["LEGS"],
+    level: 6,
     iconLocation: [5, 14],
     drops: true,
     requirements: {
@@ -342,6 +390,8 @@ const apArmor: Item[] = [
   // T7
   {
     name: "[AP] Cadon Helmet",
+    tags: ["HEAD/FEET"],
+    level: 7,
     iconLocation: [5, 15],
     drops: true,
     requirements: {
@@ -355,6 +405,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Cadon Chest Armor",
+    tags: ["BODY"],
+    level: 7,
     iconLocation: [5, 13],
     drops: true,
     requirements: {
@@ -368,6 +420,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Cadon Bracers",
+    tags: ["HANDS"],
+    level: 7,
     iconLocation: [6, 13],
     drops: true,
     requirements: {
@@ -381,6 +435,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Cadon Shin Armor",
+    tags: ["LEGS"],
+    level: 7,
     iconLocation: [5, 14],
     drops: true,
     requirements: {
@@ -395,6 +451,8 @@ const apArmor: Item[] = [
   // T8
   {
     name: "[AP] Soulton Helmet",
+    tags: ["HEAD/FEET"],
+    level: 8,
     iconLocation: [5, 15],
     drops: true,
     requirements: {
@@ -408,6 +466,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Soulton Chest Armor",
+    tags: ["BODY"],
+    level: 8,
     iconLocation: [5, 13],
     drops: true,
     requirements: {
@@ -421,6 +481,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Soulton Bracers",
+    tags: ["HANDS"],
+    level: 8,
     iconLocation: [6, 13],
     drops: true,
     requirements: {
@@ -434,6 +496,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Soulton Shin Armor",
+    tags: ["LEGS"],
+    level: 8,
     iconLocation: [5, 14],
     drops: true,
     requirements: {
@@ -448,6 +512,8 @@ const apArmor: Item[] = [
   // T9
   {
     name: "[AP] Langdrion Helmet",
+    tags: ["HEAD/FEET"],
+    level: 9,
     iconLocation: [5, 15],
     drops: true,
     requirements: {
@@ -461,6 +527,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Langdrion Chest Armor",
+    tags: ["BODY"],
+    level: 9,
     iconLocation: [5, 13],
     drops: true,
     requirements: {
@@ -474,6 +542,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Langdrion Bracers",
+    tags: ["HANDS"],
+    level: 9,
     iconLocation: [6, 13],
     drops: true,
     requirements: {
@@ -487,6 +557,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Langdrion Shin Armor",
+    tags: ["LEGS"],
+    level: 9,
     iconLocation: [5, 14],
     drops: true,
     requirements: {
@@ -501,6 +573,8 @@ const apArmor: Item[] = [
   // T10
   {
     name: "[AP] Rampion Helmet",
+    tags: ["HEAD/FEET"],
+    level: 10,
     iconLocation: [5, 15],
     drops: true,
     requirements: {
@@ -515,6 +589,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Rampion Chest Armor",
+    tags: ["BODY"],
+    level: 10,
     iconLocation: [5, 13],
     drops: true,
     requirements: {
@@ -529,6 +605,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Rampion Bracers",
+    tags: ["HANDS"],
+    level: 10,
     iconLocation: [6, 13],
     drops: true,
     requirements: {
@@ -543,6 +621,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Rampion Shin Armor",
+    tags: ["LEGS"],
+    level: 10,
     iconLocation: [5, 14],
     drops: true,
     requirements: {
@@ -558,6 +638,8 @@ const apArmor: Item[] = [
   // T11
   {
     name: "[AP] Puron Helmet",
+    tags: ["HEAD/FEET"],
+    level: 11,
     iconLocation: [5, 15],
     drops: false,
     requirements: {
@@ -572,6 +654,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Puron Chest Armor",
+    tags: ["BODY"],
+    level: 11,
     iconLocation: [5, 13],
     drops: false,
     requirements: {
@@ -586,6 +670,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Puron Bracers",
+    tags: ["HANDS"],
+    level: 11,
     iconLocation: [6, 13],
     drops: false,
     requirements: {
@@ -600,6 +686,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Puron Shin Armor",
+    tags: ["LEGS"],
+    level: 11,
     iconLocation: [5, 14],
     drops: false,
     requirements: {
@@ -615,6 +703,8 @@ const apArmor: Item[] = [
   // T12
   {
     name: "[AP] Morgion Helmet",
+    tags: ["HEAD/FEET"],
+    level: 12,
     iconLocation: [5, 15],
     drops: false,
     requirements: {
@@ -629,6 +719,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Morgion Chest Armor",
+    tags: ["BODY"],
+    level: 12,
     iconLocation: [5, 13],
     drops: false,
     requirements: {
@@ -643,6 +735,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Morgion Bracers",
+    tags: ["HANDS"],
+    level: 12,
     iconLocation: [6, 13],
     drops: false,
     requirements: {
@@ -657,6 +751,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Morgion Shin Armor",
+    tags: ["LEGS"],
+    level: 12,
     iconLocation: [5, 14],
     drops: false,
     requirements: {
@@ -672,6 +768,8 @@ const apArmor: Item[] = [
   // T13
   {
     name: "[AP] Hudion Helmet",
+    tags: ["HEAD/FEET"],
+    level: 13,
     iconLocation: [5, 15],
     drops: false,
     requirements: {
@@ -687,6 +785,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Hudion Chest Armor",
+    tags: ["BODY"],
+    level: 13,
     iconLocation: [5, 13],
     drops: false,
     requirements: {
@@ -702,6 +802,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Hudion Bracers",
+    tags: ["HANDS"],
+    level: 13,
     iconLocation: [6, 13],
     drops: false,
     requirements: {
@@ -717,6 +819,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Hudion Shin Armor",
+    tags: ["LEGS"],
+    level: 13,
     iconLocation: [5, 14],
     drops: false,
     requirements: {
@@ -733,6 +837,8 @@ const apArmor: Item[] = [
   // T14
   {
     name: "[AP] Strife Helmet",
+    tags: ["HEAD/FEET"],
+    level: 14,
     iconLocation: [5, 15],
     drops: false,
     requirements: {
@@ -748,6 +854,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Strife Chest Armor",
+    tags: ["BODY"],
+    level: 14,
     iconLocation: [5, 13],
     drops: false,
     requirements: {
@@ -763,6 +871,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Strife Bracers",
+    tags: ["HANDS"],
+    level: 14,
     iconLocation: [6, 13],
     drops: false,
     requirements: {
@@ -778,6 +888,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Strife Shin Armor",
+    tags: ["LEGS"],
+    level: 14,
     iconLocation: [5, 14],
     drops: false,
     requirements: {
@@ -794,6 +906,8 @@ const apArmor: Item[] = [
   // T15
   {
     name: "[AP] Crom Helmet",
+    tags: ["HEAD/FEET"],
+    level: 15,
     iconLocation: [5, 15],
     drops: false,
     requirements: {
@@ -809,6 +923,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Crom Chest Armor",
+    tags: ["BODY"],
+    level: 15,
     iconLocation: [5, 13],
     drops: false,
     requirements: {
@@ -824,6 +940,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Crom Bracers",
+    tags: ["HANDS"],
+    level: 15,
     iconLocation: [6, 13],
     drops: false,
     requirements: {
@@ -839,6 +957,8 @@ const apArmor: Item[] = [
   },
   {
     name: "[AP] Crom Shin Armor",
+    tags: ["LEGS"],
+    level: 15,
     iconLocation: [5, 14],
     drops: false,
     requirements: {
@@ -856,7 +976,7 @@ const apArmor: Item[] = [
 
 for (const item of apArmor) {
   item.race = "AP";
-  item.itemType = "ARMOR";
+  item.tags.push("ARMOR");
 }
 
 export default apArmor;

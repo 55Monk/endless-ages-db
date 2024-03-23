@@ -1,9 +1,10 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
-import { Marker, tabs } from "../components/WebsiteContent";
+import { tabs } from "../components/Tabs";
+import { Marker } from "../components/WebsiteContent";
 import { getMapMap } from "../data/maps";
-import getNpcMap from "../data/npcs";
+import { NPC, npcMap } from "../data/npcs/npcs.ts";
 import { Quest } from "../data/quests";
 
 export type SelectedCard = {
@@ -24,6 +25,7 @@ type ContentState = {
   markers: Marker[];
   lines: any;
   clearMap: () => void;
+  plotNpc: (npc: NPC) => void;
   plotQuest: (quest: Quest) => void;
   setMarkerComplete: (index: number, complete: boolean) => void;
 };
@@ -48,11 +50,18 @@ function clearMap() {
   return { markers: [], lines: [] };
 }
 
+function plotNpc(npc: NPC) {
+  const marker = {
+    location: npc.location,
+    icon: npc.icon,
+  };
+  return { markers: [marker], selectedMap: marker.location.map };
+}
+
 function plotQuest(quest: Quest) {
-  const npcs = getNpcMap();
   const markers = quest.steps.map((step) => ({
-    location: npcs[step.npcName].location,
-    icon: npcs[step.npcName].icon,
+    location: npcMap[step.npcName].location,
+    icon: npcMap[step.npcName].icon,
   }));
   return { markers, selectedMap: markers[0].location.map };
 }
@@ -60,7 +69,7 @@ function plotQuest(quest: Quest) {
 function setMarkerComplete(
   state: ContentState,
   index: number,
-  complete: boolean
+  complete: boolean,
 ) {
   state.markers[index].complete = complete;
   if (complete) {
@@ -103,13 +112,14 @@ const useContentStore = create<ContentState>()(
         markers: [],
         lines: [],
         clearMap: () => set(() => clearMap()),
+        plotNpc: (npc) => set(() => plotNpc(npc)),
         plotQuest: (quest) => set(() => plotQuest(quest)),
         setMarkerComplete: (index, complete) =>
           set((state) => setMarkerComplete(state, index, complete)),
       }),
-      { name: "eadb-content-storage" }
-    )
-  )
+      { name: "eadb-content-storage" },
+    ),
+  ),
 );
 
 export default useContentStore;

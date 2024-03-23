@@ -1,77 +1,147 @@
 import { Tab } from "@headlessui/react";
-import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/20/solid";
-import { useState } from "react";
-import getItems, { PlayerRace, playerRaces } from "../../data/items/items";
-import FiltersPanel from "../FiltersPanel";
+import intersection from "lodash-es/intersection";
+import { useEffect, useMemo, useState } from "react";
+import { Item, Tag, items } from "../../data/items/items";
+import { Race, races, sortData } from "../../data/shared";
+import Card from "../Card.tsx";
 import NoMatchCard from "../NoMatchCard";
-import ItemCard from "./ItemCard";
-import ItemRaceFilterPanel, { Filters } from "./ItemRaceFilterPanel";
+import Search from "../Search.tsx";
+import SortBar, { Sort, SortOption } from "../SortBar.tsx";
+import ItemCardPreviewContent from "./ItemCardPreviewContent.tsx";
+import { ItemCardTitle } from "./ItemCardTitle.tsx";
+import ItemRaceFilterBar, { Filters } from "./ItemRaceFilterBar.tsx";
+import ItemTagFilterBar from "./ItemTagFilterBar.tsx";
 
-const items = getItems();
+const initialRacesFilter: Partial<Filters<Race>> = {};
+races.forEach((race) => (initialRacesFilter[race] = true));
 
-// let filteredItems = [...items];
-// // filter by search
-// if (searchValue.length > 0) {
-//   filteredItems = items.filter((item) =>
-//     item.name.toLowerCase().includes(searchValue.toLowerCase())
-//   );
-// }
-// // filter by race
-// const toKeepRaces = Object.entries(racesFilter)
-//   .filter(([race, keep]) => keep)
-//   .map(([race]) => race);
-// filteredItems = filteredItems.filter(
-//   (item) => !item.race || toKeepRaces.includes(item.race)
-// );
+const allPrimaryTags: Tag[] = [
+  "ARMOR",
+  "ACCESSORY",
+  "PILOT",
+  "MAGIC",
+  "GUN",
+  "MELEE",
+  "SS",
+  "POTION",
+  "ALCH",
+  "ENG",
+  "SMITH",
+  "QI",
+  "JUNK",
+];
+
+const sortOptions: SortOption[] = [
+  {
+    name: "Level",
+    field: "level",
+  },
+  {
+    name: "Name",
+    field: "name",
+  },
+  {
+    name: "Price",
+    field: "marketCost",
+  },
+  {
+    name: "DPS",
+    field: "damage.dps",
+  },
+  {
+    name: "Strength Requirement",
+    field: "requirements.STR",
+  },
+  {
+    name: "Dexterity Requirement",
+    field: "requirements.DEX",
+  },
+  {
+    name: "Wisdom Requirement",
+    field: "requirements.WIS",
+  },
+];
 
 export default function ItemPanel() {
-  const [searchRef, setSearchRef] = useState<HTMLInputElement | null>(null);
   const [searchValue, setSearchValue] = useState<string>("");
+  const [racesFilter, setRacesFilter] = useState<Filters<Race>>(
+    initialRacesFilter as Filters<Race>,
+  );
+  const [tagsFilter, setTagsFilter] = useState<Tag[]>(allPrimaryTags);
+  const [sort, setSort] = useState<Sort>({
+    name: "Level",
+    field: "level",
+    direction: "asc",
+  });
 
-  const initialRacesFilter: any = {};
-  playerRaces.forEach((race) => (initialRacesFilter[race] = true));
-  const [racesFilter, setRacesFilter] =
-    useState<Filters<PlayerRace>>(initialRacesFilter);
+  const [selected, setSelected] = useState<Item>();
+
+  useEffect(() => {
+    setSelected(undefined);
+  }, [searchValue, racesFilter, tagsFilter]);
+
+  const filteredItems = useMemo(() => {
+    const toKeepRaces = Object.entries(racesFilter)
+      .filter(([, keep]) => keep)
+      .map(([race]) => race);
+
+    // Filter items
+    const filteredItems = items.filter((item) => {
+      const keepRace =
+        (!item.race && toKeepRaces.includes("Other")) ||
+        toKeepRaces.includes(item.race || "");
+      if (!keepRace) {
+        return false;
+      }
+      const keepSearch = item.name
+        .toLowerCase()
+        .includes(searchValue.toLowerCase());
+      if (!keepSearch) {
+        return false;
+      }
+      return intersection(item.tags, tagsFilter).length > 0;
+    });
+
+    // sort
+    if (sort.direction !== "none") {
+      filteredItems.sort((one, two) => sortData(one, two, sort));
+    }
+    return filteredItems;
+  }, [tagsFilter, racesFilter, searchValue, sort]);
 
   return (
     <Tab.Panel className="flex flex-grow flex-col">
       <div className="flex flex-col gap-1 px-2 pb-2">
-        <div className="flex w-full items-center gap-2 rounded border border-neutral-300 px-2 py-1 ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-700 focus-within:ring-2">
-          <MagnifyingGlassIcon className="h-4 w-4" />
-          <input
-            ref={(ref) => setSearchRef(ref)}
-            placeholder="Search"
-            className="flex-grow focus:outline-none"
-            value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
-          />
-          {searchValue.length > 0 && (
-            <button
-              onClick={() => {
-                setSearchValue("");
-                searchRef?.focus();
-              }}
-              className="rounded-xl p-1 hover:bg-neutral-100"
-            >
-              <XMarkIcon className="h-4 w-4" />
-            </button>
-          )}
-        </div>
-        <ItemRaceFilterPanel
+        <Search searchValue={searchValue} setSearchValue={setSearchValue} />
+        <ItemRaceFilterBar
           racesFilter={racesFilter}
           setRacesFilter={setRacesFilter}
         />
-        <FiltersPanel
-          name="Additional Filters"
-          filters={["Armor", "Gun", "Sword", "Quest Item"]}
+        <ItemTagFilterBar
+          additionalFilters={tagsFilter}
+          setAdditionalFilters={setTagsFilter}
+          allPrimaryTags={allPrimaryTags}
         />
+        <SortBar options={sortOptions} sort={sort} setSort={setSort} />
       </div>
       <hr />
-      <div className="flex flex-grow basis-0 flex-col gap-2 overflow-y-scroll p-2">
-        {items.length === 0 && <NoMatchCard type="Item" />}
-        {items.map((item) => (
-          <ItemCard key={item.name} item={item} />
-        ))}
+      <div className="relative flex flex-grow flex-col">
+        <div className="flex flex-grow basis-0 flex-col gap-2 overflow-y-scroll bg-neutral-100 p-2">
+          {filteredItems.length === 0 && <NoMatchCard type="Item" />}
+          {filteredItems.map((item) => (
+            <Card
+              key={item.name}
+              titleContent={<ItemCardTitle item={item} />}
+              previewContent={<ItemCardPreviewContent item={item} />}
+              expand={{
+                fullContent: <ItemCardPreviewContent item={item} />,
+                full: item === selected,
+                select: () => setSelected(item),
+                close: () => setSelected(undefined),
+              }}
+            />
+          ))}
+        </div>
       </div>
     </Tab.Panel>
   );

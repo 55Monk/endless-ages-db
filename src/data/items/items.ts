@@ -1,10 +1,55 @@
+import { keyBy } from "lodash-es";
+import { DamageType, Element, Race } from "../shared.ts";
+import apAccessories from "./ap/accessories.ts";
 import apArmor from "./ap/armor";
+import apGuns from "./ap/guns.ts";
+import apMelee from "./ap/melee.ts";
+import blArmor from "./bl/armor.ts";
+import hfArmor from "./hf/armor.ts";
+import hmArmor from "./hm/armor.ts";
+import magics from "./magic.ts";
 
-export const playerRaces = ["AP", "BL", "HF", "HM"] as const;
-export type PlayerRace = (typeof playerRaces)[number];
+export const tags = [
+  "ARMOR",
+  "BODY",
+  "LEGS",
+  "HANDS",
+  "HEAD/FEET",
+  "ACCESSORY",
+  "RING",
+  "AMULET",
+  "BADGE",
+  "MISCACCESSORY",
+  "COSMETIC",
+  "GUN",
+  "DIRECTDAMAGEONLYGUN",
+  "AOEDAMAGEONLYGUN",
+  "BOTHDAMAGEGUN",
+  "UTILITYGUN",
+  "MELEE",
+  "PILOT",
+  "JETPACK",
+  "VEHICLE",
+  "FAMILIAR",
+  "MAGIC",
+  "DIRECTDAMAGEONLYSPELL",
+  "AOEDAMAGEONLYSPELL",
+  "BOTHDAMAGESPELL",
+  "HEALSPELL",
+  "UTILITYSPELL",
+  "SS",
+  "POTION",
+  "ALCH",
+  "ENG",
+  "SMITH",
+  "QI",
+  "JUNK",
+] as const;
+export type Tag = (typeof tags)[number];
 
-export type ItemType = "ARMOR" | "GUN" | "MELEE" | "QI" | "MISC";
 type Stat = "STR" | "DEX" | "WIS";
+type Bonus = Stat | "HEALTH";
+
 type CraftSkill = "ALCH" | "ENG" | "SMITH";
 type Skill =
   | "WT"
@@ -15,30 +60,34 @@ type Skill =
   | "MAGIC"
   | "FAMILIARS"
   | CraftSkill;
+
 type Requirement = Stat | Skill;
-type Element = "NORMAL" | "RUNE" | "DEATH" | "HEAL";
-type Bonus = Stat | "HEALTH";
+
+export type ItemQuantity = [name: string, quantity: number];
 
 export type Item = {
   name: string;
-  itemType?: ItemType;
+  tags: Tag[];
+  level?: number; // this is a soft level, e.g. armor doesn't have wt requirement but is called lv11, 12, etc. For many items this will just match SS, WT, etc requirements
   iconLocation?: [x: number, y: number];
   drops?: boolean;
   marketCost?: number;
   // Requirements to equip/use
-  race?: PlayerRace;
+  race?: Race;
   requirements?: Partial<Record<Requirement, number>>;
   // Stats
   defenses?: Partial<Record<Element, number>>;
   bonuses?: Partial<Record<Bonus, number>>;
   damage?: {
-    directElement?: Element;
+    directElement?: DamageType;
     directAmount?: number;
-    splashElement?: Element;
+    splashElement?: DamageType;
     splashAmount?: number;
     reloadDurationSeconds: number;
+    dps?: number;
   };
   flightDurationSeconds?: number;
+  useCost?: ItemQuantity[];
   // How to get, eventually remove and generate from mobs, npcs, and quests
   rewardFrom?: string;
   fromVendor?: string;
@@ -56,26 +105,10 @@ export type Item = {
   };
 };
 
-const items: Item[] = [
-  {
-    name: "[AP] Ontroytag",
-    iconLocation: [14, 9],
-    drops: false,
-    race: "AP",
-    requirements: {
-      STR: 10,
-      DEX: 10,
-      WIS: 20,
-    },
-    damage: {
-      directElement: "NORMAL",
-      directAmount: 12,
-      reloadDurationSeconds: 0.5,
-    },
-    fromVendor: "Multiple",
-  },
+export const items: Item[] = [
   {
     name: "Peroxi Rebuilder Heal",
+    tags: ["POTION", "ALCH"],
     iconLocation: [3, 1],
     drops: true,
     marketCost: 60,
@@ -98,10 +131,11 @@ const items: Item[] = [
   },
   {
     name: "Quest Item",
-    itemType: "QI",
+    tags: ["QI"],
   },
   {
     name: "Agate",
+    tags: ["JUNK"],
     iconLocation: [5, 1],
     drops: true,
     marketCost: 150,
@@ -111,25 +145,8 @@ const items: Item[] = [
     },
   },
   {
-    name: "[HF] Phision Torso Armor",
-    itemType: "ARMOR",
-    iconLocation: [0, 13],
-    drops: false,
-    marketCost: 250000,
-    rewardFrom: "11 Armor Quest",
-    race: "HF",
-    requirements: {
-      STR: 165,
-      DEX: 155,
-      WIS: 78,
-    },
-    defenses: {
-      NORMAL: 22,
-      RUNE: 7,
-    },
-  },
-  {
     name: "[AP] Wings of Crom",
+    tags: ["PILOT", "JETPACK"],
     iconLocation: [12, 5],
     drops: false,
     rewardFrom: "Crom Keys",
@@ -141,6 +158,7 @@ const items: Item[] = [
   },
   {
     name: "[HF] Netlauncher",
+    tags: ["GUN", "BOTHDAMAGEGUN"],
     iconLocation: [5, 4],
     drops: false,
     rewardFrom: "Netlauncher Quest",
@@ -154,12 +172,14 @@ const items: Item[] = [
     damage: {
       directElement: "DEATH",
       directAmount: 120,
+      splashElement: "NORMAL",
       splashAmount: 60,
       reloadDurationSeconds: 1.93,
     },
   },
   {
     name: "[HF] Ring of Power +20",
+    tags: ["ACCESSORY", "RING"],
     iconLocation: [8, 6],
     drops: false,
     rewardFrom: "Dominion Egg Quest",
@@ -168,26 +188,17 @@ const items: Item[] = [
       STR: 20,
     },
   },
+  ...apArmor,
+  ...apAccessories,
+  ...apGuns,
+  ...apMelee,
+  ...blArmor,
+  ...hfArmor,
+  ...hmArmor,
+  ...magics,
 ];
 
-items.push(...apArmor);
-
-items.forEach((item) => {
-  if (!item.iconLocation) {
-    switch (item.itemType) {
-      case "QI": {
-        item.iconLocation = [0, 1];
-        break;
-      }
-    }
-  }
-});
-
-export function getItemSalePrice(item: Item) {
-  return item.marketCost ? Math.floor(item.marketCost / 4) : 0;
-}
-
-export function getItemDps(item: Item) {
+function getItemDps(item: Item) {
   if (item.damage) {
     const totalDamage =
       (item.damage.directAmount ?? 0) + (item.damage.splashAmount ?? 0);
@@ -197,16 +208,20 @@ export function getItemDps(item: Item) {
   return undefined;
 }
 
-const itemMap: Partial<Record<string, Item>> = {};
-items.reduce((map, item) => {
-  map[item.name] = item;
-  return map;
-}, itemMap);
+items.forEach((item) => {
+  if (!item.iconLocation) {
+    if (item.tags.includes("QI")) {
+      item.iconLocation = [0, 1];
+    }
+  }
 
-export function getItemMap() {
-  return itemMap;
+  if (item.damage) {
+    item.damage.dps = getItemDps(item);
+  }
+});
+
+export function getItemSalePrice(item: Item) {
+  return item.marketCost ? Math.floor(item.marketCost / 4) : 0;
 }
 
-export default function getItems() {
-  return items;
-}
+export const itemMap = keyBy(items, (item) => item.name);
