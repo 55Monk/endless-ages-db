@@ -11,13 +11,12 @@ type Expand = {
 
 type Props = {
   titleContent: ReactNode;
-  previewContent: ReactNode;
+  previewContent?: ReactNode;
   expand?: Expand;
-  defaultSize?: "SMALL" | "MEDIUM";
 };
 
 export default function Card(props: Props) {
-  const { titleContent, previewContent, expand, defaultSize } = props;
+  const { titleContent, previewContent, expand } = props;
   const { fullContent, full, select, close } = expand ?? {};
 
   const { ref, inView } = useInView({ threshold: 0 });
@@ -35,7 +34,9 @@ export default function Card(props: Props) {
       className={`border bg-white ${full ? "absolute left-0 top-0 z-[998] h-full w-full border-white p-3" : expand ? "cursor-pointer rounded border-neutral-300 p-1 hover:bg-neutral-50" : ""}`}
     >
       {inView ? (
-        <div className={defaultSize === "SMALL" ? "min-h-10" : "min-h-20"}>
+        <div
+          className={`flex flex-col gap-1 ${previewContent ? "min-h-[88px]" : "min-h-10"}`}
+        >
           <div className="flex items-start justify-between gap-2">
             {titleContent}
             <button
@@ -48,7 +49,7 @@ export default function Card(props: Props) {
           {full ? fullContent : previewContent}
         </div>
       ) : (
-        <div className={defaultSize === "SMALL" ? "min-h-10" : "min-h-20"} />
+        <div className={previewContent ? "min-h-[88px]" : "min-h-10"} />
       )}
     </div>
   );

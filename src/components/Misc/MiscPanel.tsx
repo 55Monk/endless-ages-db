@@ -4,6 +4,7 @@ import { Misc } from "../../data/misc.ts";
 import getMiscs from "../../data/misc.tsx";
 import Card from "../Card.tsx";
 import NoMatchCard from "../NoMatchCard.tsx";
+import { MiscCardTitle } from "./MiscCardTitle.tsx";
 
 const miscs = getMiscs();
 
@@ -20,15 +21,13 @@ export default function MiscPanel() {
           {(selected ? [selected] : miscs).map((misc) => (
             <Card
               key={misc.name}
-              titleContent={<strong>{misc.name}</strong>}
-              previewContent={<div>{misc.description}</div>}
+              titleContent={<MiscCardTitle misc={misc} />}
               expand={{
                 fullContent: misc.content,
                 full: !!selected,
                 select: () => setSelected(misc),
                 close: () => setSelected(undefined),
               }}
-              defaultSize="SMALL"
             />
           ))}
         </div>
