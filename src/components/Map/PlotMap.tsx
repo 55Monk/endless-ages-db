@@ -9,6 +9,7 @@ import {
 } from "react-leaflet";
 import { getMapMap } from "../../data/maps";
 import useContentStore from "../../hooks/UseContentStore";
+import HeatmapLayer from "./HeatmapLayer.tsx";
 import MapSelectionHeader from "./MapSelectionHeader";
 
 type Line = {
@@ -78,6 +79,7 @@ export default function PlotMap() {
   const selectedMap = useContentStore((state) => state.selectedMap);
   const selectMap = useContentStore((state) => state.selectMap);
   const markers = useContentStore((state) => state.markers);
+  const heatpoints = useContentStore((state) => state.heatpoints);
 
   const selectedMapDetails = mapMap[selectedMap];
 
@@ -137,6 +139,7 @@ export default function PlotMap() {
             ]
           }
         />
+        <HeatmapLayer activeMap={selectedMap} heatpoints={heatpoints} />
         {markers
           .filter((marker) => marker.location.map === selectedMap)
           .map((marker, index) => (

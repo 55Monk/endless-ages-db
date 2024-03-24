@@ -12,7 +12,7 @@ export function MonsterCardTitle(props: Props) {
   const { monster } = props;
 
   return (
-    <div className="flex-grow">
+    <div>
       <div className="flex items-center gap-2">
         <strong className="leading-none">{monster.name}</strong>
         {monster.aggro ? (

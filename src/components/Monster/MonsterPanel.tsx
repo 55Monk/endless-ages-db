@@ -1,11 +1,13 @@
 import { Tab } from "@headlessui/react";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Monster, monsters } from "../../data/monsters.ts";
 import { sortData } from "../../data/shared.ts";
+import useContentStore from "../../hooks/UseContentStore.tsx";
 import Card from "../Card.tsx";
 import NoMatchCard from "../NoMatchCard";
 import Search from "../Search.tsx";
 import SortBar, { Sort, SortOption } from "../SortBar.tsx";
+import MonsterCardContent from "./MonsterCardContent.tsx";
 import MonsterCardPreviewContent from "./MonsterCardPreviewContent.tsx";
 import { MonsterCardTitle } from "./MonsterCardTitle.tsx";
 
@@ -32,11 +34,35 @@ export default function MonsterPanel() {
     direction: "asc",
   });
 
-  const [selected, setSelected] = useState<Monster>();
+  const selectCard = useContentStore((state) => state.selectCard);
+  const selectedCard = useContentStore((state) => state.selectedCard);
+  const plotMonster = useContentStore((state) => state.plotMonster);
 
-  useEffect(() => {
-    setSelected(undefined);
-  }, [searchValue]);
+  const isSelectedMonster = useCallback(
+    (monster: Monster) => {
+      return !!(
+        selectedCard &&
+        selectedCard.type === "Monster" &&
+        selectedCard.name.toLowerCase() === monster.name.toLowerCase()
+      );
+    },
+    [selectedCard],
+  );
+
+  const selectMonster = useCallback(
+    (monster: Monster) => {
+      selectCard({ type: "Monster", name: monster.name });
+      plotMonster(monster);
+    },
+    [plotMonster, selectCard],
+  );
+
+  const deselect = useCallback(() => {
+    selectCard();
+  }, [selectCard]);
+
+  // Clear the selection if any filters change
+  useEffect(() => deselect, [deselect, searchValue]);
 
   const filteredMonsters = useMemo(() => {
     const filteredMonsters = monsters.filter((monster) => {
@@ -69,10 +95,10 @@ export default function MonsterPanel() {
               titleContent={<MonsterCardTitle monster={monster} />}
               previewContent={<MonsterCardPreviewContent monster={monster} />}
               expand={{
-                fullContent: <MonsterCardPreviewContent monster={monster} />,
-                full: monster === selected,
-                select: () => setSelected(monster),
-                close: () => setSelected(undefined),
+                fullContent: <MonsterCardContent monster={monster} />,
+                full: isSelectedMonster(monster),
+                select: () => selectMonster(monster),
+                close: deselect,
               }}
             />
           ))}

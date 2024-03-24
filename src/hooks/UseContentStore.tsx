@@ -4,8 +4,11 @@ import { immer } from "zustand/middleware/immer";
 import { tabs } from "../components/Tabs";
 import { Marker } from "../components/WebsiteContent";
 import { getMapMap } from "../data/maps";
+import { getMobMapCoordinates } from "../data/mobLocations.ts";
+import { Monster } from "../data/monsters.ts";
 import { NPC, npcMap } from "../data/npcs/npcs.ts";
 import { Quest } from "../data/quests";
+import { MapLocation } from "../data/shared.ts";
 
 export type SelectedCard = {
   type: "Quest" | "NPC" | "Monster";
@@ -24,10 +27,12 @@ type ContentState = {
 
   markers: Marker[];
   lines: any;
+  heatpoints: MapLocation[];
   clearMap: () => void;
   plotNpc: (npc: NPC) => void;
   plotQuest: (quest: Quest) => void;
   setMarkerComplete: (index: number, complete: boolean) => void;
+  plotMonster: (monster: Monster) => void;
 };
 
 function selectTab(tab: number | string) {
@@ -43,11 +48,11 @@ function selectMap(map: string) {
 }
 
 function selectCard(selectedCard?: SelectedCard) {
-  return { selectedCard: selectedCard };
+  return { markers: [], lines: [], heatpoints: [], selectedCard: selectedCard };
 }
 
 function clearMap() {
-  return { markers: [], lines: [] };
+  return { markers: [], lines: [], heatpoints: [] };
 }
 
 function plotNpc(npc: NPC) {
@@ -64,6 +69,17 @@ function plotQuest(quest: Quest) {
     icon: npcMap[step.npcName].icon,
   }));
   return { markers, selectedMap: markers[0].location.map };
+}
+
+function plotMonster(monster: Monster) {
+  const mapLocations = getMobMapCoordinates(monster.name);
+  const stateChange: { heatpoints?: MapLocation[]; selectedMap?: string } = {
+    heatpoints: mapLocations,
+  };
+  if (mapLocations) {
+    stateChange.selectedMap = mapLocations[0].map;
+  }
+  return stateChange;
 }
 
 function setMarkerComplete(
@@ -111,11 +127,13 @@ const useContentStore = create<ContentState>()(
         selectCard: (selectedCard) => set(() => selectCard(selectedCard)),
         markers: [],
         lines: [],
+        heatpoints: [],
         clearMap: () => set(() => clearMap()),
         plotNpc: (npc) => set(() => plotNpc(npc)),
         plotQuest: (quest) => set(() => plotQuest(quest)),
         setMarkerComplete: (index, complete) =>
           set((state) => setMarkerComplete(state, index, complete)),
+        plotMonster: (monster) => set(() => plotMonster(monster)),
       }),
       { name: "eadb-content-storage" },
     ),

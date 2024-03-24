@@ -14,7 +14,6 @@ export default function QuestPanel() {
   const selectCard = useContentStore((state) => state.selectCard);
   const selectedCard = useContentStore((state) => state.selectedCard);
   const plotQuest = useContentStore((state) => state.plotQuest);
-  const clearMap = useContentStore((state) => state.clearMap);
 
   const isSelectedQuest = useCallback(
     (quest: Quest) => {
@@ -37,8 +36,7 @@ export default function QuestPanel() {
 
   const deselectQuest = useCallback(() => {
     selectCard();
-    clearMap();
-  }, [clearMap, selectCard]);
+  }, [selectCard]);
 
   // Clear the selection if any filters change
   useEffect(() => deselectQuest, [deselectQuest, searchValue]);

@@ -41,13 +41,13 @@ export function getDataTypeColor(type: DataType) {
 // <br> +Z = north
 // <br> -Z = south
 // <br>Leaflet coordinates (standard latlng): [Z, X]
-type Coordinates = [number, number, number];
+export type Coordinates = [number, number, number];
 
 export type MapLocation = {
   map: string;
   coordinates: Coordinates;
   radius?: number;
-  description: string;
+  description?: string;
 };
 
 export type MapEntity = {
