@@ -16,7 +16,7 @@ export default function SearchBar(props: Props) {
       <MagnifyingGlassIcon className="h-4 w-4" />
       <input
         ref={(ref) => setSearchRef(ref)}
-        placeholder="SearchBar"
+        placeholder="Search"
         className="flex-grow focus:outline-none"
         value={searchValue}
         onChange={(e) => setSearchValue(e.target.value)}
