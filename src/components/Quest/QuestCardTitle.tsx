@@ -8,7 +8,7 @@ export function QuestCardTitle(props: Props) {
   const { quest } = props;
 
   return (
-    <div className="flex-grow">
+    <div>
       <strong className="leading-none">{quest.name}</strong>
       <div className="text-xs">{quest.shortDesc}</div>
     </div>

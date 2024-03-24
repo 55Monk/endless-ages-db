@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
-import { tabs } from "../components/Tabs";
 import { Marker } from "../components/WebsiteContent";
 import { getMapMap } from "../data/maps";
 import { getMobMapCoordinates } from "../data/mobLocations.ts";
@@ -34,6 +33,8 @@ type ContentState = {
   setMarkerComplete: (index: number, complete: boolean) => void;
   plotMonster: (monster: Monster) => void;
 };
+
+export const tabs: string[] = ["Items", "Monsters", "NPCs", "Quests", "Misc"];
 
 function selectTab(tab: number | string) {
   if (typeof tab === "string") {

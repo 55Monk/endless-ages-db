@@ -8,7 +8,7 @@ export function MiscCardTitle(props: Props) {
   const { misc } = props;
 
   return (
-    <div className="flex-grow">
+    <div>
       <strong className="leading-none">{misc.name}</strong>
       <div className="text-xs">{misc.description}</div>
     </div>

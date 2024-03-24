@@ -1,14 +1,13 @@
 import { Tab } from "@headlessui/react";
 import { Fragment } from "react";
 import { MapLocation } from "../data/shared";
-import useContentStore from "../hooks/UseContentStore";
+import useContentStore, { tabs } from "../hooks/UseContentStore";
 import ItemPanel from "./Item/ItemPanel";
 import PlotMap from "./Map/PlotMap.tsx";
 import MiscPanel from "./Misc/MiscPanel";
 import MonsterPanel from "./Monster/MonsterPanel";
 import NpcPanel from "./Npc/NpcPanel";
 import QuestPanel from "./Quest/QuestPanel";
-import { tabs } from "./Tabs";
 
 export type Marker = {
   location: MapLocation;
