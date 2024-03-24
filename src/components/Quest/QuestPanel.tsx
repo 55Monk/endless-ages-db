@@ -4,7 +4,7 @@ import { Quest, quests } from "../../data/quests.ts";
 import useContentStore from "../../hooks/UseContentStore.tsx";
 import Card from "../Card.tsx";
 import NoMatchCard from "../NoMatchCard";
-import Search from "../Search.tsx";
+import SearchBar from "../SearchBar.tsx";
 import QuestCardContent from "./QuestCardContent.tsx";
 import { QuestCardTitle } from "./QuestCardTitle.tsx";
 
@@ -53,7 +53,7 @@ export default function QuestPanel() {
   return (
     <Tab.Panel className="flex flex-grow flex-col">
       <div className="flex flex-col gap-1 px-2 pb-2">
-        <Search searchValue={searchValue} setSearchValue={setSearchValue} />
+        <SearchBar searchValue={searchValue} setSearchValue={setSearchValue} />
       </div>
       <hr />
       <div className="relative flex flex-grow flex-col">

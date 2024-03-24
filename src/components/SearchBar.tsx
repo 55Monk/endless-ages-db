@@ -6,7 +6,7 @@ type Props = {
   setSearchValue: Dispatch<SetStateAction<string>>;
 };
 
-export default function Search(props: Props) {
+export default function SearchBar(props: Props) {
   const { searchValue, setSearchValue } = props;
 
   const [searchRef, setSearchRef] = useState<HTMLInputElement | null>(null);
@@ -16,7 +16,7 @@ export default function Search(props: Props) {
       <MagnifyingGlassIcon className="h-4 w-4" />
       <input
         ref={(ref) => setSearchRef(ref)}
-        placeholder="Search"
+        placeholder="SearchBar"
         className="flex-grow focus:outline-none"
         value={searchValue}
         onChange={(e) => setSearchValue(e.target.value)}

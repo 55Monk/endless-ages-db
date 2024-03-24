@@ -5,7 +5,7 @@ import { Item, Tag, items } from "../../data/items/items";
 import { Race, races, sortData } from "../../data/shared";
 import Card from "../Card.tsx";
 import NoMatchCard from "../NoMatchCard";
-import Search from "../Search.tsx";
+import SearchBar from "../SearchBar.tsx";
 import SortBar, { Sort, SortOption } from "../SortBar.tsx";
 import ItemCardPreviewContent from "./ItemCardPreviewContent.tsx";
 import { ItemCardTitle } from "./ItemCardTitle.tsx";
@@ -112,7 +112,7 @@ export default function ItemPanel() {
   return (
     <Tab.Panel className="flex flex-grow flex-col">
       <div className="flex flex-col gap-1 px-2 pb-2">
-        <Search searchValue={searchValue} setSearchValue={setSearchValue} />
+        <SearchBar searchValue={searchValue} setSearchValue={setSearchValue} />
         <ItemRaceFilterBar
           racesFilter={racesFilter}
           setRacesFilter={setRacesFilter}
