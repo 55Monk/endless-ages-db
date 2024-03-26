@@ -1,9 +1,8 @@
-import { Tab } from "@headlessui/react";
 import { useCallback, useEffect, useState } from "react";
+import Panel from "../../Panel.tsx";
 import { Quest, quests } from "../../data/quests.ts";
 import useContentStore from "../../hooks/UseContentStore.tsx";
 import Card from "../Card.tsx";
-import NoMatchCard from "../NoMatchCard";
 import SearchBar from "../SearchBar.tsx";
 import QuestCardContent from "./QuestCardContent.tsx";
 import { QuestCardTitle } from "./QuestCardTitle.tsx";
@@ -12,30 +11,19 @@ export default function QuestPanel() {
   const [searchValue, setSearchValue] = useState<string>("");
 
   const selectCard = useContentStore((state) => state.selectCard);
-  const selectedCard = useContentStore((state) => state.selectedCard);
+  const selectedCard = useContentStore((state) => state.selectedCard) as Quest;
   const plotQuest = useContentStore((state) => state.plotQuest);
-
-  const isSelectedQuest = useCallback(
-    (quest: Quest) => {
-      return !!(
-        selectedCard &&
-        selectedCard.type === "Quest" &&
-        selectedCard.name.toLowerCase() === quest.name.toLowerCase()
-      );
-    },
-    [selectedCard],
-  );
 
   const selectQuest = useCallback(
     (quest: Quest) => {
-      selectCard({ type: "Quest", name: quest.name });
+      selectCard(quest);
       plotQuest(quest);
     },
     [plotQuest, selectCard],
   );
 
   const deselectQuest = useCallback(() => {
-    selectCard();
+    selectCard(undefined);
   }, [selectCard]);
 
   // Clear the selection if any filters change
@@ -50,29 +38,63 @@ export default function QuestPanel() {
     );
   }
 
+  function hasNext() {
+    if (!selectedCard) {
+      return false;
+    }
+    const index = filteredQuests.indexOf(selectedCard);
+    return index < filteredQuests.length - 1;
+  }
+
+  function next() {
+    if (!selectedCard) {
+      return;
+    }
+    const index = filteredQuests.indexOf(selectedCard);
+    selectCard(filteredQuests[index + 1]);
+  }
+
+  function hasPrevious() {
+    if (!selectedCard) {
+      return false;
+    }
+    const index = filteredQuests.indexOf(selectedCard);
+    return index > 0;
+  }
+
+  function previous() {
+    if (!selectedCard) {
+      return;
+    }
+    const index = filteredQuests.indexOf(selectedCard);
+    selectCard(filteredQuests[index - 1]);
+  }
+
   return (
-    <Tab.Panel className="flex flex-grow flex-col">
-      <div className="flex flex-col gap-1 px-2 pb-2">
+    <Panel
+      type="Quests"
+      bars={
         <SearchBar searchValue={searchValue} setSearchValue={setSearchValue} />
-      </div>
-      <hr />
-      <div className="relative flex flex-grow flex-col">
-        <div className="flex flex-grow basis-0 flex-col gap-2 overflow-y-scroll bg-neutral-100 p-2">
-          {filteredQuests.length === 0 && <NoMatchCard type="Quest" />}
-          {filteredQuests.map((quest) => (
-            <Card
-              key={quest.name}
-              titleContent={<QuestCardTitle quest={quest} />}
-              expand={{
-                fullContent: <QuestCardContent quest={quest} />,
-                full: isSelectedQuest(quest),
-                select: () => selectQuest(quest),
-                close: () => deselectQuest(),
-              }}
-            />
-          ))}
-        </div>
-      </div>
-    </Tab.Panel>
+      }
+    >
+      {filteredQuests.map((quest) => (
+        <Card
+          key={quest.name}
+          titleContent={<QuestCardTitle quest={quest} />}
+          expand={{
+            fullContent: <QuestCardContent quest={quest} />,
+            full: quest === selectedCard,
+            select: () => selectQuest(quest),
+            close: () => deselectQuest(),
+            page: {
+              hasNext: hasNext(),
+              next: next,
+              hasPrevious: hasPrevious(),
+              previous: previous,
+            },
+          }}
+        />
+      ))}
+    </Panel>
   );
 }

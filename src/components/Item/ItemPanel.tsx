@@ -1,12 +1,13 @@
-import { Tab } from "@headlessui/react";
 import intersection from "lodash-es/intersection";
-import { useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
+import Panel from "../../Panel.tsx";
 import { Item, Tag, items } from "../../data/items/items";
 import { Race, races, sortData } from "../../data/shared";
+import useContentStore from "../../hooks/UseContentStore.tsx";
 import Card from "../Card.tsx";
-import NoMatchCard from "../NoMatchCard";
 import SearchBar from "../SearchBar.tsx";
 import SortBar, { Sort, SortOption } from "../SortBar.tsx";
+import ItemCardContent from "./ItemCardContent.tsx";
 import ItemCardPreviewContent from "./ItemCardPreviewContent.tsx";
 import { ItemCardTitle } from "./ItemCardTitle.tsx";
 import ItemRaceFilterBar, { Filters } from "./ItemRaceFilterBar.tsx";
@@ -74,11 +75,12 @@ export default function ItemPanel() {
     direction: "asc",
   });
 
-  const [selected, setSelected] = useState<Item>();
+  const selectCard = useContentStore((state) => state.selectCard);
+  const selectedCard = useContentStore((state) => state.selectedCard) as Item;
 
   useEffect(() => {
-    setSelected(undefined);
-  }, [searchValue, racesFilter, tagsFilter]);
+    selectCard(undefined);
+  }, [searchValue, racesFilter, tagsFilter, selectCard]);
 
   const filteredItems = useMemo(() => {
     const toKeepRaces = Object.entries(racesFilter)
@@ -109,40 +111,79 @@ export default function ItemPanel() {
     return filteredItems;
   }, [tagsFilter, racesFilter, searchValue, sort]);
 
+  function hasNext() {
+    if (!selectedCard) {
+      return false;
+    }
+    const index = filteredItems.indexOf(selectedCard);
+    return index < filteredItems.length - 1;
+  }
+
+  function next() {
+    if (!selectedCard) {
+      return;
+    }
+    const index = filteredItems.indexOf(selectedCard);
+    selectCard(filteredItems[index + 1]);
+  }
+
+  function hasPrevious() {
+    if (!selectedCard) {
+      return false;
+    }
+    const index = filteredItems.indexOf(selectedCard);
+    return index > 0;
+  }
+
+  function previous() {
+    if (!selectedCard) {
+      return;
+    }
+    const index = filteredItems.indexOf(selectedCard);
+    selectCard(filteredItems[index - 1]);
+  }
+
   return (
-    <Tab.Panel className="flex flex-grow flex-col">
-      <div className="flex flex-col gap-1 px-2 pb-2">
-        <SearchBar searchValue={searchValue} setSearchValue={setSearchValue} />
-        <ItemRaceFilterBar
-          racesFilter={racesFilter}
-          setRacesFilter={setRacesFilter}
+    <Panel
+      type="Items"
+      bars={
+        <Fragment>
+          <SearchBar
+            searchValue={searchValue}
+            setSearchValue={setSearchValue}
+          />
+          <ItemRaceFilterBar
+            racesFilter={racesFilter}
+            setRacesFilter={setRacesFilter}
+          />
+          <ItemTagFilterBar
+            additionalFilters={tagsFilter}
+            setAdditionalFilters={setTagsFilter}
+            allPrimaryTags={allPrimaryTags}
+          />
+          <SortBar options={sortOptions} sort={sort} setSort={setSort} />
+        </Fragment>
+      }
+    >
+      {filteredItems.map((item) => (
+        <Card
+          key={item.name}
+          titleContent={<ItemCardTitle item={item} />}
+          previewContent={<ItemCardPreviewContent item={item} />}
+          expand={{
+            fullContent: <ItemCardContent item={item} />,
+            full: item === selectedCard,
+            select: () => selectCard(item),
+            close: () => selectCard(undefined),
+            page: {
+              hasNext: hasNext(),
+              next: next,
+              hasPrevious: hasPrevious(),
+              previous: previous,
+            },
+          }}
         />
-        <ItemTagFilterBar
-          additionalFilters={tagsFilter}
-          setAdditionalFilters={setTagsFilter}
-          allPrimaryTags={allPrimaryTags}
-        />
-        <SortBar options={sortOptions} sort={sort} setSort={setSort} />
-      </div>
-      <hr />
-      <div className="relative flex flex-grow flex-col">
-        <div className="flex flex-grow basis-0 flex-col gap-2 overflow-y-scroll bg-neutral-100 p-2">
-          {filteredItems.length === 0 && <NoMatchCard type="Item" />}
-          {filteredItems.map((item) => (
-            <Card
-              key={item.name}
-              titleContent={<ItemCardTitle item={item} />}
-              previewContent={<ItemCardPreviewContent item={item} />}
-              expand={{
-                fullContent: <ItemCardPreviewContent item={item} />,
-                full: item === selected,
-                select: () => setSelected(item),
-                close: () => setSelected(undefined),
-              }}
-            />
-          ))}
-        </div>
-      </div>
-    </Tab.Panel>
+      ))}
+    </Panel>
   );
 }

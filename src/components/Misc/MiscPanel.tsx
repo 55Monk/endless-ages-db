@@ -1,37 +1,65 @@
-import { Tab } from "@headlessui/react";
-import { useState } from "react";
-import { Misc } from "../../data/misc.ts";
-import getMiscs from "../../data/misc.tsx";
+import Panel from "../../Panel.tsx";
+import { Misc, miscs } from "../../data/misc.tsx";
+import useContentStore from "../../hooks/UseContentStore.tsx";
 import Card from "../Card.tsx";
-import NoMatchCard from "../NoMatchCard.tsx";
 import { MiscCardTitle } from "./MiscCardTitle.tsx";
 
-const miscs = getMiscs();
-
 export default function MiscPanel() {
-  const [selected, setSelected] = useState<Misc>();
+  const selectCard = useContentStore((state) => state.selectCard);
+  const selectedCard = useContentStore((state) => state.selectedCard) as Misc;
+
+  function hasNext() {
+    if (!selectedCard) {
+      return false;
+    }
+    const index = miscs.indexOf(selectedCard);
+    return index < miscs.length - 1;
+  }
+
+  function next() {
+    if (!selectedCard) {
+      return;
+    }
+    const index = miscs.indexOf(selectedCard);
+    selectCard(miscs[index + 1]);
+  }
+
+  function hasPrevious() {
+    if (!selectedCard) {
+      return false;
+    }
+    const index = miscs.indexOf(selectedCard);
+    return index > 0;
+  }
+
+  function previous() {
+    if (!selectedCard) {
+      return;
+    }
+    const index = miscs.indexOf(selectedCard);
+    selectCard(miscs[index - 1]);
+  }
 
   return (
-    <Tab.Panel className="flex flex-grow flex-col">
-      <div className="flex flex-col gap-1 px-2 pb-2"></div>
-      <hr />
-      <div className="relative flex flex-grow flex-col">
-        <div className="flex flex-grow basis-0 flex-col gap-2 overflow-y-scroll bg-neutral-100 p-2">
-          {miscs.length === 0 && <NoMatchCard type="Misc" />}
-          {(selected ? [selected] : miscs).map((misc) => (
-            <Card
-              key={misc.name}
-              titleContent={<MiscCardTitle misc={misc} />}
-              expand={{
-                fullContent: misc.content,
-                full: !!selected,
-                select: () => setSelected(misc),
-                close: () => setSelected(undefined),
-              }}
-            />
-          ))}
-        </div>
-      </div>
-    </Tab.Panel>
+    <Panel type="Misc">
+      {miscs.map((misc) => (
+        <Card
+          key={misc.name}
+          titleContent={<MiscCardTitle misc={misc} />}
+          expand={{
+            fullContent: misc.content,
+            full: misc === selectedCard,
+            select: () => selectCard(misc),
+            close: () => selectCard(undefined),
+            page: {
+              hasNext: hasNext(),
+              next: next,
+              hasPrevious: hasPrevious(),
+              previous: previous,
+            },
+          }}
+        />
+      ))}
+    </Panel>
   );
 }

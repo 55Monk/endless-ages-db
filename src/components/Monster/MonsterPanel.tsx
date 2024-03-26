@@ -1,10 +1,9 @@
-import { Tab } from "@headlessui/react";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import Panel from "../../Panel.tsx";
 import { Monster, monsters } from "../../data/monsters.ts";
 import { sortData } from "../../data/shared.ts";
 import useContentStore from "../../hooks/UseContentStore.tsx";
 import Card from "../Card.tsx";
-import NoMatchCard from "../NoMatchCard";
 import SearchBar from "../SearchBar.tsx";
 import SortBar, { Sort, SortOption } from "../SortBar.tsx";
 import MonsterCardContent from "./MonsterCardContent.tsx";
@@ -35,34 +34,21 @@ export default function MonsterPanel() {
   });
 
   const selectCard = useContentStore((state) => state.selectCard);
-  const selectedCard = useContentStore((state) => state.selectedCard);
+  const selectedCard = useContentStore(
+    (state) => state.selectedCard,
+  ) as Monster;
   const plotMonster = useContentStore((state) => state.plotMonster);
-
-  const isSelectedMonster = useCallback(
-    (monster: Monster) => {
-      return !!(
-        selectedCard &&
-        selectedCard.type === "Monster" &&
-        selectedCard.name.toLowerCase() === monster.name.toLowerCase()
-      );
-    },
-    [selectedCard],
-  );
 
   const selectMonster = useCallback(
     (monster: Monster) => {
-      selectCard({ type: "Monster", name: monster.name });
+      selectCard(monster);
       plotMonster(monster);
     },
     [plotMonster, selectCard],
   );
 
-  const deselect = useCallback(() => {
-    selectCard();
-  }, [selectCard]);
-
   // Clear the selection if any filters change
-  useEffect(() => deselect, [deselect, searchValue]);
+  useEffect(() => selectCard(undefined), [searchValue, selectCard]);
 
   const filteredMonsters = useMemo(() => {
     const filteredMonsters = monsters.filter((monster) => {
@@ -79,31 +65,70 @@ export default function MonsterPanel() {
     return filteredMonsters;
   }, [searchValue, sort]);
 
+  function hasNext() {
+    if (!selectedCard) {
+      return false;
+    }
+    const index = filteredMonsters.indexOf(selectedCard);
+    return index < filteredMonsters.length - 1;
+  }
+
+  function next() {
+    if (!selectedCard) {
+      return;
+    }
+    const index = filteredMonsters.indexOf(selectedCard);
+    selectCard(filteredMonsters[index + 1]);
+  }
+
+  function hasPrevious() {
+    if (!selectedCard) {
+      return false;
+    }
+    const index = filteredMonsters.indexOf(selectedCard);
+    return index > 0;
+  }
+
+  function previous() {
+    if (!selectedCard) {
+      return;
+    }
+    const index = filteredMonsters.indexOf(selectedCard);
+    selectCard(filteredMonsters[index - 1]);
+  }
+
   return (
-    <Tab.Panel className="flex flex-grow flex-col">
-      <div className="flex flex-col gap-1 px-2 pb-2">
-        <SearchBar searchValue={searchValue} setSearchValue={setSearchValue} />
-        <SortBar options={sortOptions} sort={sort} setSort={setSort} />
-      </div>
-      <hr />
-      <div className="relative flex flex-grow flex-col">
-        <div className="flex flex-grow basis-0 flex-col gap-2 overflow-y-scroll bg-neutral-100 p-2">
-          {filteredMonsters.length === 0 && <NoMatchCard type="Monster" />}
-          {filteredMonsters.map((monster) => (
-            <Card
-              key={monster.name}
-              titleContent={<MonsterCardTitle monster={monster} />}
-              previewContent={<MonsterCardPreviewContent monster={monster} />}
-              expand={{
-                fullContent: <MonsterCardContent monster={monster} />,
-                full: isSelectedMonster(monster),
-                select: () => selectMonster(monster),
-                close: deselect,
-              }}
-            />
-          ))}
-        </div>
-      </div>
-    </Tab.Panel>
+    <Panel
+      type="Monsters"
+      bars={
+        <>
+          <SearchBar
+            searchValue={searchValue}
+            setSearchValue={setSearchValue}
+          />
+          <SortBar options={sortOptions} sort={sort} setSort={setSort} />
+        </>
+      }
+    >
+      {filteredMonsters.map((monster) => (
+        <Card
+          key={monster.name}
+          titleContent={<MonsterCardTitle monster={monster} />}
+          previewContent={<MonsterCardPreviewContent monster={monster} />}
+          expand={{
+            fullContent: <MonsterCardContent monster={monster} />,
+            full: monster === selectedCard,
+            select: () => selectMonster(monster),
+            close: () => selectCard(undefined),
+            page: {
+              hasNext: hasNext(),
+              next: next,
+              hasPrevious: hasPrevious(),
+              previous: previous,
+            },
+          }}
+        />
+      ))}
+    </Panel>
   );
 }

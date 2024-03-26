@@ -9,20 +9,15 @@ import { NPC, npcMap } from "../data/npcs/npcs.ts";
 import { Quest } from "../data/quests";
 import { MapLocation } from "../data/shared.ts";
 
-export type SelectedCard = {
-  type: "Quest" | "NPC" | "Monster";
-  name: string;
-};
-
 type ContentState = {
   selectedTab: number;
-  selectTab: (tab: number | string) => void;
+  selectTab: (tab: number | Tab) => void;
 
   selectedMap: string;
   selectMap: (map: string) => void;
 
-  selectedCard?: SelectedCard;
-  selectCard: (selectedCard?: SelectedCard) => void;
+  selectedCard: unknown | undefined;
+  selectCard: (selectedCard: unknown | undefined) => void;
 
   markers: Marker[];
   lines: any;
@@ -34,9 +29,10 @@ type ContentState = {
   plotMonster: (monster: Monster) => void;
 };
 
-export const tabs: string[] = ["Items", "Monsters", "NPCs", "Quests", "Misc"];
+export const tabs = ["Items", "Monsters", "NPCs", "Quests", "Misc"] as const;
+export type Tab = (typeof tabs)[number];
 
-function selectTab(tab: number | string) {
+function selectTab(tab: number | Tab) {
   if (typeof tab === "string") {
     return { selectedTab: tabs.indexOf(tab) };
   } else {
@@ -48,7 +44,7 @@ function selectMap(map: string) {
   return { selectedMap: map };
 }
 
-function selectCard(selectedCard?: SelectedCard) {
+function selectCard(selectedCard?: unknown) {
   return { markers: [], lines: [], heatpoints: [], selectedCard: selectedCard };
 }
 

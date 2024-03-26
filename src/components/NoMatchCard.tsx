@@ -7,7 +7,7 @@ export default function NoMatchCard(props: Props) {
 
   return (
     <div className="rounded-md border-2 border-dotted border-neutral-300 p-6 text-center align-middle text-neutral-400">
-      No {type}s Match Criteria
+      No {type} Match Criteria
     </div>
   );
 }

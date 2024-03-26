@@ -6,7 +6,7 @@ export type Misc = {
   content: ReactNode;
 };
 
-const miscs: Misc[] = [
+export const miscs: Misc[] = [
   {
     name: "Commands List",
     description: "Chat commands to delete quests, leave groups, etc",
@@ -32,7 +32,3 @@ const miscs: Misc[] = [
     ),
   },
 ];
-
-export default function getMiscs() {
-  return miscs;
-}

@@ -1,21 +1,16 @@
 import {
   AdjustmentsHorizontalIcon,
   BoltIcon,
-  BugAntIcon,
   ChartBarIcon,
   ClockIcon,
   RocketLaunchIcon,
   ShieldExclamationIcon,
-  ShoppingCartIcon,
   SparklesIcon,
-  TrophyIcon,
-  WrenchScrewdriverIcon,
 } from "@heroicons/react/24/outline";
 import { getElementIcon } from "../../Elements";
 import { Item } from "../../data/items/items";
 import { elements } from "../../data/shared";
 import { Attribute, AttributeRow } from "../CardAttribute";
-import TextRef from "../Reference/TextRef";
 
 type Props = { item: Item };
 
@@ -88,44 +83,6 @@ export default function ItemCardPreviewContent(props: Props) {
           <Attribute
             qualifiers={<ClockIcon className="h-4 w-4" title="Cooldown" />}
             value={item.flightDurationSeconds}
-          />
-        </AttributeRow>
-      )}
-      {item.fromVendor && (
-        <AttributeRow name="Purchased from" icon={<ShoppingCartIcon />}>
-          <Attribute value={<TextRef name={item.fromVendor} type="npc" />} />
-        </AttributeRow>
-      )}
-      {item.craftedBy && (
-        <>
-          <div className="flex items-center gap-2">
-            <WrenchScrewdriverIcon className="group h-5 w-5" title="Crafted" />
-            <span className="mb-[-1px] text-sm">
-              Crafted by{" "}
-              <span className="font-bold text-cyan-500">
-                {item.craftedBy.skill}
-              </span>{" "}
-              (level <strong>{item.craftedBy.level}</strong>)
-            </span>
-          </div>
-          {item.craftedBy.ingredients.map((ingredient, index) => (
-            <div key={index} className="mb-[-1px] pl-6 text-sm">
-              {ingredient.quantity}{" "}
-              <TextRef name={ingredient.name} type="item" />
-            </div>
-          ))}
-        </>
-      )}
-      {item.rewardFrom && (
-        <AttributeRow name="Reward From" icon={<TrophyIcon />}>
-          <Attribute value={<TextRef name={item.rewardFrom} type="quest" />} />
-        </AttributeRow>
-      )}
-      {item.droppedBy && (
-        <AttributeRow name="Dropped By" icon={<BugAntIcon />}>
-          <Attribute
-            qualifiers={<TextRef name={item.droppedBy.name} type="mob" />}
-            value={`${item.droppedBy.rate}%`}
           />
         </AttributeRow>
       )}
