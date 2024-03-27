@@ -31,4 +31,10 @@ export const miscs: Misc[] = [
       </div>
     ),
   },
+  {
+    name: "About",
+    description: "endless ages db info",
+    content:
+      "Made by 55 Monk. A big thanks to plasticAiredale for allowing me to use his work from EA Monster Bytes as a starting point to expand on.",
+  },
 ];
