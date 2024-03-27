@@ -1,10 +1,9 @@
-import { Tab } from "@headlessui/react";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import Panel from "../../Panel.tsx";
 import { NPC, npcs } from "../../data/npcs/npcs.ts";
 import { sortData } from "../../data/shared.ts";
 import useContentStore from "../../hooks/UseContentStore.tsx";
 import Card from "../Card.tsx";
-import NoMatchCard from "../NoMatchCard.tsx";
 import SearchBar from "../SearchBar.tsx";
 import SortBar, { Sort, SortOption } from "../SortBar.tsx";
 import { NpcCardTitle } from "./NpcCardTitle.tsx";
@@ -30,36 +29,19 @@ export default function NpcPanel() {
   });
 
   const selectCard = useContentStore((state) => state.selectCard);
-  const selectedCard = useContentStore((state) => state.selectedCard);
+  const selectedCard = useContentStore((state) => state.selectedCard) as NPC;
   const plotNpc = useContentStore((state) => state.plotNpc);
-  const clearMap = useContentStore((state) => state.clearMap);
-
-  const isSelectedNpc = useCallback(
-    (npc: NPC) => {
-      return !!(
-        selectedCard &&
-        selectedCard.type === "NPC" &&
-        selectedCard.name.toLowerCase() === npc.name.toLowerCase()
-      );
-    },
-    [selectedCard],
-  );
 
   const selectNpc = useCallback(
     (npc: NPC) => {
-      selectCard({ type: "NPC", name: npc.name });
+      selectCard(npc);
       plotNpc(npc);
     },
     [plotNpc, selectCard],
   );
 
-  const deselectNpc = useCallback(() => {
-    selectCard();
-    clearMap();
-  }, [clearMap, selectCard]);
-
   // Clear the selection if any filters change
-  useEffect(() => deselectNpc, [deselectNpc, searchValue]);
+  useEffect(() => selectCard(undefined), [searchValue, selectCard]);
 
   const filteredNpcs = useMemo(() => {
     // Filter npcs
@@ -74,30 +56,69 @@ export default function NpcPanel() {
     return filteredNpcs;
   }, [searchValue, sort]);
 
+  function hasNext() {
+    if (!selectedCard) {
+      return false;
+    }
+    const index = filteredNpcs.indexOf(selectedCard);
+    return index < filteredNpcs.length - 1;
+  }
+
+  function next() {
+    if (!selectedCard) {
+      return;
+    }
+    const index = filteredNpcs.indexOf(selectedCard);
+    selectCard(filteredNpcs[index + 1]);
+  }
+
+  function hasPrevious() {
+    if (!selectedCard) {
+      return false;
+    }
+    const index = filteredNpcs.indexOf(selectedCard);
+    return index > 0;
+  }
+
+  function previous() {
+    if (!selectedCard) {
+      return;
+    }
+    const index = filteredNpcs.indexOf(selectedCard);
+    selectCard(filteredNpcs[index - 1]);
+  }
+
   return (
-    <Tab.Panel className="flex flex-grow flex-col">
-      <div className="flex flex-col gap-1 px-2 pb-2">
-        <SearchBar searchValue={searchValue} setSearchValue={setSearchValue} />
-        <SortBar options={sortOptions} sort={sort} setSort={setSort} />
-      </div>
-      <hr />
-      <div className="relative flex flex-grow flex-col">
-        <div className="flex flex-grow basis-0 flex-col gap-2 overflow-y-scroll bg-neutral-100 p-2">
-          {filteredNpcs.length === 0 && <NoMatchCard type="Item" />}
-          {filteredNpcs.map((npc) => (
-            <Card
-              key={npc.name}
-              titleContent={<NpcCardTitle npc={npc} />}
-              expand={{
-                fullContent: <div />,
-                full: isSelectedNpc(npc),
-                select: () => selectNpc(npc),
-                close: () => deselectNpc(),
-              }}
-            />
-          ))}
-        </div>
-      </div>
-    </Tab.Panel>
+    <Panel
+      type="NPCs"
+      bars={
+        <>
+          <SearchBar
+            searchValue={searchValue}
+            setSearchValue={setSearchValue}
+          />
+          <SortBar options={sortOptions} sort={sort} setSort={setSort} />
+        </>
+      }
+    >
+      {filteredNpcs.map((npc) => (
+        <Card
+          key={npc.name}
+          titleContent={<NpcCardTitle npc={npc} />}
+          expand={{
+            fullContent: <div />,
+            full: npc === selectedCard,
+            select: () => selectNpc(npc),
+            close: () => selectCard(undefined),
+            page: {
+              hasNext: hasNext(),
+              next: next,
+              hasPrevious: hasPrevious(),
+              previous: previous,
+            },
+          }}
+        />
+      ))}
+    </Panel>
   );
 }
