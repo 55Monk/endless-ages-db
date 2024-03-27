@@ -12,7 +12,7 @@ export function AttributeRow(props: PropsWithChildren<AttributeRowProps>) {
       <div className="mx-[6px] h-5 w-5" title={name}>
         {icon}
       </div>
-      <span className="flex gap-1 text-sm">{children}</span>
+      <span className="flex flex-wrap gap-1 text-sm">{children}</span>
     </div>
   );
 }
