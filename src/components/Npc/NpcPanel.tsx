@@ -64,9 +64,9 @@ export default function NpcPanel() {
   function next() {
     const index = filteredNpcs.indexOf(selectedCard);
     if (hasNext()) {
-      selectCard(filteredNpcs[index + 1]);
+      selectNpc(filteredNpcs[index + 1]);
     } else {
-      selectCard(filteredNpcs[0]);
+      selectNpc(filteredNpcs[0]);
     }
   }
 
@@ -78,9 +78,9 @@ export default function NpcPanel() {
   function previous() {
     const index = filteredNpcs.indexOf(selectedCard);
     if (hasPrevious()) {
-      selectCard(filteredNpcs[index - 1]);
+      selectNpc(filteredNpcs[index - 1]);
     } else {
-      selectCard(filteredNpcs[filteredNpcs.length - 1]);
+      selectNpc(filteredNpcs[filteredNpcs.length - 1]);
     }
   }
 
