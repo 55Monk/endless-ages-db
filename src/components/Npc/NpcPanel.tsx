@@ -69,7 +69,7 @@ export default function NpcPanel() {
       return;
     }
     const index = filteredNpcs.indexOf(selectedCard);
-    selectCard(filteredNpcs[index + 1]);
+    selectNpc(filteredNpcs[index + 1]);
   }
 
   function hasPrevious() {
@@ -85,7 +85,7 @@ export default function NpcPanel() {
       return;
     }
     const index = filteredNpcs.indexOf(selectedCard);
-    selectCard(filteredNpcs[index - 1]);
+    selectNpc(filteredNpcs[index - 1]);
   }
 
   return (

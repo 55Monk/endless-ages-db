@@ -22,12 +22,8 @@ export default function QuestPanel() {
     [plotQuest, selectCard],
   );
 
-  const deselectQuest = useCallback(() => {
-    selectCard(undefined);
-  }, [selectCard]);
-
   // Clear the selection if any filters change
-  useEffect(() => deselectQuest, [deselectQuest, searchValue]);
+  useEffect(() => selectCard(undefined), [searchValue, selectCard]);
 
   let filteredQuests = [...quests];
 
@@ -51,7 +47,7 @@ export default function QuestPanel() {
       return;
     }
     const index = filteredQuests.indexOf(selectedCard);
-    selectCard(filteredQuests[index + 1]);
+    selectQuest(filteredQuests[index + 1]);
   }
 
   function hasPrevious() {
@@ -67,7 +63,7 @@ export default function QuestPanel() {
       return;
     }
     const index = filteredQuests.indexOf(selectedCard);
-    selectCard(filteredQuests[index - 1]);
+    selectQuest(filteredQuests[index - 1]);
   }
 
   return (
@@ -85,7 +81,7 @@ export default function QuestPanel() {
             fullContent: <QuestCardContent quest={quest} />,
             full: quest === selectedCard,
             select: () => selectQuest(quest),
-            close: () => deselectQuest(),
+            close: () => selectCard(undefined),
             page: {
               hasNext: hasNext(),
               next: next,

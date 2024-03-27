@@ -82,7 +82,7 @@ export default function MonsterPanel() {
       return;
     }
     const index = filteredMonsters.indexOf(selectedCard);
-    selectCard(filteredMonsters[index + 1]);
+    selectMonster(filteredMonsters[index + 1]);
   }
 
   function hasPrevious() {
@@ -98,7 +98,7 @@ export default function MonsterPanel() {
       return;
     }
     const index = filteredMonsters.indexOf(selectedCard);
-    selectCard(filteredMonsters[index - 1]);
+    selectMonster(filteredMonsters[index - 1]);
   }
 
   return (
