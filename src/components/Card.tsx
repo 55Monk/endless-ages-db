@@ -1,4 +1,6 @@
 import {
+  ArrowUturnLeftIcon,
+  ArrowUturnRightIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
   XMarkIcon,
@@ -51,16 +53,24 @@ export default function Card(props: Props) {
           <button
             onClick={previous}
             className="rounded focus:outline-none focus:ring-2 enabled:hover:bg-neutral-100 disabled:text-neutral-400"
-            disabled={!hasPrevious}
+            disabled={!hasPrevious && !hasNext}
           >
-            <ChevronLeftIcon className="m-1 h-5 w-5" />
+            {hasPrevious ? (
+              <ChevronLeftIcon className="m-1 h-5 w-5" />
+            ) : (
+              <ArrowUturnRightIcon className="m-1 h-5 w-5" />
+            )}
           </button>
           <button
             onClick={next}
             className="rounded focus:outline-none focus:ring-2 enabled:hover:bg-neutral-100 disabled:text-neutral-400"
-            disabled={!hasNext}
+            disabled={!hasPrevious && !hasNext}
           >
-            <ChevronRightIcon className="m-1 h-5 w-5" />
+            {hasNext ? (
+              <ChevronRightIcon className="m-1 h-5 w-5" />
+            ) : (
+              <ArrowUturnLeftIcon className="m-1 h-5 w-5" />
+            )}
           </button>
           <button
             onClick={close}

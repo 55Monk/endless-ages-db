@@ -112,35 +112,31 @@ export default function ItemPanel() {
   }, [tagsFilter, racesFilter, searchValue, sort]);
 
   function hasNext() {
-    if (!selectedCard) {
-      return false;
-    }
     const index = filteredItems.indexOf(selectedCard);
     return index < filteredItems.length - 1;
   }
 
   function next() {
-    if (!selectedCard) {
-      return;
-    }
     const index = filteredItems.indexOf(selectedCard);
-    selectCard(filteredItems[index + 1]);
+    if (hasNext()) {
+      selectCard(filteredItems[index + 1]);
+    } else {
+      selectCard(filteredItems[0]);
+    }
   }
 
   function hasPrevious() {
-    if (!selectedCard) {
-      return false;
-    }
     const index = filteredItems.indexOf(selectedCard);
     return index > 0;
   }
 
   function previous() {
-    if (!selectedCard) {
-      return;
-    }
     const index = filteredItems.indexOf(selectedCard);
-    selectCard(filteredItems[index - 1]);
+    if (hasPrevious()) {
+      selectCard(filteredItems[index - 1]);
+    } else {
+      selectCard(filteredItems[filteredItems.length - 1]);
+    }
   }
 
   return (

@@ -70,35 +70,31 @@ export default function MonsterPanel() {
   }, [searchValue, sort]);
 
   function hasNext() {
-    if (!selectedCard) {
-      return false;
-    }
     const index = filteredMonsters.indexOf(selectedCard);
     return index < filteredMonsters.length - 1;
   }
 
   function next() {
-    if (!selectedCard) {
-      return;
-    }
     const index = filteredMonsters.indexOf(selectedCard);
-    selectMonster(filteredMonsters[index + 1]);
+    if (hasNext()) {
+      selectMonster(filteredMonsters[index + 1]);
+    } else {
+      selectMonster(filteredMonsters[0]);
+    }
   }
 
   function hasPrevious() {
-    if (!selectedCard) {
-      return false;
-    }
     const index = filteredMonsters.indexOf(selectedCard);
     return index > 0;
   }
 
   function previous() {
-    if (!selectedCard) {
-      return;
-    }
     const index = filteredMonsters.indexOf(selectedCard);
-    selectMonster(filteredMonsters[index - 1]);
+    if (hasPrevious()) {
+      selectMonster(filteredMonsters[index - 1]);
+    } else {
+      selectMonster(filteredMonsters[filteredMonsters.length - 1]);
+    }
   }
 
   return (

@@ -35,35 +35,31 @@ export default function QuestPanel() {
   }
 
   function hasNext() {
-    if (!selectedCard) {
-      return false;
-    }
     const index = filteredQuests.indexOf(selectedCard);
     return index < filteredQuests.length - 1;
   }
 
   function next() {
-    if (!selectedCard) {
-      return;
-    }
     const index = filteredQuests.indexOf(selectedCard);
-    selectQuest(filteredQuests[index + 1]);
+    if (hasNext()) {
+      selectQuest(filteredQuests[index + 1]);
+    } else {
+      selectQuest(filteredQuests[0]);
+    }
   }
 
   function hasPrevious() {
-    if (!selectedCard) {
-      return false;
-    }
     const index = filteredQuests.indexOf(selectedCard);
     return index > 0;
   }
 
   function previous() {
-    if (!selectedCard) {
-      return;
-    }
     const index = filteredQuests.indexOf(selectedCard);
-    selectQuest(filteredQuests[index - 1]);
+    if (hasPrevious()) {
+      selectQuest(filteredQuests[index - 1]);
+    } else {
+      selectQuest(filteredQuests[filteredQuests.length - 1]);
+    }
   }
 
   return (

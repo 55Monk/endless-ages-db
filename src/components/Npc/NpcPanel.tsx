@@ -57,35 +57,31 @@ export default function NpcPanel() {
   }, [searchValue, sort]);
 
   function hasNext() {
-    if (!selectedCard) {
-      return false;
-    }
     const index = filteredNpcs.indexOf(selectedCard);
     return index < filteredNpcs.length - 1;
   }
 
   function next() {
-    if (!selectedCard) {
-      return;
-    }
     const index = filteredNpcs.indexOf(selectedCard);
-    selectNpc(filteredNpcs[index + 1]);
+    if (hasNext()) {
+      selectCard(filteredNpcs[index + 1]);
+    } else {
+      selectCard(filteredNpcs[0]);
+    }
   }
 
   function hasPrevious() {
-    if (!selectedCard) {
-      return false;
-    }
     const index = filteredNpcs.indexOf(selectedCard);
     return index > 0;
   }
 
   function previous() {
-    if (!selectedCard) {
-      return;
-    }
     const index = filteredNpcs.indexOf(selectedCard);
-    selectNpc(filteredNpcs[index - 1]);
+    if (hasPrevious()) {
+      selectCard(filteredNpcs[index - 1]);
+    } else {
+      selectCard(filteredNpcs[filteredNpcs.length - 1]);
+    }
   }
 
   return (

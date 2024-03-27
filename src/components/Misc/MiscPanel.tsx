@@ -9,35 +9,31 @@ export default function MiscPanel() {
   const selectedCard = useContentStore((state) => state.selectedCard) as Misc;
 
   function hasNext() {
-    if (!selectedCard) {
-      return false;
-    }
     const index = miscs.indexOf(selectedCard);
     return index < miscs.length - 1;
   }
 
   function next() {
-    if (!selectedCard) {
-      return;
-    }
     const index = miscs.indexOf(selectedCard);
-    selectCard(miscs[index + 1]);
+    if (hasNext()) {
+      selectCard(miscs[index + 1]);
+    } else {
+      selectCard(miscs[0]);
+    }
   }
 
   function hasPrevious() {
-    if (!selectedCard) {
-      return false;
-    }
     const index = miscs.indexOf(selectedCard);
     return index > 0;
   }
 
   function previous() {
-    if (!selectedCard) {
-      return;
-    }
     const index = miscs.indexOf(selectedCard);
-    selectCard(miscs[index - 1]);
+    if (hasPrevious()) {
+      selectCard(miscs[index - 1]);
+    } else {
+      selectCard(miscs[miscs.length - 1]);
+    }
   }
 
   return (
