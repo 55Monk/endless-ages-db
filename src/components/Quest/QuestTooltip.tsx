@@ -13,7 +13,7 @@ export default function QuestTooltip(props: Props) {
   const selectTab = useContentStore((state) => state.selectTab);
 
   function onClickGoTo() {
-    selectTab("quest");
+    selectTab("Quests");
   }
 
   return (
