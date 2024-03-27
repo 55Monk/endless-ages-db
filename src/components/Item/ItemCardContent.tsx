@@ -63,6 +63,7 @@ export default function ItemCardContent(props: Props) {
         )}
       </div>
       <img
+        className="min-h-0"
         src={`${import.meta.env.BASE_URL}/assets/pictures/${item.name}.jpg`}
         alt={item.name}
         title={item.name}

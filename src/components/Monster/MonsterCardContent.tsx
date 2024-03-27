@@ -43,6 +43,7 @@ export default function MonsterCardContent(props: Props) {
         </AttributeRow>
       </div>
       <img
+        className="min-h-0"
         src={`${import.meta.env.BASE_URL}/assets/pictures/${monster.name}.jpg`}
         alt={monster.name}
         title={monster.name}
