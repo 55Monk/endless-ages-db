@@ -23,6 +23,10 @@ const sortOptions: SortOption[] = [
     name: "DPS",
     field: "damage.dps",
   },
+  {
+    name: "Credits",
+    field: "loot.creditRange[1]",
+  },
 ];
 
 export default function MonsterPanel() {
